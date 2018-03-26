@@ -55,7 +55,6 @@ public class WorkoutHistoryActivity extends Activity {
                 }
             }
             String buttonText = date + "\n";
-            int x = 0;
             for(String muscleGroupString : muscleGroupNames) {
                 buttonText += muscleGroupString + " ";
             }
