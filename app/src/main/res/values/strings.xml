@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Gym Assistant</string>
+    <string name="stopwatchInitialValue">00:00:00</string>
+    <string name="stopwatchStartButtonText">Start</string>
+    <string name="stopwatchResetButtonText">Reset</string>
+    <string name="stopwatchStopButtonTexgt">Stop</string>
+    <string name="muscleGroup">Grupa mięśniowa</string>
+    <string name="sort">Sortowanie</string>
+</resources>
