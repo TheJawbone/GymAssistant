@@ -89,7 +89,7 @@ public class ChooseExcerciseActivity extends Activity {
                         exerciseNames.add(exercise.getName());
                     }
                 } else {
-                    MuscleGroup muscleGroup = db.getMuscleGroup(selectedItem);
+                    MuscleGroup muscleGroup = db.getMuscleGroupByID(selectedItem);
                     List<Exercise> exercises = db.getExercisesByMuscleGroupID(muscleGroup.getID());
                     for(Exercise exercise : exercises) {
                         exerciseNames.add(exercise.getName());

@@ -255,46 +255,6 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Create exercise
-     * @param exercise
-     * @return
-     */
-    public long createExercise(Exercise exercise, long[] muscleGroupIDs) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(exerciseName, exercise.getName());
-        values.put(createdAt, getCurrentDate());
-
-        long exerciseID = db.insert(tableExercises, null, values);
-
-        for(long muscleGroupID : muscleGroupIDs) {
-            createExerciseMuscleGroup(exerciseID, muscleGroupID);
-        }
-
-        return exerciseID;
-    }
-
-    /**
-     * Create muscle group
-     * @param group
-     * @return
-     */
-    public long createMuscleGroup(MuscleGroup group) {
-
-        SQLiteDatabase db = this.getWritableDatabase();
-
-        ContentValues values = new ContentValues();
-        values.put(muscleGroupName, group.getName());
-        values.put(createdAt, getCurrentDate());
-
-        long muscleGroupID = db.insert(tableMuscleGroups, null, values);
-
-        return muscleGroupID;
-    }
-
-    /**
      * Create exerciseSet
      * @param exerciseSet
      * @return
@@ -478,7 +438,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param ID
      * @return
      */
-    public MuscleGroup getMuscleGroup(long ID) {
+    public MuscleGroup getMuscleGroupByID(long ID) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -506,7 +466,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * @param name
      * @return
      */
-    public MuscleGroup getMuscleGroup(String name) {
+    public MuscleGroup getMuscleGroupByID(String name) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -754,22 +714,24 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public List<MuscleGroup> getMuscleGroupsByExerciseID(long exerciseID) {
 
-        String selectQuery = "SELECT * FROM " + tableMuscleGroups
+        String selectQuery = "SELECT " + muscleGroupID + " FROM " + tableExerciseMuscleGroups
                 + " WHERE " + this.exerciseID + " = " + exerciseID;
 
         Log.e(log, selectQuery);
 
         SQLiteDatabase db = this.getReadableDatabase();
         Cursor c = db.rawQuery(selectQuery, null);
-        List<MuscleGroup> muscleGroups = new ArrayList<>();
+
+        List<Long> muscleGroupIDs = new ArrayList<>();
         if(c.moveToFirst()) {
             do {
-                MuscleGroup muscleGroup = new MuscleGroup();
-                muscleGroup.setID(c.getLong(c.getColumnIndex(keyID)));
-                muscleGroup.setName(c.getString(c.getColumnIndex(muscleGroupName)));
-                muscleGroup.setCreatedAt(c.getString(c.getColumnIndex(createdAt)));
-                muscleGroups.add(muscleGroup);
-            } while (c.moveToNext());
+                muscleGroupIDs.add(c.getLong(c.getColumnIndex(muscleGroupID)));
+            } while(c.moveToNext());
+        }
+
+        List<MuscleGroup> muscleGroups = new ArrayList<>();
+        for(Long muscleGroupID : muscleGroupIDs) {
+            muscleGroups.add(getMuscleGroupByID(muscleGroupID));
         }
 
         return muscleGroups;
@@ -859,6 +821,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 new String[] { String.valueOf(ID) });
     }
 
+    public void truncateExerciseMuscleGroups()
+    {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "DELETE FROM " + tableExerciseMuscleGroups
+                + ";VACUUM";
+        db.execSQL(query);
+        Log.e(log, query);
+    }
+
     /**
      * Delete all completed workouts
      */
@@ -878,6 +849,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void populateMuscleGroupsTable(Context context) {
 
         //TODO: check if launching app for the first time in if
+        //
         List<MuscleGroup> muscleGroups = getAllMuscleGroups();
         if(true) {
             for(MuscleGroup muscleGroup : muscleGroups) {
@@ -919,6 +891,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         if(true) {
             for(Exercise exercise : exercises) {
                 deleteExercise(exercise.getID());
+                truncateExerciseMuscleGroups();
             }
 
             SQLiteDatabase db = this.getWritableDatabase();
