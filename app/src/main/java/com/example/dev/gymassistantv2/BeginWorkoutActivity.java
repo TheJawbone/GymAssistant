@@ -3,7 +3,6 @@ package com.example.dev.gymassistantv2;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Typeface;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -29,7 +28,7 @@ public class BeginWorkoutActivity extends Activity {
         button.setTypeface(typeface);
         button = findViewById(R.id.buttonPlannedWorkout);
         button.setTypeface(typeface);
-        button = findViewById(R.id.buttonBack);
+        button = findViewById(R.id.buttonEndWorkout);
         button.setTypeface(typeface);
 
         //Create free workout on click listener
@@ -51,7 +50,7 @@ public class BeginWorkoutActivity extends Activity {
         });
 
         //Set back button on click listener
-        button = findViewById(R.id.buttonBack);
+        button = findViewById(R.id.buttonEndWorkout);
         button.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {

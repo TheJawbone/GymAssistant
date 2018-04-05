@@ -35,7 +35,7 @@ public class SettingsActivity extends Activity {
                 DatabaseHelper db = new DatabaseHelper(getApplicationContext());
                 db.deleteAllCompletedWorkouts();
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "Historia treningów została usunięta",
+                        "@strings/history_erased_notification",
                         Toast.LENGTH_LONG);
                 toast.show();
             }

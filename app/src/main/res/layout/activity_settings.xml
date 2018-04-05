@@ -16,7 +16,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/bottom_border"
             android:fontFamily="@font/black_ops_one"
-            android:text="Wyczyść historię treningów"
+            android:text="@string/clear_workout_history"
             android:textColor="@color/colorPrimary" />
 
         <Button
@@ -27,7 +27,7 @@
             android:layout_marginStart="8dp"
             android:background="@drawable/bottom_border"
             android:fontFamily="@font/black_ops_one"
-            android:text="Wybierz dostępne ćwiczenia"
+            android:text="@string/choose_available_exercises"
             android:textColor="@color/colorPrimary" />
     </LinearLayout>
 </ScrollView>

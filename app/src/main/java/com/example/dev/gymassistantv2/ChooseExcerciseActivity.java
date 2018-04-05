@@ -38,7 +38,7 @@ public class ChooseExcerciseActivity extends Activity {
         textView = findViewById(R.id.textViewExcerciseList);
         textView.setTypeface(typeface);
 
-        Button button = findViewById(R.id.buttonStart);
+        Button button = findViewById(R.id.buttonBeginSet);
         button.setTypeface(typeface);
         button = findViewById(R.id.buttonEndWorkout);
         button.setTypeface(typeface);
@@ -113,7 +113,7 @@ public class ChooseExcerciseActivity extends Activity {
         });
 
         //ExerciseSet start series button on click listener
-        button = findViewById(R.id.buttonStart);
+        button = findViewById(R.id.buttonBeginSet);
         button.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View view) {

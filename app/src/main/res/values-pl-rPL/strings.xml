@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="reset">Reset</string>
+    <string name="sort">Sortowanie</string>
+    <string name="start">Start</string>
+    <string name="stop">Stop</string>
+    <string name="choose_exercise">Wybierz ćwiczenie</string>
+    <string name="muscle_group">Grupa mięśniowa</string>
+    <string name="muscle_group_colon">Grupa mięśniowa:</string>
+    <string name="exercise_colon">Ćwiczenie:</string>
+    <string name="begin_set">Rozpocznij serię</string>
+    <string name="end_workout">Zakończ trening</string>
+    <string name="free_workout">Trening dowolny</string>
+    <string name="planned_workout">Trening zaplanowany</string>
+    <string name="back">Powrót</string>
+    <string name="begin_workout">Rozpocznij trening</string>
+    <string name="plan_workout">Zaplanuj trening</string>
+    <string name="progress">Postępy</string>
+    <string name="workout_history">Historia treningów</string>
+    <string name="settings">Ustawienia</string>
+    <string name="choose_workout_type">Wybierz rodzaj treningu</string>
+    <string name="application_logo">Logo aplikacji</string>
+    <string name="exercise_name">Nazwa ćwiczenia</string>
+    <string name="weight_colon">Obciążenie:</string>
+    <string name="rep_count_colon">Liczba powtórzeń:</string>
+    <string name="next_set">Następna seria</string>
+    <string name="next_exercise">Następne ćwiczenie</string>
+    <string name="cancel_set">Anuluj serię</string>
+    <string name="set">Seria</string>
+    <string name="save_set">Zapisz serię</string>
+    <string name="grey_background">Szare tło</string>
+    <string name="clear_workout_history">Wyczyść historię treningów</string>
+    <string name="choose_available_exercises">Wybierz dostępne ćwiczenia</string>
+    <string name="history_erased_notification">Historia treningów została usunięta</string>
+</resources>

@@ -19,7 +19,7 @@
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
             android:fontFamily="@font/black_ops_one"
-            android:text="@string/muscleGroup"
+            android:text="@string/muscle_group"
             android:textAlignment="center"
             android:textColor="@color/colorPrimary"
             app:layout_constraintStart_toStartOf="parent"
