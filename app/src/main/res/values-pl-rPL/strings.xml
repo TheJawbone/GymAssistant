@@ -32,4 +32,7 @@
     <string name="clear_workout_history">Wyczyść historię treningów</string>
     <string name="choose_available_exercises">Wybierz dostępne ćwiczenia</string>
     <string name="history_erased_notification">Historia treningów została usunięta</string>
+    <string name="fill_text_fields_notification">Uzupełnij oba pola bądź anuluj serię</string>
+    <string name="default_settings">Zresetuj aplikację do ustawień domyślnych</string>
+    <string name="default_settings_restored_notification">Aplikacja została przywrócona do ustawień domyślnych</string>
 </resources>

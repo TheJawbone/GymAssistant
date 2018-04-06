@@ -32,4 +32,7 @@
     <string name="next_exercise">Next exercise</string>
     <string name="cancel_set">Cancel set</string>
     <string name="history_erased_notification">Workout history has been erased</string>
+    <string name="fill_text_fields_notification">Fill both fields or cancel set</string>
+    <string name="default_settings">Reset app to default settings</string>
+    <string name="default_settings_restored_notification">Application has been restored to it\'s default settings</string>
 </resources>

@@ -1,13 +1,13 @@
-Wspięcia na palce w staniu,2
-Wspięcia na palce w siadzie,2
-Wypychanie ciężaru na suwnicy palcami nóg,2
-Odwrotne wspięcia w staniu,2
-Przysiady ze sztangą na barkach,3
-Przysiady ze sztangą trzymaną z przodu,3
-Przysiady na suwnicy skośnej,3
-Prostowanie nóg w siadzie,3
-Wypychanie ciężaru na suwnicy,3
-Uginaniu nóg w leżeniu,3
-Przysiady wykroczne,3
-Odwodzenie nogi w tył,3,4
-Ściąganie kolan w siadzie,3
+Wspięcia na palce w staniu,1,2
+Wspięcia na palce w siadzie,1,2
+Wypychanie ciężaru na suwnicy palcami nóg,1,2
+Odwrotne wspięcia w staniu,1,2
+Przysiady ze sztangą na barkach,1,3
+Przysiady ze sztangą trzymaną z przodu,1,3
+Przysiady na suwnicy skośnej,1,3
+Prostowanie nóg w siadzie,1,3
+Wypychanie ciężaru na suwnicy,1,3
+Uginaniu nóg w leżeniu,1,3
+Przysiady wykroczne,1,3
+Odwodzenie nogi w tył,1,3,4
+Ściąganie kolan w siadzie,1,3

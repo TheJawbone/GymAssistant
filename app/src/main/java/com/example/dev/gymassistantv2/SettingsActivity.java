@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-public class SettingsActivity extends Activity {
+public class SettingsActivity extends Activity implements View.OnClickListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,33 +22,47 @@ public class SettingsActivity extends Activity {
         //ExerciseSet fonts
         Typeface typeface = Typeface.createFromAsset(getAssets(),  "fonts/BlackOpsOne-Regular.ttf");
 
+        // Set up buttons
         Button button = findViewById(R.id.buttonClearDatabase);
         button.setTypeface(typeface);
+        button.setOnClickListener(this);
         button = findViewById(R.id.buttonChooseAvailableExercises);
         button.setTypeface(typeface);
+        button.setOnClickListener(this);
+        button = findViewById(R.id.buttonDefaultSettings);
+        button.setTypeface(typeface);
+        button.setOnClickListener(this);
+    }
 
-        //ExerciseSet clear database button on click listener
-        button = findViewById(R.id.buttonClearDatabase);
-        button.setOnClickListener(new View.OnClickListener() {
+    @Override
+    public void onClick(View view) {
 
-            public void onClick(View view) {
+        switch(view.getId()) {
+
+            case R.id.buttonClearDatabase:
                 DatabaseHelper db = new DatabaseHelper(getApplicationContext());
-                db.deleteAllCompletedWorkouts();
+                db.truncateCompletedWorkouts();
                 Toast toast = Toast.makeText(getApplicationContext(),
-                        "@strings/history_erased_notification",
+                        getString(R.string.history_erased_notification),
                         Toast.LENGTH_LONG);
                 toast.show();
-            }
-        });
+                break;
 
-        //ExerciseSet choose available exercises button on click listener
-        button = findViewById(R.id.buttonChooseAvailableExercises);
-        button.setOnClickListener(new View.OnClickListener() {
-
-            public void onClick(View view) {
+            case R.id.buttonChooseAvailableExercises:
                 Intent intent = new Intent(getApplicationContext(), ChooseAvailableExercisesActivity.class);
                 startActivity(intent);
-            }
-        });
+                break;
+
+            case R.id.buttonDefaultSettings:
+                getApplicationContext().deleteDatabase(getString(R.string.database_name));
+                db = new DatabaseHelper(getApplicationContext());
+                db.populateExercisesTable(getApplicationContext());
+                db.populateMuscleGroupsTable(getApplicationContext());
+                toast = Toast.makeText(getApplicationContext(),
+                        getString(R.string.default_settings_restored_notification),
+                        Toast.LENGTH_LONG);
+                toast.show();
+                break;
+        }
     }
 }

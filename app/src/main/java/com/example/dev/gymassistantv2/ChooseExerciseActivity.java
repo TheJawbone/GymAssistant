@@ -16,7 +16,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class ChooseExcerciseActivity extends Activity {
+public class ChooseExerciseActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +57,7 @@ public class ChooseExcerciseActivity extends Activity {
             i++;
         }
         final Spinner spinnerMuscleGroups = findViewById(R.id.spinnerMuscleGroups);
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, muscleGroupSpinnerArray);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, muscleGroupSpinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerMuscleGroups.setAdapter(adapter);
 
@@ -66,51 +66,17 @@ public class ChooseExcerciseActivity extends Activity {
         String[] exerciseListSpinnerArray = new String[exercises.size()];
         i = 0;
         for(Exercise exercise : exercises) {
-            exerciseListSpinnerArray[i] = exercise.getName();
+        //    if(exercise.getIsAvailable()) {
+                exerciseListSpinnerArray[i] = exercise.getName();
+        //    }
             i++;
         }
         final Spinner spinnerExercises = findViewById(R.id.spinnerExcerciseList);
-        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, exerciseListSpinnerArray);
+        adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, exerciseListSpinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerExercises.setAdapter(adapter);
 
-        //Set muscle group spinner listener
-        final Context context = getApplicationContext();
-        spinnerMuscleGroups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
 
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                String selectedItem = spinnerMuscleGroups.getSelectedItem().toString();
-                Set exerciseNames = new HashSet();
-                if(selectedItem.equals("Dowolna")) {
-                    List<Exercise> exercises = db.getAllExercises();
-                    for(Exercise exercise : exercises) {
-                        exerciseNames.add(exercise.getName());
-                    }
-                } else {
-                    MuscleGroup muscleGroup = db.getMuscleGroupByID(selectedItem);
-                    List<Exercise> exercises = db.getExercisesByMuscleGroupID(muscleGroup.getID());
-                    for(Exercise exercise : exercises) {
-                        exerciseNames.add(exercise.getName());
-                    }
-                }
-                String[] exerciseListSpinnerArray = new String[exerciseNames.size()];
-                i = 0;
-                for(Object exerciseName : exerciseNames) {
-                    exerciseListSpinnerArray[i] = (String)exerciseName;
-                    i++;
-                }
-                final Spinner spinnerExercises = findViewById(R.id.spinnerExcerciseList);
-                ArrayAdapter<String> adapter = new ArrayAdapter<String>(context.getApplicationContext(), android.R.layout.simple_spinner_item, exerciseListSpinnerArray);
-                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                spinnerExercises.setAdapter(adapter);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-            }
-        });
 
         //ExerciseSet start series button on click listener
         button = findViewById(R.id.buttonBeginSet);
@@ -134,6 +100,38 @@ public class ChooseExcerciseActivity extends Activity {
                finish();
                startActivity(intent);
            }
+        });
+
+        //Set sort spinner on item selected listener
+        spinnerMuscleGroups.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                String selectedItem = spinnerMuscleGroups.getSelectedItem().toString();
+                Set exerciseNames = new HashSet();
+                MuscleGroup muscleGroup = db.getMuscleGroupByID(selectedItem);
+                List<Exercise> exercises = db.getExercisesByMuscleGroupID(muscleGroup.getID());
+                for(Exercise exercise : exercises) {
+                    if(exercise.getIsAvailable()) {
+                        exerciseNames.add(exercise.getName());
+                    }
+                }
+                String[] exerciseListSpinnerArray = new String[exerciseNames.size()];
+                i = 0;
+                for(Object exerciseName : exerciseNames) {
+                    exerciseListSpinnerArray[i] = (String)exerciseName;
+                    i++;
+                }
+                final Spinner spinnerExercises = findViewById(R.id.spinnerExcerciseList);
+                ArrayAdapter<String> adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_spinner_item, exerciseListSpinnerArray);
+                adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinnerExercises.setAdapter(adapter);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+            }
         });
 
         //ExerciseSet end workout button on click listener

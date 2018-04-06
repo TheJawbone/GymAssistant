@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -68,6 +69,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
      * Exercises table column names
      */
     private static final String exerciseName = "exerciseName";
+    private static final String exerciseIsAvailable = "exerciseIsAvailable";
 
     /**
      * MuscleGroups table column names
@@ -117,6 +119,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             + keyID + " INTEGER PRIMARY KEY,"
             + muscleGroupID + " INTEGER,"
             + exerciseName + " VARCHAR(50),"
+            + exerciseIsAvailable + " INTEGER,"
             + createdAt + " DATETIME" + ")";
 
     /**
@@ -402,6 +405,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         exercise.setID(c.getInt(c.getColumnIndex(keyID)));
         exercise.setName(c.getString(c.getColumnIndex(exerciseName)));
         exercise.setCreatedAt(c.getString(c.getColumnIndex(createdAt)));
+        exercise.setIsAvailable(c.getInt(c.getColumnIndex(exerciseIsAvailable)) != 0);
 
         return exercise;
     }
@@ -444,6 +448,34 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         String selectQuery = "SELECT * FROM " + tableMuscleGroups
                 + " WHERE " + keyID + " = " + ID;
+
+        Log.e(log, selectQuery);
+
+        Cursor c = db.rawQuery(selectQuery, null);
+
+        if(c != null) {
+            c.moveToFirst();
+        }
+
+        MuscleGroup muscleGroup = new MuscleGroup();
+        muscleGroup.setID(c.getInt(c.getColumnIndex(keyID)));
+        muscleGroup.setName(c.getString(c.getColumnIndex(muscleGroupName)));
+        muscleGroup.setCreatedAt(c.getString(c.getColumnIndex(createdAt)));
+
+        return muscleGroup;
+    }
+
+    /**
+     * Get muscle group by it's name
+     * @param name
+     * @return
+     */
+    public MuscleGroup getMuscleGroupByName(String name) {
+
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        String selectQuery = "SELECT * FROM " + tableMuscleGroups
+                + " WHERE " + muscleGroupName + " = '" + name + "'";
 
         Log.e(log, selectQuery);
 
@@ -674,14 +706,17 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         if(c.moveToFirst()) {
             do {
+                int test = c.getInt(c.getColumnIndex(exerciseIsAvailable));
                 Exercise exercise = new Exercise();
                 exercise.setID(c.getInt(c.getColumnIndex(keyID)));
                 exercise.setName(c.getString(c.getColumnIndex(exerciseName)));
                 exercise.setCreatedAt(c.getString(c.getColumnIndex(createdAt)));
+                exercise.setIsAvailable(c.getInt(c.getColumnIndex(exerciseIsAvailable)) != 0);
                 exercises.add(exercise);
             } while(c.moveToNext());
         }
 
+        Collections.sort(exercises);
         return exercises;
     }
 
@@ -759,6 +794,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             exercises.add(getExerciseByID(exerciseID));
         }
 
+        Collections.sort(exercises);
         return exercises;
     }
 
@@ -833,13 +869,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     /**
      * Delete all completed workouts
      */
-    public void deleteAllCompletedWorkouts() {
+    public void truncateCompletedWorkouts() {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        List<CompletedWorkout> workouts = getAllCompletedWorkouts();
-        for(CompletedWorkout workout : workouts) {
-            deleteCompletedWorkout(workout.getID());
+        String query = "DELETE FROM " + tableCompletedWorkouts
+                + ";VACUUM";
+        db.execSQL(query);
+        Log.e(log, query);
+    }
+
+    /**
+     * Update record in Exercise table
+     * @param exercise
+     */
+    public void updateExercise(Exercise exercise) {
+
+        int isAvailable;
+        if(exercise.getIsAvailable()) {
+            isAvailable = 1;
         }
+        else {
+            isAvailable = 0;
+        }
+
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + tableExercises
+                + " SET " + exerciseIsAvailable + "=" + isAvailable
+                + " WHERE " + keyID + "=" + exercise.getID();
+        db.execSQL(query);
+        Log.e(log, query);
     }
 
     /**
@@ -907,6 +965,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ContentValues exerciseValues = new ContentValues();
                     exerciseValues.put(exerciseName, lineElements[0]);
                     exerciseValues.put(createdAt, getCurrentDate());
+                    exerciseValues.put(exerciseIsAvailable, 1);
                     long exerciseID = db.insert(tableExercises, null, exerciseValues);
 
                     //Create exercise muscle group

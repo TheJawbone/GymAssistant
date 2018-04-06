@@ -102,10 +102,10 @@ public class SetActivity extends Activity {
         button = findViewById(R.id.buttonReset);
         button.setTypeface(typeface);
         button = findViewById(R.id.buttonNextExcerciseOK);
-        button.setText(Html.fromHtml("Następne ćwiczenie<br><small>Zapisz serię</small>"));
+        button.setText(Html.fromHtml(getString(R.string.next_exercise) + "<br><small>" + getString(R.string.save_set) + "</small>"));
         button.setTypeface(typeface);
         button = findViewById(R.id.buttonNextExerciseCancel);
-        button.setText(Html.fromHtml("Następne ćwiczenie<br><small>Anuluj serię</small>"));
+        button.setText(Html.fromHtml(getString(R.string.next_exercise) + "<br><small>" + getString(R.string.cancel_set) + "</small>"));
         button.setTypeface(typeface);
         button = findViewById(R.id.buttonNextSeries);
         button.setTypeface(typeface);
@@ -185,7 +185,7 @@ public class SetActivity extends Activity {
                 else {
                     Toast toast = Toast.makeText(
                             getApplicationContext(),
-                            "Uzupełnij oba pola lub przejdź do kolejnego ćwiczenia",
+                            getString(R.string.fill_text_fields_notification),
                             Toast.LENGTH_LONG);
                     toast.show();
                 }
@@ -207,7 +207,7 @@ public class SetActivity extends Activity {
                 }
 
                 //Prepare intent and refirect to choose exercise activity
-                Intent intent = new Intent(getApplicationContext(), ChooseExcerciseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ChooseExerciseActivity.class);
                 intent.putExtra("workoutID", getIntent().getLongExtra("workoutID", 0));
                 finish();
                 startActivity(intent);
@@ -233,7 +233,7 @@ public class SetActivity extends Activity {
                     saveSetToDatabase(segmentID, repCount, weight);
 
                     //Prepare intent and redirect to choose exercise activity
-                    Intent intent = new Intent(getApplicationContext(), ChooseExcerciseActivity.class);
+                    Intent intent = new Intent(getApplicationContext(), ChooseExerciseActivity.class);
                     intent.putExtra("workoutID", getIntent().getLongExtra("workoutID", 0));
                     finish();
                     startActivity(intent);
@@ -242,7 +242,7 @@ public class SetActivity extends Activity {
                 //If at least one field is empty, display warning
                 else {
                     Toast toast = Toast.makeText(getApplicationContext(),
-                            "Uzupełnij oba pola bądź anuluj serię",
+                            getString(R.string.fill_text_fields_notification),
                             Toast.LENGTH_LONG);
                     toast.show();
                 }

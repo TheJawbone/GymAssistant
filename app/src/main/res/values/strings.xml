@@ -34,4 +34,10 @@
     <string name="clear_workout_history">Clear workout history</string>
     <string name="choose_available_exercises">Choose available exercises</string>
     <string name="history_erased_notification">Workout history has been erased</string>
+    <string name="fill_text_fields_notification">Fill both fields or cancel set</string>
+    <string name="a_z" translatable="false">A-Z</string>
+    <string name="z_a" translatable="false">Z-A</string>
+    <string name="default_settings">Reset app to default settings</string>
+    <string name="database_name" translatable="false">gymAssistantDB</string>
+    <string name="default_settings_restored_notification">Application has been restored to it\'s default settings</string>
 </resources>

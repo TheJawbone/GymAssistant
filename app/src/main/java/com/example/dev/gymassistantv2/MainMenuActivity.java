@@ -76,11 +76,6 @@ public class MainMenuActivity extends Activity {
         //Create/open database
         DatabaseHelper db = new DatabaseHelper(getApplicationContext());
 
-        //Populate muscle groups and exercises tables
-        db.populateMuscleGroupsTable(getApplicationContext());
-        db.populateExercisesTable(getApplicationContext());
-        //getApplicationContext().deleteDatabase("gymAssistantDB");
-
         //List all muscle groups
         List<MuscleGroup> muscleGroups = db.getAllMuscleGroups();
         for(MuscleGroup muscleGroup : muscleGroups) {

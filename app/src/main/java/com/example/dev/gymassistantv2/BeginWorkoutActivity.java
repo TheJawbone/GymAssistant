@@ -42,7 +42,7 @@ public class BeginWorkoutActivity extends Activity {
                 long workoutID = db.createCompletedWorkout(workout);
 
                 //Redirect to choose exercise activity
-                Intent intent = new Intent(getApplicationContext(), ChooseExcerciseActivity.class);
+                Intent intent = new Intent(getApplicationContext(), ChooseExerciseActivity.class);
                 intent.putExtra("workoutID", workoutID);
                 finish();
                 startActivity(intent);
