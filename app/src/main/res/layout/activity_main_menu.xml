@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     tools:context="com.example.dev.gymassistantv2.MainMenuActivity">
 
-    <TextView
+    <android.support.v7.widget.AppCompatTextView
         android:id="@+id/textViewTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,21 +36,6 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView2" />
 
     <Button
-        android:id="@+id/buttonPlanWorkout"
-        android:layout_width="220dp"
-        android:layout_height="60dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:background="@color/colorPrimary"
-        android:fontFamily="@font/black_ops_one"
-        android:text="@string/plan_workout"
-        android:textColor="@android:color/background_light"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonBeginWorkout" />
-
-    <Button
         android:id="@+id/buttonProgress"
         android:layout_width="220dp"
         android:layout_height="60dp"
@@ -63,7 +48,7 @@
         android:textColor="@android:color/background_light"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonPlanWorkout" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonBeginWorkout" />
 
     <Button
         android:id="@+id/buttonHistory"

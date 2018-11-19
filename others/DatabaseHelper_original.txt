@@ -297,16 +297,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get completed workout by ID
-     * @param ID
+     * Get completed workout by id
+     * @param id
      * @return
      */
-    public CompletedWorkout getCompletedWorkout(long ID) {
+    public CompletedWorkout getCompletedWorkout(long id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + tableCompletedWorkouts
-                + " WHERE " + keyID + " = " + ID;
+                + " WHERE " + keyID + " = " + id;
 
         Log.e(log, selectQuery);
 
@@ -326,15 +326,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Get planned workout
-     * @param ID
+     * @param id
      * @return
      */
-    public PlannedWorkout getPlannedWorkout(long ID) {
+    public PlannedWorkout getPlannedWorkout(long id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + tablePlannedWorkouts
-                + " WHERE " + keyID + " = " + ID;
+                + " WHERE " + keyID + " = " + id;
 
         Log.e(log, selectQuery);
 
@@ -354,15 +354,15 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Get segment
-     * @param ID
+     * @param id
      * @return
      */
-    public Segment getSegment(long ID) {
+    public Segment getSegment(long id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + tableSegments
-                + " WHERE " + keyID + " = " + ID;
+                + " WHERE " + keyID + " = " + id;
 
         Log.e(log, selectQuery);
 
@@ -382,16 +382,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get exercise by ID
-     * @param ID
+     * Get exercise by id
+     * @param id
      * @return
      */
-    public Exercise getExerciseByID(long ID) {
+    public Exercise getExerciseByID(long id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + tableExercises
-                + " WHERE " + keyID + " = " + ID;
+                + " WHERE " + keyID + " = " + id;
 
         Log.e(log, selectQuery);
 
@@ -438,16 +438,16 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get muscle group by ID
-     * @param ID
+     * Get muscle group by id
+     * @param id
      * @return
      */
-    public MuscleGroup getMuscleGroupByID(long ID) {
+    public MuscleGroup getMuscleGroupByID(long id) {
 
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM " + tableMuscleGroups
-                + " WHERE " + keyID + " = " + ID;
+                + " WHERE " + keyID + " = " + id;
 
         Log.e(log, selectQuery);
 
@@ -605,7 +605,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get all segments with specified workout ID
+     * Get all segments with specified workout id
      * @return
      */
     public List<Segment> getSegmentsByWorkoutID(long workoutID) {
@@ -662,7 +662,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Get all sets with specified segment ID
+     * Get all sets with specified segment id
      * @return
      */
     public List<ExerciseSet> getSetsBySegmentID(long segID) {
@@ -800,61 +800,61 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     /**
      * Delete completed workout
-     * @param ID
+     * @param id
      */
-    public void deleteCompletedWorkout(long ID) {
+    public void deleteCompletedWorkout(long id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        List<Segment> segments = getSegmentsByWorkoutID(ID);
+        List<Segment> segments = getSegmentsByWorkoutID(id);
         for(Segment segment : segments) {
             db.execSQL("DELETE FROM " + tableSets + " WHERE " + segmentID + " = " + segment.getID());
         }
-        db.execSQL("DELETE FROM " + tableSegments + " WHERE " + workoutID + " = " + ID);
-        db.execSQL("DELETE FROM " + tableCompletedWorkouts + " WHERE " + keyID + " = " + ID);
+        db.execSQL("DELETE FROM " + tableSegments + " WHERE " + workoutID + " = " + id);
+        db.execSQL("DELETE FROM " + tableCompletedWorkouts + " WHERE " + keyID + " = " + id);
     }
 
     /**
      * Delete planned workout
-     * @param ID
+     * @param id
      */
-    public void deletePlannedWorkout(long ID) {
+    public void deletePlannedWorkout(long id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(tablePlannedWorkouts, keyID + " = ?",
-                new String[] { String.valueOf(ID) });
+                new String[] { String.valueOf(id) });
     }
 
     /**
      * Delete segment
-     * @param ID
+     * @param id
      */
-    public void deleteSegment(long ID) {
+    public void deleteSegment(long id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
-        db.execSQL("DELETE FROM " + tableSets + " WHERE " + segmentID + " = " + ID);
-        db.execSQL("DELETE FROM " + tableSegments + " WHERE " + keyID + " = " + ID);
+        db.execSQL("DELETE FROM " + tableSets + " WHERE " + segmentID + " = " + id);
+        db.execSQL("DELETE FROM " + tableSegments + " WHERE " + keyID + " = " + id);
     }
 
     /**
      * Delete exercise
-     * @param ID
+     * @param id
      */
-    public void deleteExercise(long ID) {
+    public void deleteExercise(long id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(tableExercises, keyID + " = ?",
-                new String[] { String.valueOf(ID) });
+                new String[] { String.valueOf(id) });
     }
 
     /**
      * Delete muscle group
-     * @param ID
+     * @param id
      */
-    public void deleteMuscleGroup(long ID) {
+    public void deleteMuscleGroup(long id) {
 
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(tableMuscleGroups, keyID + " = ?",
-                new String[] { String.valueOf(ID) });
+                new String[] { String.valueOf(id) });
     }
 
     public void truncateExerciseMuscleGroups()

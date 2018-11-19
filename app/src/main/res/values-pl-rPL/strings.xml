@@ -35,4 +35,18 @@
     <string name="fill_text_fields_notification">Uzupełnij oba pola bądź anuluj serię</string>
     <string name="default_settings">Zresetuj aplikację do ustawień domyślnych</string>
     <string name="default_settings_restored_notification">Aplikacja została przywrócona do ustawień domyślnych</string>
+    <string name="add_exercise">Dodaj nowe ćwiczenie do bazy</string>
+    <string name="save">Zapisz</string>
+    <string name="cancel">Anuluj</string>
+    <string name="send_invitation">Wyślij zaproszenie</string>
+    <string name="send_invitation_description">Wybierz trenera z którym chcesz nawiązać współpracę.</string>
+    <string name="pending_invitations">Zaproszenia oczekujące na zatwierdzenie</string>
+    <string name="my_trainer">Mój trener</string>
+    <string name="no_trainer">Brak trenera</string>
+    <string name="find_trainer">Znajdź trenera</string>
+    <string name="your_charges">Twoi podopieczni</string>
+    <string name="category">Kategoria</string>
+    <string name="measurements">Pomiary</string>
+    <string name="body_part">Część ciała</string>
+    <string name="measurement_cm">Pomiar [cm]</string>
 </resources>

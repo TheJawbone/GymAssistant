@@ -40,4 +40,18 @@
     <string name="default_settings">Reset app to default settings</string>
     <string name="database_name" translatable="false">gymAssistantDB</string>
     <string name="default_settings_restored_notification">Application has been restored to it\'s default settings</string>
+    <string name="add_exercise">Add new exercise to database</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="send_invitation">Send invitation</string>
+    <string name="send_invitation_description">Pick the trainer you wish to establish cooperation with.</string>
+    <string name="pending_invitations">Pending invitations</string>
+    <string name="my_trainer">My trainer</string>
+    <string name="no_trainer">No trainer</string>
+    <string name="find_trainer">Find trainer</string>
+    <string name="your_charges">Your charges</string>
+    <string name="category">Category</string>
+    <string name="measurements">Measurements</string>
+    <string name="body_part">Body part</string>
+    <string name="measurement_cm">Measurement [cm]</string>
 </resources>

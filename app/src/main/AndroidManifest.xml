@@ -12,45 +12,15 @@
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-        <activity
-            android:name=".MainMenuActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActivityThemeNoActionBar">
+
+        <activity android:name=".MainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".BeginWorkoutActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActivityThemeNoActionBar" />
-        <activity
-            android:name=".ChooseExerciseActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActivityThemeNoActionBar" />
-
-        <activity
-            android:name=".SetActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActivityThemeNoActionBar" />
-        <activity
-            android:name=".SettingsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActivityThemeNoActionBar" />
-        <activity
-            android:name=".WorkoutHistoryActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActivityThemeNoActionBar" />
-        <activity
-            android:name=".WorkoutDetailsActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActivityThemeNoActionBar" />
-        <activity
-            android:name=".ChooseAvailableExercisesActivity"
-            android:screenOrientation="portrait"
-            android:theme="@style/CustomActivityThemeNoActionBar" />
+        <activity android:name=".ChooseExerciseActivity"></activity>
     </application>
 
 </manifest>
