@@ -13,7 +13,7 @@ class ChooseExerciseActivity : Activity() {
         setContentView(R.layout.activity_choose_excercise)
 
         val buttonBeginSet = findViewById<Button>(R.id.buttonBeginSet)
-        val intent = Intent(this, ChooseExerciseActivity::class.java)
+        val intent = Intent(this, SetActivity::class.java)
         buttonBeginSet.setOnClickListener { startActivity(intent) }
     }
 }

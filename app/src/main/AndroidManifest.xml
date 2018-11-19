@@ -21,6 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ChooseExerciseActivity"></activity>
+        <activity android:name=".ProgressActivity"></activity>
+        <activity android:name=".SetActivity"></activity>
+        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".WorkoutHistoryActivity"></activity>
     </application>
 
 </manifest>
