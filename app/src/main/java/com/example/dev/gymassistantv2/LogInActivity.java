@@ -17,10 +17,6 @@ import com.facebook.login.widget.LoginButton;
 
 import java.util.Arrays;
 
-/**
- * Created by Arkadiusz on 19.11.2018.
- */
-
 public class LogInActivity extends Activity {
 
     private static final String EMAIL = "email";
@@ -41,7 +37,7 @@ public class LogInActivity extends Activity {
         accessToken = AccessToken.getCurrentAccessToken();
         boolean isLoggedIn = accessToken != null && !accessToken.isExpired();
 
-        if(isLoggedIn)
+        if (isLoggedIn)
             LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
         else {
 
@@ -70,12 +66,11 @@ public class LogInActivity extends Activity {
                 }
             });
         }
+    }
 
-        }
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         callbackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
     }
-
 }
