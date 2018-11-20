@@ -2,10 +2,9 @@ package com.example.dev.gymassistantv2
 
 import android.app.Activity
 import android.content.Intent
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
-import android.view.View
 import android.widget.Button
+import kotlinx.android.synthetic.main.activity_main_menu.*
 
 class MainMenuActivity : Activity() {
 
@@ -18,8 +17,21 @@ class MainMenuActivity : Activity() {
         buttonBeginWorkout.setOnClickListener { startActivity(intentBeginWorkout) }
 
         val buttonProgress = findViewById<Button>(R.id.buttonProgress)
-        val intentProgress = Intent(this, ProgressActivity::class.java)
+        val intentProgress = Intent(this, ProgressSubmenuActivity::class.java)
         buttonProgress.setOnClickListener { startActivity(intentProgress) }
+
+        val isTrainer = false // TODO: check if the user is a trainer
+        val buttonTrainerOrCharges = findViewById<Button>(R.id.buttonTrainerOrCharges)
+        if(!isTrainer) {
+            buttonTrainerOrCharges.text = resources.getString(R.string.trainer)
+            val intentTrainer = Intent(this, ManageTrainerActivity::class.java)
+            buttonTrainerOrCharges.setOnClickListener { startActivity(intentTrainer) }
+        }
+        else {
+            buttonTrainerOrCharges.text = resources.getString(R.string.your_charges)
+            val intentCharges = Intent(this, ChargesSubmenuActivity::class.java)
+            buttonTrainerOrCharges.setOnClickListener { startActivity(intentCharges) }
+        }
 
         val buttonHistory = findViewById<Button>(R.id.buttonHistory)
         val intentHistory = Intent(this, WorkoutHistoryActivity::class.java)

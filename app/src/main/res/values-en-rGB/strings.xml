@@ -49,4 +49,11 @@
     <string name="measurements">Measurements</string>
     <string name="body_part">Body part</string>
     <string name="measurement_cm">Measurement [cm]</string>
+    <string name="add_measurements">Add body measurements</string>
+    <string name="check_progress">Check progress</string>
+    <string name="trainer">Trainer</string>
+    <string name="delete_invitation">Delete pending invitation</string>
+    <string name="invitation_pending">There is an invitation waiting to be accepted</string>
+    <string name="manage_charges">Manage charges</string>
+    <string name="manage_invitations">Manage invitations</string>
 </resources>

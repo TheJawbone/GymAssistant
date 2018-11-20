@@ -49,4 +49,11 @@
     <string name="measurements">Pomiary</string>
     <string name="body_part">Część ciała</string>
     <string name="measurement_cm">Pomiar [cm]</string>
+    <string name="add_measurements">Dodaj pomiary ciała</string>
+    <string name="check_progress">Sprawdź postępy</string>
+    <string name="trainer">Trener</string>
+    <string name="delete_invitation">Usuń oczekujące zaproszenie</string>
+    <string name="invitation_pending">Istnieje zaproszenie oczekujące na zatwierdzenie</string>
+    <string name="manage_charges">Zarządzaj podopiecznymi</string>
+    <string name="manage_invitations">Zarządzaj zaproszeniami</string>
 </resources>
