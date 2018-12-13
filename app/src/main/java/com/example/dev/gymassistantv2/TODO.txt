@@ -1,5 +1,5 @@
 A Ogarnąć logowanie przez API facebookowe
-P Zrobić DAOsy
+P DONE - Zrobić DAOsy
 P Zrobić DBInitializera
 A Ogarnąć i zrobić wykresy - dla pomiarów centymetry, dla ćwiczeń ciężar razem z repsami
 A Dołożyć date pickery do postępów (filtracja)

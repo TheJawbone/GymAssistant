@@ -6,10 +6,9 @@ import android.arch.persistence.room.PrimaryKey
 
 @Entity(tableName = "User")
 data class User(@PrimaryKey(autoGenerate = true) var id: Long?,
-                @ColumnInfo(name="workouts") var workouts: List<Workout>?,
-                @ColumnInfo(name="isTrainer") var isTrainer: Boolean,
-                @ColumnInfo(name="charges") var charges: List<User>?,
-                @ColumnInfo(name="trainer") var trainer: User?
+                @ColumnInfo(name="facebookId") var facebookId: Long?,
+                @ColumnInfo(name="isTrainer") var isTrainer: Boolean?,
+                @ColumnInfo(name="trainerId") var trainerId: Long?
 ){
-    constructor():this(null, null, false, null, null)
+    constructor():this(null, null, false, null)
 }
