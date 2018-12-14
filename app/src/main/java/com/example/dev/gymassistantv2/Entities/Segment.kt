@@ -11,6 +11,7 @@ import android.arch.persistence.room.*
         ForeignKey(
                 entity = Workout::class,
                 onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE,
                 parentColumns = arrayOf("id"),
                 childColumns = arrayOf("workoutId"))
 )))

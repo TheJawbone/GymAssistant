@@ -6,6 +6,7 @@ import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import android.content.Intent
 import android.graphics.Typeface
 import android.util.DisplayMetrics
+import android.view.Gravity
 import android.widget.*
 import java.sql.Date
 import java.text.SimpleDateFormat
@@ -21,6 +22,12 @@ class SegmentHistoryActivity : Activity() {
 
         processIntent()
         generateSegmentList()
+    }
+
+    override fun onBackPressed() {
+        val intent = Intent(this, WorkoutHistoryActivity::class.java)
+        intent.putExtra("workoutId", workoutId)
+        startActivity(intent)
     }
 
     private fun processIntent() {
@@ -40,8 +47,6 @@ class SegmentHistoryActivity : Activity() {
 
         val layout = LinearLayout(applicationContext)
         layout.orientation = LinearLayout.VERTICAL
-        layout.setPadding(Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0,
-                Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0)
         scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
@@ -52,22 +57,43 @@ class SegmentHistoryActivity : Activity() {
         }
 
         segments.forEach {
+            val horizontalLayout = LinearLayout(this)
+            horizontalLayout.orientation = LinearLayout.HORIZONTAL
+            horizontalLayout.gravity = Gravity.CENTER_VERTICAL
+
             val exerciseName = dbContext!!.exerciseDao().getById(it.exerciseId!!).name
             val numberOfSets = dbContext!!.exerciseSetDao().getForSegment(it.id!!).count()
-            val button = Button(applicationContext)
-            button.height = Math.ceil((60 * logicalDensity).toDouble()).toInt()
-            button.background = applicationContext.getDrawable(R.drawable.bottom_border)
-            button.text = "$exerciseName\n$numberOfSets serii"
+            val buttonMain = Button(this)
+            buttonMain.layoutParams = LinearLayout.LayoutParams(
+                    (metrics.widthPixels * 0.8).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
+            buttonMain.background = this.getDrawable(R.drawable.bottom_border)
+            buttonMain.text = "$exerciseName\nSerii: $numberOfSets"
             val typeface = Typeface.createFromAsset(assets, "fonts/BlackOpsOne-Regular.ttf")
-            button.typeface = typeface
+            buttonMain.typeface = typeface
+            buttonMain.measure(windowManager.defaultDisplay.width, windowManager.defaultDisplay.height)
             val segmentId = it.id
-
-            button.setOnClickListener {
-                val intent = Intent(applicationContext, SetHistoryActivity::class.java)
+            buttonMain.setOnClickListener {
+                val intent = Intent(this, SetHistoryActivity::class.java)
                 intent.putExtra("segmentId", segmentId)
                 startActivity(intent)
             }
-            layout.addView(button)
+
+            val buttonDelete = Button(this)
+            buttonDelete.height = buttonMain.measuredHeight
+            buttonDelete.width = (metrics.widthPixels * 0.2).toInt()
+            buttonDelete.background = applicationContext.getDrawable(R.drawable.bottom_border_red)
+            buttonDelete.text = "Usuń"
+            buttonDelete.typeface = typeface
+            buttonDelete.setOnClickListener {
+                dbContext!!.segmentDao().delete(dbContext!!.segmentDao().getById(segmentId!!))
+                val intent = Intent(this, SegmentHistoryActivity::class.java)
+                intent.putExtra("workoutId", workoutId)
+                startActivity(intent)
+            }
+
+            horizontalLayout.addView(buttonMain)
+            horizontalLayout.addView(buttonDelete)
+            layout.addView(horizontalLayout)
         }
     }
 }

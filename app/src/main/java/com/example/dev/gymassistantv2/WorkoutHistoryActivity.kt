@@ -1,5 +1,6 @@
 package com.example.dev.gymassistantv2
 
+import android.app.ActionBar
 import android.app.Activity
 import android.os.Bundle
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
@@ -23,6 +24,11 @@ class WorkoutHistoryActivity : Activity() {
         generateWorkoutList()
     }
 
+    override fun onBackPressed() {
+        intent = Intent(this, MainMenuActivity::class.java)
+        startActivity(intent)
+    }
+
     private fun processIntent() {
         this.userId = this.intent.getLongExtra("userId", 0)
     }
@@ -38,8 +44,6 @@ class WorkoutHistoryActivity : Activity() {
 
         val layout = LinearLayout(applicationContext)
         layout.orientation = LinearLayout.VERTICAL
-        layout.setPadding(Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0,
-                Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0)
         scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
@@ -54,23 +58,42 @@ class WorkoutHistoryActivity : Activity() {
         }
 
         workouts.forEach {
+            val horizontalLayout = LinearLayout(this)
+            horizontalLayout.orientation = LinearLayout.HORIZONTAL
+
             val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
             val date = dateFormat.format(Date(it.date!!))
             var buttonText = date
-            val button = Button(applicationContext)
-            button.height = Math.ceil((60 * logicalDensity).toDouble()).toInt()
-            button.background = applicationContext.getDrawable(R.drawable.bottom_border)
-            button.text = buttonText
+            val buttonMain = Button(this)
+            buttonMain.layoutParams = LinearLayout.LayoutParams(
+                    (metrics.widthPixels * 0.8).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
+            buttonMain.background = applicationContext.getDrawable(R.drawable.bottom_border)
+            buttonMain.text = buttonText
             val typeface = Typeface.createFromAsset(assets, "fonts/BlackOpsOne-Regular.ttf")
-            button.typeface = typeface
+            buttonMain.typeface = typeface
             val workoutId = it.id
-
-            button.setOnClickListener {
-                val intent = Intent(applicationContext, SegmentHistoryActivity::class.java)
+            buttonMain.setOnClickListener {
+                val intent = Intent(this, SegmentHistoryActivity::class.java)
                 intent.putExtra("workoutId", workoutId)
                 startActivity(intent)
             }
-            layout.addView(button)
+
+            val buttonDelete = Button(this)
+            buttonDelete.height = buttonMain.height
+            buttonDelete.width = (metrics.widthPixels * 0.2).toInt()
+            buttonDelete.background = applicationContext.getDrawable(R.drawable.bottom_border_red)
+            buttonDelete.text = "Usuń"
+            buttonDelete.typeface = typeface
+            buttonDelete.setOnClickListener {
+                dbContext!!.workoutDao().delete(dbContext!!.workoutDao().getById(workoutId!!))
+                val intent = Intent(this, WorkoutHistoryActivity::class.java)
+                intent.putExtra("userId", userId)
+                startActivity(intent)
+            }
+
+            horizontalLayout.addView(buttonMain)
+            horizontalLayout.addView(buttonDelete)
+            layout.addView(horizontalLayout)
         }
     }
 }

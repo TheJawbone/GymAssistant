@@ -1,10 +1,12 @@
 package com.example.dev.gymassistantv2
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import android.graphics.Typeface
 import android.util.DisplayMetrics
+import android.view.Gravity
 import android.widget.*
 import java.sql.Date
 import java.text.SimpleDateFormat
@@ -20,6 +22,13 @@ class SetHistoryActivity : Activity() {
 
         processIntent()
         generateSegmentList()
+    }
+
+    override fun onBackPressed() {
+        intent = Intent(this, SegmentHistoryActivity::class.java)
+        intent.putExtra("workoutId",
+                GymAssistantDatabase.getInstance(this)!!.segmentDao().getById(segmentId).workoutId)
+        startActivity(intent)
     }
 
     private fun processIntent() {
@@ -39,8 +48,8 @@ class SetHistoryActivity : Activity() {
 
         val layout = LinearLayout(applicationContext)
         layout.orientation = LinearLayout.VERTICAL
-        layout.setPadding(Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0,
-                Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0)
+        /*layout.setPadding(Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0,
+                Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0)*/
         scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
@@ -51,13 +60,50 @@ class SetHistoryActivity : Activity() {
         }
 
         segments.forEach {
-            val button = Button(applicationContext)
-            button.height = Math.ceil((60 * logicalDensity).toDouble()).toInt()
-            button.background = applicationContext.getDrawable(R.drawable.bottom_border)
-            button.text = "Ciężar: " + it.weight + "\nLiczba powtórzeń: " + it.repCount
+            val horizontalLayout = LinearLayout(this)
+            horizontalLayout.orientation = LinearLayout.HORIZONTAL
+            horizontalLayout.gravity = Gravity.CENTER_VERTICAL
+
+            val buttonMain = Button(applicationContext)
+            buttonMain.layoutParams = LinearLayout.LayoutParams(
+                    (metrics.widthPixels * 0.6).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
+            buttonMain.background = applicationContext.getDrawable(R.drawable.bottom_border)
+            buttonMain.text = "Ciężar: " + it.weight + "\nLiczba powtórzeń: " + it.repCount
             val typeface = Typeface.createFromAsset(assets, "fonts/BlackOpsOne-Regular.ttf")
-            button.typeface = typeface
-            layout.addView(button)
+            buttonMain.typeface = typeface
+            buttonMain.measure(windowManager.defaultDisplay.width, windowManager.defaultDisplay.height)
+
+            val buttonEdit = Button(this)
+            buttonEdit.height = buttonMain.measuredHeight
+            buttonEdit.width = (metrics.widthPixels * 0.2).toInt()
+            buttonEdit.background = applicationContext.getDrawable(R.drawable.bottom_border_blue)
+            buttonEdit.text = "Edytuj"
+            buttonEdit.typeface = typeface
+            buttonEdit.setOnClickListener {
+                /*dbContext!!.exerciseSetDao().delete(dbContext!!.exerciseSetDao().getById(exerciseSetId!!))
+                val intent = Intent(this, SetHistoryActivity::class.java)
+                intent.putExtra("segmentId", segmentId)
+                startActivity(intent)*/
+            }
+
+            val buttonDelete = Button(this)
+            buttonDelete.height = buttonMain.measuredHeight
+            buttonDelete.width = (metrics.widthPixels * 0.2).toInt()
+            buttonDelete.background = applicationContext.getDrawable(R.drawable.bottom_border_red)
+            buttonDelete.text = "Usuń"
+            buttonDelete.typeface = typeface
+            val exerciseSetId = it.id
+            buttonDelete.setOnClickListener {
+                dbContext!!.exerciseSetDao().delete(dbContext!!.exerciseSetDao().getById(exerciseSetId!!))
+                val intent = Intent(this, SetHistoryActivity::class.java)
+                intent.putExtra("segmentId", segmentId)
+                startActivity(intent)
+            }
+
+            horizontalLayout.addView(buttonMain)
+            horizontalLayout.addView(buttonEdit)
+            horizontalLayout.addView(buttonDelete)
+            layout.addView(horizontalLayout)
         }
     }
 }
