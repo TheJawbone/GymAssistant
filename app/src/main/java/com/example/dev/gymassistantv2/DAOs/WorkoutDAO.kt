@@ -10,6 +10,12 @@ interface WorkoutDAO {
     @Query("SELECT * FROM Workout")
     fun getAll(): List<Workout>
 
+    @Query("SELECT * FROM Workout wor WHERE wor.id == :id")
+    fun getById(id: Long): Workout
+
+    @Query("SELECT * FROM Workout wor WHERE userId == :id")
+    fun getForUser(id: Long): List<Workout>
+
     @Insert(onConflict = REPLACE)
     fun insert(workout: Workout): Long
 

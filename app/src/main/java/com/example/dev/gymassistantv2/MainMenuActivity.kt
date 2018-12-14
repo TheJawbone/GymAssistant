@@ -7,8 +7,6 @@ import android.widget.Button
 import com.example.dev.gymassistantv2.Database.DBInitializer
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.Workout
-import java.sql.Date
-import java.time.LocalDateTime
 
 class MainMenuActivity : Activity() {
 
@@ -16,11 +14,11 @@ class MainMenuActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
-        setNavigationContorls()
+        setNavigationControls()
         setDatabase()
     }
 
-    private fun setNavigationContorls() {
+    private fun setNavigationControls() {
         val buttonBeginWorkout = findViewById<Button>(R.id.buttonBeginWorkout)
         val intentBeginWorkout = Intent(this, ChooseExerciseActivity::class.java)
         buttonBeginWorkout.setOnClickListener {

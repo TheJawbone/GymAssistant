@@ -53,7 +53,9 @@
         <activity android:name=".ManageTrainerActivity" />
         <activity android:name=".ProgressActivity" />
         <activity android:name=".ProgressSubmenuActivity" />
+        <activity android:name=".SegmentHistoryActivity" />
         <activity android:name=".SetActivity" />
+        <activity android:name=".SetHistoryActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".WorkoutDetailsActivity" />
         <activity android:name=".WorkoutHistoryActivity" />

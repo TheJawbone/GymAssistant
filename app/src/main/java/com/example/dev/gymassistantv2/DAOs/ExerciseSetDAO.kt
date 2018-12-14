@@ -9,6 +9,9 @@ interface ExerciseSetDAO {
     @Query("SELECT * FROM ExerciseSet")
     fun getAll(): List<ExerciseSet>
 
+    @Query("SELECT * FROM ExerciseSet exSet WHERE exSet.segmentId == :id")
+    fun getForSegment(id: Long): List<ExerciseSet>
+
     @Insert(onConflict = REPLACE)
     fun insert(exerciseSet: ExerciseSet)
 

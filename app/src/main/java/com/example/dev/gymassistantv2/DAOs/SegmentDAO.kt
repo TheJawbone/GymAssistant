@@ -15,6 +15,9 @@ interface SegmentDAO {
     @Query("SELECT * FROM Segment seg WHERE seg.id == :id")
     fun getById(id: Long): Segment
 
+    @Query("SELECT * FROM Segment seg WHERE workoutId == :id")
+    fun getForWorkout(id: Long): List<Segment>
+
     @Insert(onConflict = REPLACE)
     fun insert(segment: Segment): Long
 

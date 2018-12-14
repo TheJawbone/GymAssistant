@@ -11,26 +11,28 @@ import java.sql.Date
 import java.text.SimpleDateFormat
 
 
-class WorkoutHistoryActivity : Activity() {
+class SegmentHistoryActivity : Activity() {
 
-    private var userId: Long = 0
+    private var workoutId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.generic_history_layout)
 
         processIntent()
-        generateWorkoutList()
+        generateSegmentList()
     }
 
     private fun processIntent() {
-        this.userId = this.intent.getLongExtra("userId", 0)
+        this.workoutId = this.intent.getLongExtra("workoutId", 0)
     }
 
-    private fun generateWorkoutList() {
+    private fun generateSegmentList() {
         val scrollView = findViewById<ScrollView>(R.id.scrollView)
         val header = findViewById<TextView>(R.id.textViewHeader)
-        header.text = "Twoje treningi"
+        val workout = GymAssistantDatabase.getInstance(this)!!.workoutDao().getById(workoutId)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
+        header.text = "Ćwiczenia z treningu " + dateFormat.format(Date(workout.date!!))
 
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
@@ -43,31 +45,26 @@ class WorkoutHistoryActivity : Activity() {
         scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
-        var workouts = if (userId != 0.toLong()) {
-            dbContext!!.workoutDao().getForUser(userId)
-        } else {
-            dbContext!!.workoutDao().getAll()
+        val segments = dbContext!!.segmentDao().getForWorkout(workoutId)
+
+        if(segments.isEmpty()) {
+            Toast.makeText(this, "Brak zapisanych segmentów", Toast.LENGTH_LONG).show()
         }
 
-        if(workouts.isEmpty()) {
-            Toast.makeText(this, "Brak zapisanych treningów", Toast.LENGTH_LONG).show()
-        }
-
-        workouts.forEach {
-            val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
-            val date = dateFormat.format(Date(it.date!!))
-            var buttonText = date
+        segments.forEach {
+            val exerciseName = dbContext!!.exerciseDao().getById(it.exerciseId!!).name
+            val numberOfSets = dbContext!!.exerciseSetDao().getForSegment(it.id!!).count()
             val button = Button(applicationContext)
             button.height = Math.ceil((60 * logicalDensity).toDouble()).toInt()
             button.background = applicationContext.getDrawable(R.drawable.bottom_border)
-            button.text = buttonText
+            button.text = "$exerciseName\n$numberOfSets serii"
             val typeface = Typeface.createFromAsset(assets, "fonts/BlackOpsOne-Regular.ttf")
             button.typeface = typeface
-            val workoutId = it.id
+            val segmentId = it.id
 
             button.setOnClickListener {
-                val intent = Intent(applicationContext, SegmentHistoryActivity::class.java)
-                intent.putExtra("workoutId", workoutId)
+                val intent = Intent(applicationContext, SetHistoryActivity::class.java)
+                intent.putExtra("segmentId", segmentId)
                 startActivity(intent)
             }
             layout.addView(button)

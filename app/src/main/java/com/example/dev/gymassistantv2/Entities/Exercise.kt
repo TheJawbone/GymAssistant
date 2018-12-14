@@ -11,6 +11,7 @@ import android.arch.persistence.room.*
         ForeignKey(
                 entity = MuscleGroup::class,
                 onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.NO_ACTION,
                 parentColumns = arrayOf("id"),
                 childColumns = arrayOf("muscleGroupId"))
 )))

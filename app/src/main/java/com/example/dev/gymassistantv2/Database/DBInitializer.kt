@@ -19,15 +19,13 @@ class DBInitializer(private val dbContext : GymAssistantDatabase?) {
     }
 
     fun populateExercise() {
-        dbContext!!.exerciseDao().deleteAll()
-        var defaultExercises = dbContext!!.exerciseDao().getAll()
+        //dbContext!!.exerciseDao().deleteAll()
         if(dbContext!!.exerciseDao().getDefault().isEmpty()) {
             var exercises = mutableListOf<Exercise>()
-            var muscleGroup = MuscleGroup()
 
             var exercise1 = Exercise()
             exercise1.name = "Wyciskanie sztangi nad głową"
-            muscleGroup = dbContext!!.muscleGroupDao().getByName("Barki")
+            var muscleGroup = dbContext!!.muscleGroupDao().getByName("Barki")
             exercise1.muscleGroupId = muscleGroup.id
             exercises.add(exercise1)
 

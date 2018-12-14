@@ -25,21 +25,23 @@ class ChooseExerciseActivity : Activity() {
         setExerciseSpinner()
     }
 
-    override fun onBackPressed() {}
+    override fun onBackPressed() { }
 
     private fun processIntent() {
-        this.intent.getLongExtra("workoutId", workoutId)
+        this.workoutId = this.intent.getLongExtra("workoutId", workoutId)
     }
 
     private fun setNavigationControls() {
+        val dbContext = GymAssistantDatabase.getInstance(this)
+
         val buttonBeginSet = findViewById<Button>(R.id.buttonBeginSet)
         val intentBeginSet = Intent(this, SetActivity::class.java)
         buttonBeginSet.setOnClickListener {
-            val dbContext = GymAssistantDatabase.getInstance(this)
             val exercise = dbContext!!.exerciseDao().getByName(findViewById<Spinner>(
                     R.id.spinnerExerciseList).selectedItem.toString())
             val segment = Segment()
             segment.exerciseId = exercise.id
+            segment.workoutId = workoutId
             val segmentId = dbContext!!.segmentDao().insert(segment)
             intentBeginSet.putExtra("segmentId", segmentId)
             startActivity(intentBeginSet)
@@ -47,7 +49,13 @@ class ChooseExerciseActivity : Activity() {
 
         val buttonEndWorkout = findViewById<Button>(R.id.buttonEndWorkout)
         val intentEndWorkout = Intent(this, MainMenuActivity::class.java)
-        buttonEndWorkout.setOnClickListener { startActivity(intentEndWorkout) }
+        buttonEndWorkout.setOnClickListener {
+            val workoutSegments = dbContext!!.segmentDao().getForWorkout(workoutId)
+            if(workoutSegments.isEmpty()) {
+                dbContext!!.workoutDao().delete(dbContext!!.workoutDao().getById(workoutId))
+            }
+            startActivity(intentEndWorkout)
+        }
     }
 
     private fun setMuscleGroupSpinner() {
