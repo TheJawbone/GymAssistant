@@ -85,36 +85,6 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <EditText
-        android:id="@+id/editTextWeight"
-        android:layout_width="100dp"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="4dp"
-        android:labelFor="@+id/editTextWeight"
-        android:ems="10"
-        android:fontFamily="@font/black_ops_one"
-        android:inputType="number"
-        android:textAlignment="center"
-        app:layout_constraintEnd_toEndOf="@+id/textViewWeight"
-        app:layout_constraintHorizontal_bias="0.468"
-        app:layout_constraintStart_toStartOf="@+id/textViewWeight"
-        app:layout_constraintTop_toBottomOf="@+id/textViewWeight" />
-
-    <TextView
-        android:id="@+id/textViewWeight"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="4dp"
-        android:layout_marginTop="32dp"
-        android:fontFamily="@font/black_ops_one"
-        android:text="@string/weight_colon"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonStop" />
-
-    <EditText
         android:id="@+id/editTextRepCount"
         android:layout_width="100dp"
         android:layout_height="wrap_content"
@@ -144,18 +114,48 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonStop" />
 
-    <Button
-        android:id="@+id/buttonNextSeries"
-        android:layout_width="220dp"
-        android:layout_height="60dp"
-        android:layout_marginBottom="8dp"
+    <EditText
+        android:id="@+id/editTextWeight"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="4dp"
+        android:labelFor="@+id/editTextWeight"
+        android:ems="10"
+        android:fontFamily="@font/black_ops_one"
+        android:inputType="number"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toEndOf="@+id/textViewWeight"
+        app:layout_constraintHorizontal_bias="0.468"
+        app:layout_constraintStart_toStartOf="@+id/textViewWeight"
+        app:layout_constraintTop_toBottomOf="@+id/textViewWeight" />
+
+    <TextView
+        android:id="@+id/textViewWeight"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="32dp"
+        android:fontFamily="@font/black_ops_one"
+        android:text="@string/weight_colon"
+        android:textAlignment="center"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonStop" />
+
+    <Button
+        android:id="@+id/buttonNextSet"
+        android:layout_width="220dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:background="@color/colorPrimary"
         android:fontFamily="@font/black_ops_one"
         android:text="@string/next_set"
         android:textColor="@android:color/background_light"
-        app:layout_constraintBottom_toTopOf="@+id/buttonNextExcerciseOK"
+        app:layout_constraintBottom_toTopOf="@+id/buttonNextExerciseOK"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -218,7 +218,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewSeries" />
 
     <Button
-        android:id="@+id/buttonNextExcerciseOK"
+        android:id="@+id/buttonNextExerciseOK"
         android:layout_width="220dp"
         android:layout_height="60dp"
         android:layout_marginBottom="8dp"

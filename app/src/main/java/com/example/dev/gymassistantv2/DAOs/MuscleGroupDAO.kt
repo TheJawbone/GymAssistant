@@ -9,6 +9,9 @@ interface MuscleGroupDAO {
     @Query("SELECT * FROM MuscleGroup")
     fun getAll(): List<MuscleGroup>
 
+    @Query("SELECT name FROM MuscleGroup")
+    fun getAllNames(): List<String>
+
     @Query("SELECT * FROM MuscleGroup musGr WHERE musGr.name LIKE :name")
     fun getByName(name: String): MuscleGroup
 

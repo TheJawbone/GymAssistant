@@ -11,7 +11,7 @@ interface WorkoutDAO {
     fun getAll(): List<Workout>
 
     @Insert(onConflict = REPLACE)
-    fun insert(workout: Workout)
+    fun insert(workout: Workout): Long
 
     @Update
     fun update(workout: Workout)

@@ -11,6 +11,12 @@ interface ExerciseDAO {
     @Query("SELECT * FROM Exercise")
     fun getAll(): List<Exercise>
 
+    @Query("SELECT name FROM Exercise")
+    fun getAllNames(): List<String>
+
+    @Query("SELECT name FROM Exercise ex WHERE ex.muscleGroupId == :muscleGroupId")
+    fun getNamesForMuscleGroup(muscleGroupId: Long): List<String>
+
     @Query("SELECT * FROM Exercise ex WHERE ex.defaultExercise == 1")
     fun getDefault(): List<Exercise>
 
@@ -19,6 +25,12 @@ interface ExerciseDAO {
 
     @Query("SELECT * FROM Exercise ex WHERE ex.ownerId == :ownerId OR ex.defaultExercise == 1")
     fun getForUser(ownerId: Long): List<Exercise>
+
+    @Query("SELECT * FROM Exercise ex WHERE ex.name LIKE :name")
+    fun getByName(name: String): Exercise
+
+    @Query("SELECT * FROM Exercise ex WHERE ex.id == :id")
+    fun getById(id: Long): Exercise
 
     @Insert(onConflict = REPLACE)
     fun insert(exercise: Exercise)

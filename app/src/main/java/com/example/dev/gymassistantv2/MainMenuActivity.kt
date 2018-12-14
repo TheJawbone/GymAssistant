@@ -3,11 +3,12 @@ package com.example.dev.gymassistantv2
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
 import android.widget.Button
-import android.widget.Toast
 import com.example.dev.gymassistantv2.Database.DBInitializer
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.Entities.Workout
+import java.sql.Date
+import java.time.LocalDateTime
 
 class MainMenuActivity : Activity() {
 
@@ -15,14 +16,20 @@ class MainMenuActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
-        setNavigationListeners()
+        setNavigationContorls()
         setDatabase()
     }
 
-    private fun setNavigationListeners() {
+    private fun setNavigationContorls() {
         val buttonBeginWorkout = findViewById<Button>(R.id.buttonBeginWorkout)
         val intentBeginWorkout = Intent(this, ChooseExerciseActivity::class.java)
-        buttonBeginWorkout.setOnClickListener { startActivity(intentBeginWorkout) }
+        buttonBeginWorkout.setOnClickListener {
+            val workout = Workout()
+            workout.date = System.currentTimeMillis()
+            val workoutId = GymAssistantDatabase.getInstance(this)!!.workoutDao().insert(workout)
+            intentBeginWorkout.putExtra("workoutId", workoutId)
+            startActivity(intentBeginWorkout)
+        }
 
         val buttonProgress = findViewById<Button>(R.id.buttonProgress)
         val intentProgress = Intent(this, ProgressSubmenuActivity::class.java)
