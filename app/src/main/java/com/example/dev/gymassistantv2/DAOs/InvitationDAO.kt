@@ -10,6 +10,9 @@ interface InvitationDAO {
     @Query("SELECT * FROM Invitation")
     fun getAll(): List<Invitation>
 
+    @Query("SELECT * FROM Invitation inv WHERE inv.id == :id")
+    fun getById(id: Long): Invitation
+
     @Query("SELECT * FROM Invitation inv WHERE inv.senderId == :senderId")
     fun getForSender(senderId: Long): Invitation
 
@@ -21,6 +24,9 @@ interface InvitationDAO {
 
     @Update
     fun update(invitation: Invitation)
+
+    @Query("DELETE FROM Invitation")
+    fun deleteAll()
 
     @Delete
     fun delete(invitation: Invitation)

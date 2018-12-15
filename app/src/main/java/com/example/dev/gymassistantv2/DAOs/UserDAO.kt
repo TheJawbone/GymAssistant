@@ -11,6 +11,9 @@ interface UserDAO {
     @Query("SELECT * FROM User")
     fun getAll(): List<User>
 
+    @Query("SELECT * FROM User usr WHERE usr.id == :id")
+    fun getById(id: Long): User
+
     @Insert(onConflict = REPLACE)
     fun insert(user: User)
 
