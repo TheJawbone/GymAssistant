@@ -64,4 +64,6 @@
     <string name="manage_charges">Manage charges</string>
     <string name="manage_invitations">Manage invitations</string>
     <string name="generic_header" translatable="false">Header</string>
+    <string name="exercises">Exercises</string>
+    <string name="subcategory">Subcategory</string>
 </resources>

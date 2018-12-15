@@ -56,4 +56,6 @@
     <string name="invitation_pending">Istnieje zaproszenie oczekujące na zatwierdzenie</string>
     <string name="manage_charges">Zarządzaj podopiecznymi</string>
     <string name="manage_invitations">Zarządzaj zaproszeniami</string>
+    <string name="exercises">Ćwiczenia</string>
+    <string name="subcategory">Podkategoria</string>
 </resources>
