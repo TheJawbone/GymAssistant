@@ -40,7 +40,6 @@ class WorkoutHistoryActivity : Activity() {
 
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
-        val logicalDensity = metrics.density
 
         val layout = LinearLayout(applicationContext)
         layout.orientation = LinearLayout.VERTICAL

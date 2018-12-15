@@ -79,11 +79,11 @@ class SetHistoryActivity : Activity() {
             buttonEdit.background = applicationContext.getDrawable(R.drawable.bottom_border_blue)
             buttonEdit.text = "Edytuj"
             buttonEdit.typeface = typeface
+            val setId = it.id
             buttonEdit.setOnClickListener {
-                /*dbContext!!.exerciseSetDao().delete(dbContext!!.exerciseSetDao().getById(exerciseSetId!!))
-                val intent = Intent(this, SetHistoryActivity::class.java)
-                intent.putExtra("segmentId", segmentId)
-                startActivity(intent)*/
+                val intent = Intent(this, SetEditActivity::class.java)
+                intent.putExtra("setId", setId)
+                startActivity(intent)
             }
 
             val buttonDelete = Button(this)

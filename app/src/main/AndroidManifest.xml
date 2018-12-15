@@ -55,6 +55,7 @@
         <activity android:name=".ProgressSubmenuActivity" />
         <activity android:name=".SegmentHistoryActivity" />
         <activity android:name=".SetActivity" />
+        <activity android:name=".SetEditActivity" />
         <activity android:name=".SetHistoryActivity" />
         <activity android:name=".SettingsActivity" />
         <activity android:name=".WorkoutDetailsActivity" />

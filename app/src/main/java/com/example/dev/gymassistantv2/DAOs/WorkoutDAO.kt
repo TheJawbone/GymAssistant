@@ -7,13 +7,13 @@ import com.example.dev.gymassistantv2.Entities.Workout
 
 @Dao
 interface WorkoutDAO {
-    @Query("SELECT * FROM Workout")
+    @Query("SELECT * FROM Workout wor ORDER BY wor.date DESC")
     fun getAll(): List<Workout>
 
     @Query("SELECT * FROM Workout wor WHERE wor.id == :id")
     fun getById(id: Long): Workout
 
-    @Query("SELECT * FROM Workout wor WHERE userId == :id")
+    @Query("SELECT * FROM Workout wor WHERE userId == :id ORDER BY wor.date DESC")
     fun getForUser(id: Long): List<Workout>
 
     @Insert(onConflict = REPLACE)
