@@ -1,8 +1,6 @@
 package com.example.dev.gymassistantv2
 
 import android.app.Activity
-import android.app.Notification
-import android.app.ProgressDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -24,34 +22,33 @@ class LogInActivity : Activity() {
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
 
+    fun logIn() {
+        val intentMainMenu = Intent(this, MainMenuActivity::class.java)
+        startActivity(intentMainMenu)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
 
         //Call super class constructor
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        var mDialog: ProgressDialog
         var accessToken: AccessToken
+        var facebookId = "userId"
 
         val loginButton = findViewById<View>(R.id.login_button) as LoginButton
         loginButton.setReadPermissions("public_profile")
 
         loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
-                mDialog = ProgressDialog(this@LogInActivity)
-                mDialog.setMessage("Retrieving data...")
-                mDialog.show()
                 accessToken = loginResult.accessToken
-
-                val intentTrainer = Intent(this@LogInActivity, MainMenuActivity::class.java)
-                startActivity(intentTrainer)
-
+                facebookId = accessToken.userId
+                logIn()
             }
 
             override fun onCancel() {
                 Toast.makeText(applicationContext, "Cancelled!",
                         Toast.LENGTH_LONG).show()
-
             }
 
             override fun onError(error: FacebookException) {
@@ -60,4 +57,5 @@ class LogInActivity : Activity() {
             }
         })
     }
+
 }
