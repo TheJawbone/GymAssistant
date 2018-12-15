@@ -13,6 +13,10 @@ class ProgressSubmenuActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_progress_submenu)
 
+        setNavigationControls()
+    }
+
+    private fun setNavigationControls() {
         val buttonProgress = findViewById<Button>(R.id.buttonCheckProgress)
         val intentProgress = Intent(this, ProgressActivity::class.java)
         buttonProgress.setOnClickListener { startActivity(intentProgress) }
@@ -20,5 +24,8 @@ class ProgressSubmenuActivity : Activity() {
         val buttonAddMeasurement = findViewById<Button>(R.id.buttonAddMeasurements)
         val intentAddMeasurements = Intent(this, AddMeasurementsActivity::class.java)
         buttonAddMeasurement.setOnClickListener { startActivity(intentAddMeasurements) }
+
+        val buttonBack = findViewById<Button>(R.id.buttonBack)
+        buttonBack.setOnClickListener { super.onBackPressed() }
     }
 }
