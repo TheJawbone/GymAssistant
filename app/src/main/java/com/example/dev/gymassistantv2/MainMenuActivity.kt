@@ -10,12 +10,19 @@ import com.example.dev.gymassistantv2.Entities.Workout
 
 class MainMenuActivity : Activity() {
 
+    private var isTrainer = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
+        determineApplicationMode()
         setNavigationControls()
         setDatabase()
+    }
+
+    private fun determineApplicationMode() {
+        isTrainer = this.intent.getBooleanExtra("isTrainer", isTrainer)
     }
 
     private fun setNavigationControls() {
@@ -33,7 +40,7 @@ class MainMenuActivity : Activity() {
         val intentProgress = Intent(this, ProgressSubmenuActivity::class.java)
         buttonProgress.setOnClickListener { startActivity(intentProgress) }
 
-        val isTrainer = false // TODO: check if the user is a trainer
+//        val isTrainer = false // TODO: check if the user is a trainer
         val buttonTrainerOrCharges = findViewById<Button>(R.id.buttonTrainerOrCharges)
         if (!isTrainer) {
             buttonTrainerOrCharges.text = resources.getString(R.string.trainer)

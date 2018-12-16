@@ -14,6 +14,9 @@ interface UserDAO {
     @Query("SELECT * FROM User usr WHERE usr.id == :id")
     fun getById(id: Long): User
 
+    @Query("SELECT * FROM User usr WHERE usr.facebookId == :facebookId")
+    fun getByFacebookId(facebookId: Long): User
+
     @Insert(onConflict = REPLACE)
     fun insert(user: User)
 

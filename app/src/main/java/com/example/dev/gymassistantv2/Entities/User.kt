@@ -11,4 +11,5 @@ data class User(@PrimaryKey(autoGenerate = true) var id: Long?,
                 @ColumnInfo(name="trainerId") var trainerId: Long?
 ){
     constructor():this(null, null, false, null)
+    constructor(id :Long?, facebookId: Long?):this(null, facebookId, false, null)
 }
