@@ -64,4 +64,5 @@
     <string name="manage_charges">Manage charges</string>
     <string name="manage_invitations">Manage invitations</string>
     <string name="generic_header" translatable="false">Header</string>
+    <string name="logout">Logout</string>
 </resources>

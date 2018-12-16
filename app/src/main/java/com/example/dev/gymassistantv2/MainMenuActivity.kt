@@ -4,13 +4,15 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.DBInitializer
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.Workout
+import com.facebook.login.LoginManager
 
 class MainMenuActivity : Activity() {
 
-    private var isTrainer = false
+    private lateinit var loggedUser: UserDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -18,11 +20,13 @@ class MainMenuActivity : Activity() {
 
         determineApplicationMode()
         setNavigationControls()
+        setLogoutButton()
         setDatabase()
     }
 
+
     private fun determineApplicationMode() {
-        isTrainer = this.intent.getBooleanExtra("isTrainer", isTrainer)
+        loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
     private fun setNavigationControls() {
@@ -42,7 +46,7 @@ class MainMenuActivity : Activity() {
 
 //        val isTrainer = false // TODO: check if the user is a trainer
         val buttonTrainerOrCharges = findViewById<Button>(R.id.buttonTrainerOrCharges)
-        if (!isTrainer) {
+        if (!loggedUser.isTrainer!!) {
             buttonTrainerOrCharges.text = resources.getString(R.string.trainer)
             val intentTrainer = Intent(this, ManageTrainerActivity::class.java)
             buttonTrainerOrCharges.setOnClickListener { startActivity(intentTrainer) }
@@ -62,10 +66,23 @@ class MainMenuActivity : Activity() {
     }
 
     private fun setDatabase() {
-        //applicationContext.deleteDatabase("gymAssistantDb")
+        applicationContext.deleteDatabase("gymAssistantDb")
         val dbContext = GymAssistantDatabase.getInstance(applicationContext)
         val dbInitializer = DBInitializer(dbContext)
         dbInitializer.populateMuscleGroup()
         dbInitializer.populateExercise()
+    }
+
+    private fun setLogoutButton() {
+        val buttonLogout = findViewById<Button>(R.id.buttonLogout)
+        val intentLogIn = Intent(this, LogInActivity::class.java)
+        buttonLogout.setOnClickListener {
+            LoginManager.getInstance().logOut()
+            startActivity(intentLogIn)
+        }
+    }
+
+    override fun onBackPressed() {
+
     }
 }

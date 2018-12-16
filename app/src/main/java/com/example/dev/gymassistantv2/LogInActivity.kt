@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.User
 
@@ -20,14 +21,15 @@ import java.util.*
 class LogInActivity : Activity() {
 
     private val callbackManager: CallbackManager = CallbackManager.Factory.create()
+    private val readPermissions = Arrays.asList("public_profile")
+
     private var gymAssistantDatabase: GymAssistantDatabase? = null
+    private var accessToken: AccessToken? = null
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)
     }
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
 
@@ -35,21 +37,39 @@ class LogInActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
-        var accessToken : AccessToken? = AccessToken.getCurrentAccessToken()
-        val isLoggedIn = accessToken != null && !accessToken.isExpired
-        if(isLoggedIn) LoginManager.getInstance().logInWithReadPermissions(this, Arrays.asList("public_profile"));
+        setLoginButton()
+        if (isAccessTokenPresent())
+            performLoginAutomatically()
+    }
+
+    private fun isAccessTokenPresent(): Boolean {
+        val accessToken = AccessToken.getCurrentAccessToken()
+        if(accessToken != null && !accessToken.isExpired) {
+            setAccessToken(accessToken)
+            return true
+        }
+        return false
+    }
+
+    private fun setAccessToken(accessToken: AccessToken) {
+        this.accessToken = accessToken
+    }
+
+    private fun performLoginAutomatically() {
+        LoginManager.getInstance().logInWithReadPermissions(this, readPermissions)
+    }
 
 
+    private fun setLoginButton() {
         var facebookId : String
 
         val loginButton = findViewById<View>(R.id.login_button) as LoginButton
-        loginButton.setReadPermissions("public_profile")
-
+        loginButton.setReadPermissions(readPermissions)
         loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 accessToken = loginResult.accessToken
                 facebookId = loginResult.accessToken.userId
-                processLogIn(facebookId)
+                logIntoApp(facebookId)
             }
 
             override fun onCancel() {
@@ -64,23 +84,28 @@ class LogInActivity : Activity() {
         })
     }
 
-    private fun processLogIn(facebookId: String) {
+    private fun logIntoApp(facebookId: String) {
         gymAssistantDatabase = GymAssistantDatabase.getInstance(this)
 
-        var registeredUser = gymAssistantDatabase?.userDao()?.getByFacebookId(facebookId.toLong())
-        if (registeredUser == null)
-            registeredUser = registerNewUser(facebookId)
-        logIn(registeredUser?.isTrainer)
+        var user = gymAssistantDatabase?.userDao()?.getByFacebookId(facebookId.toLong())
+        if (user == null)
+            user = registerNewUser(facebookId)
+        logIn(user!!)
     }
 
     private fun registerNewUser(facebookId: String): User? {
-        gymAssistantDatabase?.userDao()?.insert(User(null, facebookId.toLong()))
+        gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), true))
         return gymAssistantDatabase?.userDao()?.getByFacebookId(facebookId.toLong())
     }
 
-    private fun logIn(isTrainer : Boolean?) {
+    private fun logIn(loggedUser: User) {
+        val loggedUserDto = UserDto(loggedUser)
         val intentMainMenu = Intent(this, MainMenuActivity::class.java)
-        intentMainMenu.putExtra("isTrainer", isTrainer)
+        intentMainMenu.putExtra("loggedUser", loggedUserDto)
         startActivity(intentMainMenu)
+    }
+
+    override fun onBackPressed() {
+
     }
 }
