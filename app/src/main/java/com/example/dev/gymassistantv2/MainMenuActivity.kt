@@ -41,8 +41,10 @@ class MainMenuActivity : Activity() {
         buttonBeginWorkout.setOnClickListener {
             val workout = Workout()
             workout.date = System.currentTimeMillis()
+            workout.userId = loggedUser.userId
             val workoutId = GymAssistantDatabase.getInstance(this)!!.workoutDao().insert(workout)
             intentBeginWorkout.putExtra("workoutId", workoutId)
+            intentBeginWorkout.putExtra("loggedUser", loggedUser)
             startActivity(intentBeginWorkout)
         }
 

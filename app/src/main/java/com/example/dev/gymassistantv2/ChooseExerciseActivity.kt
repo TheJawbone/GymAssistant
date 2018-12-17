@@ -8,11 +8,13 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.Segment
 
 class ChooseExerciseActivity : Activity() {
 
+    private lateinit var loggedUser: UserDto
     private var workoutId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,10 +27,12 @@ class ChooseExerciseActivity : Activity() {
         setExerciseSpinner()
     }
 
-    override fun onBackPressed() { }
+    override fun onBackPressed() {
+    }
 
     private fun processIntent() {
         this.workoutId = this.intent.getLongExtra("workoutId", workoutId)
+        loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
     private fun setNavigationControls() {
@@ -42,8 +46,9 @@ class ChooseExerciseActivity : Activity() {
             val segment = Segment()
             segment.exerciseId = exercise.id
             segment.workoutId = workoutId
-            val segmentId = dbContext!!.segmentDao().insert(segment)
+            val segmentId = dbContext.segmentDao().insert(segment)
             intentBeginSet.putExtra("segmentId", segmentId)
+            intentBeginSet.putExtra("loggedUser", loggedUser)
             startActivity(intentBeginSet)
         }
 
@@ -52,8 +57,9 @@ class ChooseExerciseActivity : Activity() {
         buttonEndWorkout.setOnClickListener {
             val workoutSegments = dbContext!!.segmentDao().getForWorkout(workoutId)
             if(workoutSegments.isEmpty()) {
-                dbContext!!.workoutDao().delete(dbContext!!.workoutDao().getById(workoutId))
+                dbContext.workoutDao().delete(dbContext.workoutDao().getById(workoutId))
             }
+            intentEndWorkout.putExtra("loggedUser", loggedUser)
             startActivity(intentEndWorkout)
         }
     }

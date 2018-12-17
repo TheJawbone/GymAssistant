@@ -6,11 +6,15 @@ import android.graphics.Typeface
 import android.os.Bundle
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import android.widget.*
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Entities.ExerciseSet
+import kotlinx.android.synthetic.main.activity_main_menu.*
 
 
 class SetEditActivity : Activity() {
 
+    private lateinit var loggedUser: UserDto
+    private var historyOwnerId: Long = 0
     private var set = ExerciseSet()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,6 +30,8 @@ class SetEditActivity : Activity() {
     private fun processIntent() {
         val setId = this.intent.getLongExtra("setId", 0)
         set = GymAssistantDatabase.getInstance(this)!!.exerciseSetDao().getById(setId)
+        this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
+        this.historyOwnerId = this.intent.getLongExtra("historyOwnerId", historyOwnerId)
     }
 
     private fun setEditTexts() {
@@ -46,6 +52,8 @@ class SetEditActivity : Activity() {
                 GymAssistantDatabase.getInstance(this)!!.exerciseSetDao().update(set)
                 val intentSave = Intent(this, SetHistoryActivity::class.java)
                 intentSave.putExtra("segmentId", set.segmentId)
+                intentSave.putExtra("historyOwnerId", historyOwnerId)
+                intentSave.putExtra("loggedUser", loggedUser)
                 startActivity(intentSave)
             }
         }

@@ -8,12 +8,15 @@ import android.graphics.Typeface
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.widget.*
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import java.sql.Date
 import java.text.SimpleDateFormat
 
 
 class SetHistoryActivity : Activity() {
 
+    private lateinit var loggedUser: UserDto
+    private var historyOwnerId: Long = 0
     private var segmentId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,14 +28,18 @@ class SetHistoryActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        intent = Intent(this, SegmentHistoryActivity::class.java)
+        val intent = Intent(this, SegmentHistoryActivity::class.java)
         intent.putExtra("workoutId",
                 GymAssistantDatabase.getInstance(this)!!.segmentDao().getById(segmentId).workoutId)
+        intent.putExtra("loggedUser", loggedUser)
+        intent.putExtra("historyOwnerId", historyOwnerId)
         startActivity(intent)
     }
 
     private fun processIntent() {
         this.segmentId = this.intent.getLongExtra("segmentId", 0)
+        this.historyOwnerId = this.intent.getLongExtra("historyOwnerId", historyOwnerId)
+        this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
     private fun generateSegmentList() {
@@ -82,6 +89,8 @@ class SetHistoryActivity : Activity() {
             val setId = it.id
             buttonEdit.setOnClickListener {
                 val intent = Intent(this, SetEditActivity::class.java)
+                intent.putExtra("loggedUser", loggedUser)
+                intent.putExtra("historyOwnerId", historyOwnerId)
                 intent.putExtra("setId", setId)
                 startActivity(intent)
             }
@@ -94,9 +103,11 @@ class SetHistoryActivity : Activity() {
             buttonDelete.typeface = typeface
             val exerciseSetId = it.id
             buttonDelete.setOnClickListener {
-                dbContext!!.exerciseSetDao().delete(dbContext!!.exerciseSetDao().getById(exerciseSetId!!))
+                dbContext.exerciseSetDao().delete(dbContext.exerciseSetDao().getById(exerciseSetId!!))
                 val intent = Intent(this, SetHistoryActivity::class.java)
                 intent.putExtra("segmentId", segmentId)
+                intent.putExtra("historyOwnerId", historyOwnerId)
+                intent.putExtra("loggedUser", loggedUser)
                 startActivity(intent)
             }
 

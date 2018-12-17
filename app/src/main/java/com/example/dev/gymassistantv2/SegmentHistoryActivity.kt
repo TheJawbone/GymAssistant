@@ -8,12 +8,15 @@ import android.graphics.Typeface
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.widget.*
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import java.sql.Date
 import java.text.SimpleDateFormat
 
 
 class SegmentHistoryActivity : Activity() {
 
+    private lateinit var loggedUser: UserDto
+    private var historyOwnerId: Long = 0
     private var workoutId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,11 +30,15 @@ class SegmentHistoryActivity : Activity() {
     override fun onBackPressed() {
         val intent = Intent(this, WorkoutHistoryActivity::class.java)
         intent.putExtra("workoutId", workoutId)
+        intent.putExtra("loggedUser", loggedUser)
+        intent.putExtra("historyOwnerId", historyOwnerId)
         startActivity(intent)
     }
 
     private fun processIntent() {
         this.workoutId = this.intent.getLongExtra("workoutId", 0)
+        this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
+        this.historyOwnerId = this.intent.getLongExtra("historyOwnerId", historyOwnerId)
     }
 
     private fun generateSegmentList() {
@@ -75,6 +82,8 @@ class SegmentHistoryActivity : Activity() {
             buttonMain.setOnClickListener {
                 val intent = Intent(this, SetHistoryActivity::class.java)
                 intent.putExtra("segmentId", segmentId)
+                intent.putExtra("loggedUser", loggedUser)
+                intent.putExtra("historyOwnerId", historyOwnerId)
                 startActivity(intent)
             }
 
@@ -88,6 +97,8 @@ class SegmentHistoryActivity : Activity() {
                 dbContext!!.segmentDao().delete(dbContext!!.segmentDao().getById(segmentId!!))
                 val intent = Intent(this, SegmentHistoryActivity::class.java)
                 intent.putExtra("workoutId", workoutId)
+                intent.putExtra("loggedUser", loggedUser)
+                intent.putExtra("historyOwnerId", historyOwnerId)
                 startActivity(intent)
             }
 
