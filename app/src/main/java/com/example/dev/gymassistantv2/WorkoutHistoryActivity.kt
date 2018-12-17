@@ -8,13 +8,15 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.util.DisplayMetrics
 import android.widget.*
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import java.sql.Date
 import java.text.SimpleDateFormat
 
 
 class WorkoutHistoryActivity : Activity() {
 
-    private var userId: Long = 0
+    //private var userId: Long = 0
+    private lateinit var loggedUser: UserDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,11 +28,12 @@ class WorkoutHistoryActivity : Activity() {
 
     override fun onBackPressed() {
         intent = Intent(this, MainMenuActivity::class.java)
+        intent.putExtra("loggedUser", loggedUser)
         startActivity(intent)
     }
 
     private fun processIntent() {
-        this.userId = this.intent.getLongExtra("userId", 0)
+        this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
     private fun generateWorkoutList() {
@@ -46,8 +49,8 @@ class WorkoutHistoryActivity : Activity() {
         scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
-        var workouts = if (userId != 0.toLong()) {
-            dbContext!!.workoutDao().getForUser(userId)
+        var workouts = if (loggedUser.userId != 0.toLong()) {
+            dbContext!!.workoutDao().getForUser(loggedUser.userId!!)
         } else {
             dbContext!!.workoutDao().getAll()
         }
@@ -86,7 +89,7 @@ class WorkoutHistoryActivity : Activity() {
             buttonDelete.setOnClickListener {
                 dbContext!!.workoutDao().delete(dbContext!!.workoutDao().getById(workoutId!!))
                 val intent = Intent(this, WorkoutHistoryActivity::class.java)
-                intent.putExtra("userId", userId)
+                intent.putExtra("userId", loggedUser.userId!!)
                 startActivity(intent)
             }
 

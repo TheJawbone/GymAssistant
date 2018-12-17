@@ -4,10 +4,13 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.Toast
 import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.DBInitializer
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.Workout
+import com.example.dev.gymassistantv2.LogInActivity.Companion.firstName
+import com.example.dev.gymassistantv2.LogInActivity.Companion.lastName
 import com.facebook.login.LoginManager
 
 class MainMenuActivity : Activity() {
@@ -18,14 +21,18 @@ class MainMenuActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
-        determineApplicationMode()
+
+        determineLoggedUserData()
         setNavigationControls()
         setLogoutButton()
         setDatabase()
+
+        Toast.makeText(applicationContext, "Logged as $firstName $lastName",
+                Toast.LENGTH_LONG).show()
     }
 
 
-    private fun determineApplicationMode() {
+    private fun determineLoggedUserData() {
         loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
@@ -58,6 +65,7 @@ class MainMenuActivity : Activity() {
 
         val buttonHistory = findViewById<Button>(R.id.buttonHistory)
         val intentHistory = Intent(this, WorkoutHistoryActivity::class.java)
+        intentHistory.putExtra("loggedUser", loggedUser)
         buttonHistory.setOnClickListener { startActivity(intentHistory) }
 
         val buttonSettings = findViewById<Button>(R.id.buttonSettings)

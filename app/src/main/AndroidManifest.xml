@@ -39,7 +39,8 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".MainMenuActivity"/>
+        <activity android:name=".MainMenuActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".AddExerciseActivity" />
         <activity android:name=".AddMeasurementsActivity" />
         <activity android:name=".ChargesSubmenuActivity" />
