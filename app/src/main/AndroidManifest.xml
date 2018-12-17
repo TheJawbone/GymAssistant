@@ -47,7 +47,8 @@
         <activity android:name=".ChooseAvailableExercisesActivity" />
         <activity android:name=".ChooseExerciseActivity" />
         <activity android:name=".FindTrainerActivity" />
-        <activity android:name=".ManageChargesActivity" />
+        <activity android:name=".ManageChargesActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ManageInvitationsActivity" />
         <activity android:name=".ManageTrainerActivity" />
         <activity android:name=".ProgressActivity" />

@@ -21,11 +21,11 @@ class MainMenuActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main_menu)
 
-
         determineLoggedUserData()
         setNavigationControls()
         setLogoutButton()
         setDatabase()
+
 
         Toast.makeText(applicationContext, "Logged as $firstName $lastName",
                 Toast.LENGTH_LONG).show()
@@ -53,19 +53,21 @@ class MainMenuActivity : Activity() {
 
 //        val isTrainer = false // TODO: check if the user is a trainer
         val buttonTrainerOrCharges = findViewById<Button>(R.id.buttonTrainerOrCharges)
-        if (!loggedUser.isTrainer!!) {
+        if (loggedUser.isTrainer!!) {
+            buttonTrainerOrCharges.text = resources.getString(R.string.your_charges)
+            val intentCharges = Intent(this, ChargesSubmenuActivity::class.java)
+            intentCharges.putExtra("loggedUser", loggedUser)
+            buttonTrainerOrCharges.setOnClickListener { startActivity(intentCharges) }
+        } else {
             buttonTrainerOrCharges.text = resources.getString(R.string.trainer)
             val intentTrainer = Intent(this, ManageTrainerActivity::class.java)
             buttonTrainerOrCharges.setOnClickListener { startActivity(intentTrainer) }
-        } else {
-            buttonTrainerOrCharges.text = resources.getString(R.string.your_charges)
-            val intentCharges = Intent(this, ChargesSubmenuActivity::class.java)
-            buttonTrainerOrCharges.setOnClickListener { startActivity(intentCharges) }
         }
 
         val buttonHistory = findViewById<Button>(R.id.buttonHistory)
         val intentHistory = Intent(this, WorkoutHistoryActivity::class.java)
         intentHistory.putExtra("loggedUser", loggedUser)
+        intentHistory.putExtra("historyOwnerId", loggedUser.userId)
         buttonHistory.setOnClickListener { startActivity(intentHistory) }
 
         val buttonSettings = findViewById<Button>(R.id.buttonSettings)
@@ -79,6 +81,8 @@ class MainMenuActivity : Activity() {
         val dbInitializer = DBInitializer(dbContext)
         dbInitializer.populateMuscleGroup()
         dbInitializer.populateExercise()
+        dbInitializer.populateTrainers()
+        dbInitializer.populateChargesForWilliam()
     }
 
     private fun setLogoutButton() {

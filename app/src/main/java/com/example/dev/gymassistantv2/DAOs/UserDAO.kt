@@ -17,6 +17,12 @@ interface UserDAO {
     @Query("SELECT * FROM User usr WHERE usr.facebookId == :facebookId")
     fun getByFacebookId(facebookId: Long): User
 
+    @Query("SELECT * FROM User usr WHERE usr.trainerId == :userId")
+    fun getChargesForUser(userId: Long): List<User>
+
+    @Query("SELECT * FROM User usr WHERE usr.isTrainer == 1")
+    fun getAllTrainers(): List<User>
+
     @Insert(onConflict = REPLACE)
     fun insert(user: User)
 

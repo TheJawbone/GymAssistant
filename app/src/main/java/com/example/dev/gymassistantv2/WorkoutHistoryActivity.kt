@@ -15,8 +15,8 @@ import java.text.SimpleDateFormat
 
 class WorkoutHistoryActivity : Activity() {
 
-    //private var userId: Long = 0
     private lateinit var loggedUser: UserDto
+    private var historyOwnerId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,20 +26,16 @@ class WorkoutHistoryActivity : Activity() {
         generateWorkoutList()
     }
 
-    override fun onBackPressed() {
-        intent = Intent(this, MainMenuActivity::class.java)
-        intent.putExtra("loggedUser", loggedUser)
-        startActivity(intent)
-    }
-
     private fun processIntent() {
         this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
+        this.historyOwnerId = this.intent.getLongExtra("historyOwnerId", historyOwnerId)
     }
 
     private fun generateWorkoutList() {
         val scrollView = findViewById<ScrollView>(R.id.scrollView)
         val header = findViewById<TextView>(R.id.textViewHeader)
-        header.text = "Twoje treningi"
+        if(loggedUser.isTrainer!! && loggedUser.userId!! != historyOwnerId) header.text = "Podopieczny: $historyOwnerId"
+        else header.text = "Twoje treningi"
 
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
@@ -49,11 +45,13 @@ class WorkoutHistoryActivity : Activity() {
         scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
-        var workouts = if (loggedUser.userId != 0.toLong()) {
-            dbContext!!.workoutDao().getForUser(loggedUser.userId!!)
-        } else {
-            dbContext!!.workoutDao().getAll()
-        }
+//        val workouts = if (historyOwnerId != 0.toLong()) {
+//            dbContext!!.workoutDao().getForUser(historyOwnerId)
+//        } else {
+//            dbContext!!.workoutDao().getAll()
+//        }
+
+        val workouts = dbContext!!.workoutDao().getForUser(historyOwnerId)
 
         if(workouts.isEmpty()) {
             Toast.makeText(this, "Brak zapisanych treningów", Toast.LENGTH_LONG).show()
@@ -94,8 +92,21 @@ class WorkoutHistoryActivity : Activity() {
             }
 
             horizontalLayout.addView(buttonMain)
-            horizontalLayout.addView(buttonDelete)
+            if(!loggedUser.isTrainer!!) horizontalLayout.addView(buttonDelete)
             layout.addView(horizontalLayout)
         }
     }
+
+    override fun onBackPressed() {
+        if(loggedUser.isTrainer!! && loggedUser.userId!! != historyOwnerId) {
+            intent = Intent(this, ManageChargesActivity::class.java)
+            intent.putExtra("loggedUser", loggedUser)
+            startActivity(intent)
+        } else {
+            intent = Intent(this, MainMenuActivity::class.java)
+            intent.putExtra("loggedUser", loggedUser)
+            startActivity(intent)
+        }
+    }
+
 }

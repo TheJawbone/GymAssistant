@@ -13,4 +13,6 @@ data class User(@PrimaryKey(autoGenerate = true) var id: Long?,
     constructor():this(null, null, false, null)
     constructor(facebookId: Long?):this(null, facebookId, false, null)
     constructor(facebookId: Long?, isTrainer: Boolean?):this(null, facebookId, isTrainer, null)
+    constructor(facebookId: Long?, isTrainer: Boolean?, trainerId: Long):this(null, facebookId, isTrainer, trainerId)
+
 }
