@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.dev.gymassistantv2">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/gym_assistant_logo"
@@ -38,14 +39,17 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".MainMenuActivity"/>
+        <activity android:name=".MainMenuActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".AddExerciseActivity" />
         <activity android:name=".AddMeasurementsActivity" />
         <activity android:name=".ChargesSubmenuActivity" />
         <activity android:name=".ChooseAvailableExercisesActivity" />
         <activity android:name=".ChooseExerciseActivity" />
+        <activity android:name=".ManageMeasurementsActivity" />
         <activity android:name=".FindTrainerActivity" />
-        <activity android:name=".ManageChargesActivity" />
+        <activity android:name=".ManageChargesActivity"
+            android:screenOrientation="portrait"/>
         <activity android:name=".ManageInvitationsActivity" />
         <activity android:name=".ManageTrainerActivity" />
         <activity android:name=".ProgressActivity" />

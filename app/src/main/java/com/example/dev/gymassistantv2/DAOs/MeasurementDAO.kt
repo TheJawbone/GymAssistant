@@ -13,8 +13,14 @@ interface MeasurementDAO {
     @Query("SELECT * FROM Measurement mes WHERE mes.id == :id")
     fun getById(id: Long): Measurement
 
+    @Query("SELECT * FROM Measurement mes WHERE userId == :id")
+    fun getForUser(id: Long) : List<Measurement>
+
     @Query("SELECT * FROM Measurement mes WHERE mes.bodyPartId == :id")
     fun getForBodyPart(id: Long): List<Measurement>
+
+    @Query("SELECT * FROM Measurement mes WHERE mes.bodyPartId == :bodyPartId AND mes.userId == :userId")
+    fun getForBodyPartAndUser(bodyPartId: Long, userId: Long) : List<Measurement>
 
     @Insert(onConflict = REPLACE)
     fun insert(measurement: Measurement)

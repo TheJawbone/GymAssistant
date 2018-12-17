@@ -66,4 +66,6 @@
     <string name="generic_header" translatable="false">Header</string>
     <string name="exercises">Exercises</string>
     <string name="subcategory">Subcategory</string>
+    <string name="logout">Logout</string>
+    <string name="manage_measurements">Manage measurements</string>
 </resources>

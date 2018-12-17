@@ -58,4 +58,6 @@
     <string name="manage_invitations">Manage invitations</string>
     <string name="exercises">Exercises</string>
     <string name="subcategory">Subcategory</string>
+    <string name="logout">Logout</string>
+    <string name="manage_measurements">Manage measurements</string>
 </resources>

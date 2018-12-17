@@ -1,56 +1,58 @@
 package com.example.dev.gymassistantv2
 
 import android.app.Activity
+import android.os.Bundle
+import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import android.content.Intent
 import android.graphics.Typeface
-import android.os.Bundle
 import android.util.DisplayMetrics
 import android.widget.*
 import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 
-class ManageChargesActivity : Activity() {
+
+class ManageMeasurementsActivity : Activity() {
 
     private lateinit var loggedUser: UserDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_manage_charges)
+        setContentView(R.layout.generic_history_layout)
 
         processIntent()
-        setBackButton()
-        generateChargesList()
-    }
-
-    private fun setBackButton() {
-        val buttonBack = findViewById<Button>(R.id.buttonBack)
-        buttonBack.setOnClickListener { goToChargesSubmenuActivity() }
+        generateMeasurementsList()
     }
 
     private fun processIntent() {
         this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
-    private fun generateChargesList() {
+    private fun generateMeasurementsList() {
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+        val header = findViewById<TextView>(R.id.textViewHeader)
+        header.text = "Twoje pomiary"
+
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
 
-        val layout = findViewById<LinearLayout>(R.id.chargesLinearLayout)
+        val layout = LinearLayout(applicationContext)
+        layout.orientation = LinearLayout.VERTICAL
+        scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
-        val charges = dbContext!!.userDao().getChargesForUser(loggedUser.userId!!)
+        val measurements = dbContext!!.measurementDao().getForUser(loggedUser.userId!!)
 
-
-        if(charges.isEmpty()) {
-            Toast.makeText(this, "Brak podopiecznych!", Toast.LENGTH_LONG).show()
+        if (measurements.isEmpty()) {
+            Toast.makeText(this, "Brak zapisanych pomiarów", Toast.LENGTH_LONG).show()
         }
 
-        charges.forEach {
+        measurements.forEach {
             val horizontalLayout = LinearLayout(this)
             horizontalLayout.orientation = LinearLayout.HORIZONTAL
 
-            val chargeId = it.id!!
-            val buttonText = "ID: $chargeId"
+            val bodyPartName = dbContext!!.muscleGroupDao().getById(it.bodyPartId!!).name
+            val measurementValue = it.value.toString()
+
+            var buttonText = bodyPartName + "\n" + measurementValue + "cm"
             val buttonMain = Button(this)
             buttonMain.layoutParams = LinearLayout.LayoutParams(
                     (metrics.widthPixels * 0.8).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
@@ -58,25 +60,18 @@ class ManageChargesActivity : Activity() {
             buttonMain.text = buttonText
             val typeface = Typeface.createFromAsset(assets, "fonts/BlackOpsOne-Regular.ttf")
             buttonMain.typeface = typeface
-
-            buttonMain.setOnClickListener {
-                val intent = Intent(this, WorkoutHistoryActivity::class.java)
-                intent.putExtra("loggedUser", loggedUser)
-                intent.putExtra("historyOwnerId", chargeId)
-                startActivity(intent)
-            }
+            buttonMain.measure(windowManager.defaultDisplay.width, windowManager.defaultDisplay.height)
 
             val buttonDelete = Button(this)
-            buttonDelete.height = buttonMain.height
+            buttonDelete.height = buttonMain.measuredHeight
             buttonDelete.width = (metrics.widthPixels * 0.2).toInt()
             buttonDelete.background = applicationContext.getDrawable(R.drawable.bottom_border_red)
             buttonDelete.text = "Usuń"
             buttonDelete.typeface = typeface
+            val measurement = it
             buttonDelete.setOnClickListener {
-                val charge = dbContext.userDao().getById(chargeId)
-                charge.trainerId = null
-                dbContext.userDao().update(charge)
-                val intent = Intent(this, ManageChargesActivity::class.java)
+                dbContext!!.measurementDao().delete(measurement)
+                val intent = Intent(this, ManageMeasurementsActivity::class.java)
                 intent.putExtra("loggedUser", loggedUser)
                 startActivity(intent)
             }
@@ -88,14 +83,8 @@ class ManageChargesActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        goToChargesSubmenuActivity()
+        intent = Intent(this, ProgressSubmenuActivity::class.java)
+        intent.putExtra("loggedUser", loggedUser)
+        startActivity(intent)
     }
-
-    private fun goToChargesSubmenuActivity() {
-        val intentChargesSubmenu = Intent(this, ChargesSubmenuActivity::class.java)
-        intentChargesSubmenu.putExtra("loggedUser", loggedUser)
-        startActivity(intentChargesSubmenu)
-    }
-
-
 }

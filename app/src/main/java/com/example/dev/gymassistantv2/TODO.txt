@@ -1,15 +1,20 @@
-A Ogarnąć logowanie przez API facebookowe
+
 P DONE(nieprzetestowane) Zrobić DAOsy
 P DONE(szkielet) Zrobić DBInitializera
-A Ogarnąć i zrobić wykresy - dla pomiarów centymetry, dla ćwiczeń ciężar razem z repsami
-A Dołożyć date pickery do postępów (filtracja)
-A Dołożyć ekran usuwania postępów - lista pomiarów z filtracją po kategorii, sortowanie po dacie
 P DONE Sekcja historii treningów - programowo generowana lista treningów. Każdy ma mieć przycisk delete. Sortowanie wg daty. Kliknięcie przenosi do listy ćwiczeń z treningu.
 P DONE Lista ćwiczeń w treningu - to samo co wyżej, klik przenosi na listę serii w ćwiczeniu. U góry data treningu.
 P DONE Lista serii w ćwiczeniu. Delete i edit do każdego. U góry nazwa ćwiczenia
 P DONE Dodać ekran edycji serii - 2 pola tekstowe, save i cancel, u góry numer serii
-A Zaimplementować zapraszanie trenera od strony ćwiczącego - w widoku jest lista trenerów: imie, nazwisko, foto?? i obok button invite. Po kliknięciu inva robimy wpis w bazie zaproszeń i odświeżamy widok. Interpreter widoku w trakcie ładowania - sprawdzenie czy są pending zaproszenia i czy jest trener - jesli trener: id imie nazwisko i delete.
-A Widok zaproszeń trenera - lista pending zaproszeń z jego ajdikiem, możliwość przyjęcia i odrzucenia. Przyjęcie - dodajemy id zgłoszenia do podopiecznych i usuwaamy zapro, odrzuć - usuń zapro.
-A Ekran podopiecznych - lista ziomków z danymi + przyciski delete i kliknięcie w ziomka daje na postępy.
 P DONE Zaimplementować przebieg treningu.
 P DONE Dodać do ćwiczeń ID usera. Dla domyślnych, systemowych ćwiczeń ID = 0 (nope, nowe pole "DefaultExercise")
+
+A DONE Ekran podopiecznych - lista ziomków z danymi + przyciski delete i kliknięcie w ziomka daje na postępy.
+
+A IN PROGRESS Ogarnąć logowanie przez API facebookowe 
+A IN PROGRESS Zaimplementować zapraszanie trenera od strony ćwiczącego - w widoku jest lista trenerów: imie, nazwisko, foto?? i obok button invite. Po kliknięciu inva robimy wpis w bazie zaproszeń i odświeżamy widok. Interpreter widoku w trakcie ładowania - sprawdzenie czy są pending zaproszenia i czy jest trener - jesli trener: id imie nazwisko i delete.
+A IN PROGRESS Widok zaproszeń trenera - lista pending zaproszeń z jego ajdikiem, możliwość przyjęcia i odrzucenia. Przyjęcie - dodajemy id zgłoszenia do podopiecznych i usuwaamy zapro, odrzuć - usuń zapro.
+
+A Ogarnąć i zrobić wykresy - dla pomiarów centymetry, dla ćwiczeń ciężar razem z repsami
+A Dołożyć date pickery do postępów (filtracja)
+A Dołożyć ekran usuwania postępów - lista pomiarów z filtracją po kategorii, sortowanie po dacie
+

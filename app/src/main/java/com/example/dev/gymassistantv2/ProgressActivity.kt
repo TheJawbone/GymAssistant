@@ -8,22 +8,29 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.Entities.ExerciseSet
 import com.github.mikephil.charting.charts.BarChart
-import com.github.mikephil.charting.charts.LineChart
-import com.example.dev.gymassistantv2.R.id.chart
 import com.github.mikephil.charting.data.*
 
 
 class ProgressActivity : Activity() {
 
+    private lateinit var loggedUser: UserDto
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_progress)
 
+        processIntent()
         setNavigationControls()
         setCategorySpinner()
         setMeasurementsSpinner()
+    }
+
+    private fun processIntent() {
+        this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
     private fun setNavigationControls() {
@@ -58,7 +65,7 @@ class ProgressActivity : Activity() {
                 when (findViewById<Spinner>(R.id.spinnerCategory).selectedItemPosition) {
                     0 -> {
                         val bodyPart = dbContext!!.muscleGroupDao().getByName(selectedItem)
-                        val measurements = dbContext!!.measurementDao().getForBodyPart(bodyPart.id!!)
+                        val measurements = dbContext!!.measurementDao().getForBodyPartAndUser(bodyPart.id!!, loggedUser.userId!!)
                         val valuesX = mutableListOf<Int>()
                         val valuesY = mutableListOf<Int>()
                         var counter = 0
@@ -67,10 +74,32 @@ class ProgressActivity : Activity() {
                             valuesY.add(it.value!!)
                             counter++
                         }
-                        setChart(valuesX, valuesY, selectedItem)
+                        setMeasurementsChart(valuesX, valuesY, selectedItem)
                     }
                     1 -> {
-
+                        val exercise = dbContext!!.exerciseDao().getByName(selectedItem)
+                        val workouts = dbContext!!.workoutDao().getAll()
+                        val sets = mutableListOf<ExerciseSet>()
+                        workouts.forEach {
+                            val segments = dbContext!!.segmentDao().getSpecificForWorkout(it.id!!, exercise.id!!)
+                            segments.forEach {
+                                val segmentSets = dbContext!!.exerciseSetDao().getForSegment(it.id!!)
+                                segmentSets.forEach {
+                                    sets.add(it)
+                                }
+                            }
+                        }
+                        val valuesX = mutableListOf<Int>()
+                        val weightsY = mutableListOf<Int>()
+                        val repsY = mutableListOf<Int>()
+                        var counter = 0
+                        sets.forEach {
+                            valuesX.add(counter)
+                            weightsY.add(it.weight!!)
+                            repsY.add(it.repCount!!)
+                            counter++
+                        }
+                        setExercisesChart(valuesX, weightsY, repsY, selectedItem)
                     }
                     else -> null
                 }
@@ -80,7 +109,7 @@ class ProgressActivity : Activity() {
         }
     }
 
-    private fun setChart(valuesX: List<Int>, valuesY: List<Int>, label: String) {
+    private fun setMeasurementsChart(valuesX: List<Int>, valuesY: List<Int>, label: String) {
         val chart = findViewById<View>(R.id.chart) as BarChart
         val entries = ArrayList<BarEntry>()
 
@@ -93,6 +122,29 @@ class ProgressActivity : Activity() {
         dataSet.valueTextColor = Color.BLUE
 
         val barData = BarData(dataSet)
+        chart.data = barData
+        chart.invalidate()
+    }
+
+    private fun setExercisesChart(valuesX: List<Int>, weightsY: List<Int>, repsY: List<Int>, label: String) {
+        val chart = findViewById<View>(R.id.chart) as BarChart
+        val weightEntries = ArrayList<BarEntry>()
+        val repEntries = ArrayList<BarEntry>()
+
+        for(i in 0 until valuesX.count()) {
+            weightEntries.add(BarEntry(valuesX[i].toFloat(), weightsY[i].toFloat()))
+            repEntries.add(BarEntry(valuesX[i].toFloat(), repsY[i].toFloat()))
+        }
+
+        val weightsDataSet = BarDataSet(weightEntries, "$label - ciężar")
+        weightsDataSet.color = Color.RED
+        weightsDataSet.valueTextColor = Color.RED
+
+        val repsDataSet = BarDataSet(repEntries, "$label - powtórzenia")
+        weightsDataSet.color = Color.BLUE
+        weightsDataSet.valueTextColor = Color.BLUE
+
+        val barData = BarData(listOf(weightsDataSet, repsDataSet))
         chart.data = barData
         chart.invalidate()
     }

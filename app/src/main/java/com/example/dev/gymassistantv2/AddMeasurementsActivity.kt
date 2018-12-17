@@ -4,17 +4,25 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.Measurement
 
 class AddMeasurementsActivity : Activity() {
 
+    private lateinit var loggedUser: UserDto
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_measurements)
 
+        processIntent()
         setNavigationControls()
         setBodyPartSpinner()
+    }
+
+    private fun processIntent() {
+        this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
     private fun setNavigationControls() {
@@ -28,8 +36,10 @@ class AddMeasurementsActivity : Activity() {
             val measurement = Measurement()
             measurement.value = findViewById<EditText>(R.id.editTextMeasurement).text.toString().toInt()
             measurement.bodyPartId = bodyPart.id
+            measurement.userId = loggedUser.userId
             dbContext!!.measurementDao().insert(measurement)
             Toast.makeText(this, "Pomyślnie dodano pomiar", Toast.LENGTH_LONG).show()
+            intentSave.putExtra("loggedUser", loggedUser)
             startActivity(intentSave)
         }
 

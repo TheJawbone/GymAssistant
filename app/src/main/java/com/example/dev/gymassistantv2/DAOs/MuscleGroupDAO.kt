@@ -9,6 +9,9 @@ interface MuscleGroupDAO {
     @Query("SELECT * FROM MuscleGroup")
     fun getAll(): List<MuscleGroup>
 
+    @Query("SELECT * FROM MuscleGroup WHERE id == :id")
+    fun getById(id: Long) : MuscleGroup
+
     @Query("SELECT name FROM MuscleGroup")
     fun getAllNames(): List<String>
 

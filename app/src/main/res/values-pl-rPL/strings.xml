@@ -58,4 +58,6 @@
     <string name="manage_invitations">Zarządzaj zaproszeniami</string>
     <string name="exercises">Ćwiczenia</string>
     <string name="subcategory">Podkategoria</string>
+    <string name="logout">Wyloguj się</string>
+    <string name="manage_measurements">Zarządzaj pomiarami</string>
 </resources>

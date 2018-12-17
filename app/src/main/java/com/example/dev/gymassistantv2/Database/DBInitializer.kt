@@ -1,10 +1,14 @@
 package com.example.dev.gymassistantv2.Database
 
-import com.example.dev.gymassistantv2.DAOs.MuscleGroupDAO
 import com.example.dev.gymassistantv2.Entities.Exercise
 import com.example.dev.gymassistantv2.Entities.MuscleGroup
+import com.example.dev.gymassistantv2.Entities.User
+import java.util.*
 
 class DBInitializer(private val dbContext : GymAssistantDatabase?) {
+
+    private val williamsFbId = 109931923389001
+    private val williamsId = 1.toLong()
 
     fun populateMuscleGroup() {
         if(dbContext!!.muscleGroupDao().getAll().isEmpty()) {
@@ -37,6 +41,20 @@ class DBInitializer(private val dbContext : GymAssistantDatabase?) {
             exercises.add(exercise2)
 
             dbContext.exerciseDao().insert(exercises)
+        }
+    }
+
+    fun populateTrainers() {
+        if(dbContext!!.userDao().getAllTrainers().isEmpty()) {
+            for (i in 1..5) {
+                dbContext.userDao().insert(User(Random().nextLong(), true))
+            }
+        }
+    }
+
+    fun populateChargesForWilliam() {
+        for (i in 1..5) {
+            dbContext!!.userDao().insert(User(Random().nextLong(), false, williamsId))
         }
     }
 }

@@ -8,11 +8,18 @@ import android.arch.persistence.room.*
                 onUpdate = ForeignKey.CASCADE,
                 onDelete = ForeignKey.NO_ACTION,
                 parentColumns = arrayOf("id"),
-                childColumns = arrayOf("bodyPartId"))
+                childColumns = arrayOf("bodyPartId")),
+        ForeignKey(
+                entity = User::class,
+                onUpdate = ForeignKey.CASCADE,
+                onDelete = ForeignKey.CASCADE,
+                parentColumns = arrayOf("id"),
+                childColumns = arrayOf("userId"))
 )))
 data class Measurement(@PrimaryKey(autoGenerate = true) var id: Long?,
-                    @ColumnInfo(name = "bodyPartId") var bodyPartId: Long?,
-                    @ColumnInfo(name = "value") var value: Int?
+                       @ColumnInfo(name = "bodyPartId") var bodyPartId: Long?,
+                       @ColumnInfo(name = "userId") var userId: Long?,
+                       @ColumnInfo(name = "value") var value: Int?
 ) {
-    constructor() : this(null, null, null)
+    constructor() : this(null, null, null, null)
 }

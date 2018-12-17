@@ -9,12 +9,61 @@ import android.widget.TextView
 import android.widget.Toast
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.ExerciseSet
+import com.example.dev.gymassistantv2.R.string.stop
+import android.annotation.SuppressLint
+import android.os.Handler
+import android.os.Message
+import com.example.dev.gymassistantv2.Utils.Stopwatch
+
 
 class SetActivity : Activity() {
 
     private var setNumber: Int = 0
     private var segmentId: Long = 0
     private var workoutId: Long = 0
+
+    var timer = Stopwatch()
+    val REFRESH_RATE = 1.toLong()
+
+    val MSG_START_TIMER = 0
+    val MSG_STOP_TIMER = 1
+    val MSG_UPDATE_TIMER = 2
+    val MSG_RESET_TIMER = 3
+
+    @SuppressLint("HandlerLeak")
+    var mHandler: Handler = object : Handler() {
+        override fun handleMessage(msg: Message) {
+            super.handleMessage(msg)
+            val tvTimer = findViewById<TextView>(R.id.textViewTimer)
+            when (msg.what) {
+
+                MSG_START_TIMER -> {
+                    timer.start()
+                    this.sendEmptyMessage(MSG_UPDATE_TIMER)
+                }
+
+                MSG_UPDATE_TIMER -> {
+                    tvTimer.text = timer.formattedElapsedTime
+                    this.sendEmptyMessageDelayed(MSG_UPDATE_TIMER, REFRESH_RATE)
+                }
+
+                MSG_STOP_TIMER -> {
+                    this.removeMessages(MSG_UPDATE_TIMER)
+                    timer.stop()
+                    tvTimer.text = timer.formattedElapsedTime
+                }
+
+                MSG_RESET_TIMER -> {
+                    this.removeMessages(MSG_UPDATE_TIMER)
+                    timer.reset()
+                    tvTimer.text = timer.formattedElapsedTime
+                }
+
+                else -> {
+                }
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,13 +72,20 @@ class SetActivity : Activity() {
         processIntent()
         setLayoutTexts()
         setNavigationControls()
+        setStopwatchControls()
     }
 
     private fun processIntent() {
         this.setNumber = this.intent.getIntExtra("setNumber", 1)
         this.segmentId = this.intent.getLongExtra("segmentId", 0)
         this.workoutId = GymAssistantDatabase.getInstance(this)!!.segmentDao()
-                            .getById(segmentId).workoutId!!
+                .getById(segmentId).workoutId!!
+        val stopwatchIntent = intent
+        timer.set(stopwatchIntent.getLongExtra("stopwatchElapsedTime", 0))
+        val isStopwatchRunning = stopwatchIntent.getBooleanExtra("stopwatchRunning", false)
+        if (isStopwatchRunning) {
+            mHandler.sendEmptyMessage(MSG_START_TIMER)
+        }
     }
 
     private fun setLayoutTexts() {
@@ -47,6 +103,8 @@ class SetActivity : Activity() {
         intentNextSet.putExtra("segmentId", segmentId)
         intentNextSet.putExtra("workoutId", workoutId)
         buttonNextSet.setOnClickListener {
+            intentNextSet.putExtra("stopwatchElapsedTime", timer.elapsedTime)
+            intentNextSet.putExtra("stopwatchRunning", timer.isRunning)
             processSetPersistenceRequest(intentNextSet)
         }
 
@@ -73,6 +131,20 @@ class SetActivity : Activity() {
         } else {
             persistSet(repCount.toInt(), weight.toInt())
             startActivity(intent)
+        }
+    }
+
+    private fun setStopwatchControls() {
+        findViewById<Button>(R.id.buttonStart).setOnClickListener {
+            mHandler.sendEmptyMessage(MSG_START_TIMER)
+        }
+
+        findViewById<Button>(R.id.buttonStop).setOnClickListener {
+            mHandler.sendEmptyMessage(MSG_STOP_TIMER)
+        }
+
+        findViewById<Button>(R.id.buttonReset).setOnClickListener {
+            mHandler.sendEmptyMessage(MSG_RESET_TIMER)
         }
     }
 
