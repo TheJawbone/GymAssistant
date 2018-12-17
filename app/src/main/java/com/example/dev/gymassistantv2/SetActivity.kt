@@ -7,11 +7,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
+import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.ExerciseSet
 
 class SetActivity : Activity() {
 
+    private lateinit var loggedUser: UserDto
     private var setNumber: Int = 0
     private var segmentId: Long = 0
     private var workoutId: Long = 0
@@ -30,12 +32,13 @@ class SetActivity : Activity() {
         this.segmentId = this.intent.getLongExtra("segmentId", 0)
         this.workoutId = GymAssistantDatabase.getInstance(this)!!.segmentDao()
                             .getById(segmentId).workoutId!!
+        this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
     private fun setLayoutTexts() {
         val dbContext = GymAssistantDatabase.getInstance(this)
         val segment = dbContext!!.segmentDao().getById(segmentId)
-        val exercise = dbContext!!.exerciseDao().getById(segment.exerciseId!!)
+        val exercise = dbContext.exerciseDao().getById(segment.exerciseId!!)
         findViewById<TextView>(R.id.textViewExerciseName).text = exercise.name
         findViewById<TextView>(R.id.textViewSeriesNumber).text = setNumber.toString()
     }
@@ -46,6 +49,7 @@ class SetActivity : Activity() {
         intentNextSet.putExtra("setNumber", setNumber + 1)
         intentNextSet.putExtra("segmentId", segmentId)
         intentNextSet.putExtra("workoutId", workoutId)
+        intentNextSet.putExtra("loggedUser", loggedUser)
         buttonNextSet.setOnClickListener {
             processSetPersistenceRequest(intentNextSet)
         }
@@ -53,6 +57,7 @@ class SetActivity : Activity() {
         val buttonNextExerciseSave = findViewById<Button>(R.id.buttonNextExerciseOK)
         val intentNextExerciseSave = Intent(this, ChooseExerciseActivity::class.java)
         intentNextExerciseSave.putExtra("workoutId", workoutId)
+        intentNextExerciseSave.putExtra("loggedUser", loggedUser)
         buttonNextExerciseSave.setOnClickListener {
             processSetPersistenceRequest(intentNextExerciseSave)
         }
@@ -60,6 +65,7 @@ class SetActivity : Activity() {
         val buttonNextExerciseCancel = findViewById<Button>(R.id.buttonNextExerciseCancel)
         val intentNextExerciseCancel = Intent(this, ChooseExerciseActivity::class.java)
         intentNextExerciseCancel.putExtra("workoutId", workoutId)
+        intentNextExerciseCancel.putExtra("loggedUser", loggedUser)
         buttonNextExerciseCancel.setOnClickListener {
             startActivity(intentNextExerciseCancel)
         }

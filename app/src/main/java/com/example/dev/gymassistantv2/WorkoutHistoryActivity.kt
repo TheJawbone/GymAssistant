@@ -75,6 +75,8 @@ class WorkoutHistoryActivity : Activity() {
             buttonMain.setOnClickListener {
                 val intent = Intent(this, SegmentHistoryActivity::class.java)
                 intent.putExtra("workoutId", workoutId)
+                intent.putExtra("historyOwnerId", historyOwnerId)
+                intent.putExtra("loggedUser", loggedUser)
                 startActivity(intent)
             }
 
@@ -87,7 +89,8 @@ class WorkoutHistoryActivity : Activity() {
             buttonDelete.setOnClickListener {
                 dbContext!!.workoutDao().delete(dbContext!!.workoutDao().getById(workoutId!!))
                 val intent = Intent(this, WorkoutHistoryActivity::class.java)
-                intent.putExtra("userId", loggedUser.userId!!)
+                intent.putExtra("historyOwnerId", loggedUser.userId!!)
+                intent.putExtra("loggedUser", loggedUser)
                 startActivity(intent)
             }
 

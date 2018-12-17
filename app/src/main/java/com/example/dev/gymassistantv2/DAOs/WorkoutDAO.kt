@@ -13,7 +13,7 @@ interface WorkoutDAO {
     @Query("SELECT * FROM Workout wor WHERE wor.id == :id")
     fun getById(id: Long): Workout
 
-    @Query("SELECT * FROM Workout wor WHERE userId == :id ORDER BY wor.date DESC")
+    @Query("SELECT * FROM Workout wor WHERE wor.userId == :id ORDER BY wor.date DESC")
     fun getForUser(id: Long): List<Workout>
 
     @Insert(onConflict = REPLACE)
