@@ -16,6 +16,7 @@ class ChargesSubmenuActivity : Activity() {
 
         determineLoggedUserData()
         setManageChargesButton()
+        setManageInvitationsButton()
         setBackButton()
     }
 
@@ -29,6 +30,15 @@ class ChargesSubmenuActivity : Activity() {
         buttonManageCharges.setOnClickListener {
             intentManageCharges.putExtra("loggedUser", loggedUser)
             startActivity(intentManageCharges)
+        }
+    }
+
+    private fun setManageInvitationsButton() {
+        val buttonManageInvitations = findViewById<Button>(R.id.buttonManageInvitations)
+        val intentManageInvitations = Intent(this, ManageInvitationsActivity::class.java)
+        buttonManageInvitations.setOnClickListener {
+            intentManageInvitations.putExtra("loggedUser", loggedUser)
+            startActivity(intentManageInvitations)
         }
     }
 

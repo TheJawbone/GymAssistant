@@ -17,7 +17,7 @@ interface InvitationDAO {
     fun getForSender(senderId: Long): Invitation
 
     @Query("SELECT * FROM Invitation inv WHERE inv.recipientId == :recipientId")
-    fun getForRecipient(recipientId: Long): Invitation
+    fun getForRecipient(recipientId: Long): List<Invitation>
 
     @Insert(onConflict = REPLACE)
     fun insert(invitation: Invitation)

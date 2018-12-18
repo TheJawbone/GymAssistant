@@ -52,11 +52,17 @@ class DBInitializer(private val dbContext : GymAssistantDatabase?) {
     }
 
     fun populateChargesForTrainer(trainerId : Long) {
-        if(dbContext!!.userDao().getChargesForUser(trainerId).isNotEmpty()) return
-        for (usersCount in 1..12) {
-            val userId = dbContext.userDao().insert(User(Random().nextLong(), false, trainerId, firstNames[Random().nextInt(firstNames.size)], lastNames[Random().nextInt(lastNames.size)]))
-            generateWorkoutHistoryForUser(userId)
+        if(dbContext!!.userDao().getChargesForUser(trainerId).isEmpty() && dbContext.invitationDao().getForRecipient(trainerId).isEmpty()) {
+            for (usersCount in 1..12) {
+                val userId = dbContext.userDao().insert(User(Random().nextLong(), false, null, firstNames[Random().nextInt(firstNames.size)], lastNames[Random().nextInt(lastNames.size)]))
+                generateWorkoutHistoryForUser(userId)
+                    sendInvitation(userId, trainerId)
+            }
         }
+    }
+
+    private fun sendInvitation(userId: Long, trainerId: Long) {
+        dbContext!!.invitationDao().insert(Invitation(null, userId, trainerId, System.currentTimeMillis()))
     }
 
     fun generateWorkoutHistoryForUser(userId: Long) {
