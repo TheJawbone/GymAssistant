@@ -67,14 +67,14 @@ class ChooseExerciseActivity : Activity() {
     private fun setMuscleGroupSpinner() {
         val dbContext = GymAssistantDatabase.getInstance(this)
         val spinner = findViewById<Spinner>(R.id.spinnerMuscleGroups)
-        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
                 dbContext!!.muscleGroupDao().getAllNames())
         spinner.adapter = adapter
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val selectedItem = spinner.getSelectedItem().toString();
-                val muscleGroup = dbContext!!.muscleGroupDao().getByName(selectedItem)
+                val muscleGroup = dbContext.muscleGroupDao().getByName(selectedItem)
                 setExerciseSpinner(muscleGroup.id)
             }
 
@@ -92,7 +92,7 @@ class ChooseExerciseActivity : Activity() {
         else {
             spinnerElements = dbContext!!.exerciseDao().getNamesForMuscleGroup(muscleGroupId)
         }
-        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerElements)
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerElements)
         spinner.adapter = adapter
     }
 }

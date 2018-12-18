@@ -37,7 +37,7 @@ class AddMeasurementsActivity : Activity() {
             measurement.value = findViewById<EditText>(R.id.editTextMeasurement).text.toString().toInt()
             measurement.bodyPartId = bodyPart.id
             measurement.userId = loggedUser.userId
-            dbContext!!.measurementDao().insert(measurement)
+            dbContext.measurementDao().insert(measurement)
             Toast.makeText(this, "Pomyślnie dodano pomiar", Toast.LENGTH_LONG).show()
             intentSave.putExtra("loggedUser", loggedUser)
             startActivity(intentSave)
@@ -49,7 +49,7 @@ class AddMeasurementsActivity : Activity() {
 
     private fun setBodyPartSpinner() {
         val spinner = findViewById<Spinner>(R.id.spinnerMuscleGroups)
-        var adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
+        val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
                 GymAssistantDatabase.getInstance(this)!!.muscleGroupDao().getAllNames())
         spinner.adapter = adapter
     }
