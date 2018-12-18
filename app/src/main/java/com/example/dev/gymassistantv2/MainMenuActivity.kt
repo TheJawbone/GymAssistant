@@ -10,6 +10,8 @@ import com.example.dev.gymassistantv2.Database.DBInitializer
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.Workout
 import com.facebook.login.LoginManager
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class MainMenuActivity : Activity() {
 
@@ -76,15 +78,17 @@ class MainMenuActivity : Activity() {
     }
 
     private fun setDatabase() {
-        applicationContext.deleteDatabase("gymAssistantDb")
-        val dbContext = GymAssistantDatabase.getInstance(applicationContext)
-        val dbInitializer = DBInitializer(dbContext)
-        dbInitializer.populateMuscleGroup()
-        dbInitializer.populateExercise()
-        dbInitializer.populateTrainers()
-        if (loggedUser.isTrainer!!)
-            dbInitializer.populateChargesForTrainer(loggedUser.userId!!)
-        dbInitializer.generateWorkoutHistoryForUser(loggedUser.userId!!)
+        GlobalScope.launch {
+            applicationContext.deleteDatabase("gymAssistantDb")
+            val dbContext = GymAssistantDatabase.getInstance(applicationContext)
+            val dbInitializer = DBInitializer(dbContext)
+            dbInitializer.populateMuscleGroup()
+            dbInitializer.populateExercise()
+            dbInitializer.populateTrainers()
+            if (loggedUser.isTrainer!!)
+                dbInitializer.populateChargesForTrainer(loggedUser.userId!!)
+            dbInitializer.generateWorkoutHistoryForUser(loggedUser.userId!!)
+        }
     }
 
     private fun setLogoutButton() {
