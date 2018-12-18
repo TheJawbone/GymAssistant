@@ -50,7 +50,9 @@ class ManageChargesActivity : Activity() {
             horizontalLayout.orientation = LinearLayout.HORIZONTAL
 
             val chargeId = it.id!!
-            val buttonText = "ID: $chargeId"
+            val chargeFirstName = it.firstName!!
+            val chargeLastName = it.lastName!!
+            val buttonText = "ID: $chargeId $chargeFirstName $chargeLastName"
             val buttonMain = Button(this)
             buttonMain.layoutParams = LinearLayout.LayoutParams(
                     (metrics.widthPixels * 0.8).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)

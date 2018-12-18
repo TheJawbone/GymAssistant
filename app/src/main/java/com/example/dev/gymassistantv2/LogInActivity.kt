@@ -23,14 +23,13 @@ class LogInActivity : Activity() {
 
     private val callbackManager: CallbackManager = CallbackManager.Factory.create()
     private val readPermissions = Arrays.asList("public_profile")
+    private val requestedFbUserData = "first_name, last_name"
+    private var fbUserFirstName : String? = null
+    private var fbUserLastName : String? = null
 
     private var gymAssistantDatabase: GymAssistantDatabase? = null
     private var accessToken: AccessToken? = null
 
-    companion object {
-        var firstName : String? = null
-        var lastName : String? = null
-    }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -38,13 +37,8 @@ class LogInActivity : Activity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-
-        //Call super class constructor
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        //Logout
-        //LoginManager.getInstance().logOut()
 
         setLoginButton()
         if (isAccessTokenPresent())
@@ -58,7 +52,7 @@ class LogInActivity : Activity() {
         loginButton.registerCallback(callbackManager, object : FacebookCallback<LoginResult> {
             override fun onSuccess(loginResult: LoginResult) {
                 setAccessToken(loginResult.accessToken)
-                runAsyncFbUserDataFetch()
+                runFbUserDataFetch()
                 performLoginAsUser(getRegisteredUser(loginResult.accessToken.userId))
             }
 
@@ -78,20 +72,25 @@ class LogInActivity : Activity() {
         this.accessToken = accessToken
     }
 
-    private fun runAsyncFbUserDataFetch() {
+    private fun runFbUserDataFetch() {
         val graphRequest = GraphRequest.newMeRequest(accessToken) { jsonObject, graphResponse ->
             try {
-                firstName =  jsonObject.getString("first_name")
-                lastName = jsonObject.getString("last_name")
+                fbUserFirstName =  jsonObject.getString("first_name")
+                fbUserLastName = jsonObject.getString("last_name")
             } catch (e:JSONException) {
                 e.printStackTrace()
             }
         }
         val parameters = Bundle()
         parameters.putString("fields",
-                "first_name, last_name")
+                requestedFbUserData)
         graphRequest.parameters = parameters
-        graphRequest.executeAsync()
+
+        val thread = Thread(Runnable {
+            graphRequest.executeAndWait()
+        })
+        thread.start()
+        thread.join()
     }
 
     private fun getRegisteredUser(facebookId: String): User {
@@ -103,12 +102,12 @@ class LogInActivity : Activity() {
     }
 
     private fun registerNewUser(facebookId: String): User {
-        gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), true))
+        gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), true, fbUserFirstName, fbUserLastName))
         return gymAssistantDatabase?.userDao()?.getByFacebookId(facebookId.toLong())!!
     }
 
     private fun performLoginAsUser(loggedUser: User) {
-        val loggedUserDto = UserDto(loggedUser)
+        val loggedUserDto = UserDto(loggedUser, fbUserFirstName, fbUserLastName)
         val intentMainMenu = Intent(this, MainMenuActivity::class.java)
         intentMainMenu.putExtra("loggedUser", loggedUserDto)
         startActivity(intentMainMenu)

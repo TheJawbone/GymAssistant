@@ -24,7 +24,7 @@ interface UserDAO {
     fun getAllTrainers(): List<User>
 
     @Insert(onConflict = REPLACE)
-    fun insert(user: User)
+    fun insert(user: User) : Long
 
     @Update
     fun update(user: User)
