@@ -64,7 +64,7 @@ class SetHistoryActivity : Activity() {
         val dbContext = GymAssistantDatabase.getInstance(this)
         val segments = dbContext!!.exerciseSetDao().getForSegment(segmentId)
 
-        if(segments.isEmpty()) 
+        if(segments.isEmpty())
             Toast.makeText(this, "Brak zapisanych serii", Toast.LENGTH_LONG).show()
 
 

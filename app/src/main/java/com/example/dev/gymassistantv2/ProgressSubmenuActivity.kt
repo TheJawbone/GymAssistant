@@ -45,6 +45,14 @@ class ProgressSubmenuActivity : Activity() {
         }
 
         val buttonBack = findViewById<Button>(R.id.buttonBack)
-        buttonBack.setOnClickListener { super.onBackPressed() }
+        buttonBack.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
+    override fun onBackPressed() {
+        val intentMainMenu = Intent(this, MainMenuActivity::class.java)
+        intentMainMenu.putExtra("loggedUser", loggedUser)
+        startActivity(intentMainMenu)
     }
 }

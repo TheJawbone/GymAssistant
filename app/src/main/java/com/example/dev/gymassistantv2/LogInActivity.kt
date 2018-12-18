@@ -128,16 +128,6 @@ class LogInActivity : Activity() {
         LoginManager.getInstance().logInWithReadPermissions(this, readPermissions)
     }
 
-
-
-
-
-
-
-
-
-
-
     override fun onBackPressed() {
 
     }
