@@ -8,11 +8,13 @@ import android.arch.persistence.room.PrimaryKey
 data class User(@PrimaryKey(autoGenerate = true) var id: Long?,
                 @ColumnInfo(name="facebookId") var facebookId: Long?,
                 @ColumnInfo(name="isTrainer") var isTrainer: Boolean?,
-                @ColumnInfo(name="trainerId") var trainerId: Long?
+                @ColumnInfo(name="trainerId") var trainerId: Long?,
+                @ColumnInfo(name="firstName") var firstName: String?,
+                @ColumnInfo(name="lastName") var lastName: String?
 ){
-    constructor():this(null, null, false, null)
-    constructor(facebookId: Long?):this(null, facebookId, false, null)
-    constructor(facebookId: Long?, isTrainer: Boolean?):this(null, facebookId, isTrainer, null)
-    constructor(facebookId: Long?, isTrainer: Boolean?, trainerId: Long):this(null, facebookId, isTrainer, trainerId)
+    constructor():this(null, null, false, null, null, null)
+    constructor(facebookId: Long?, firstName: String?, lastName: String?):this(null, facebookId, false, null, firstName, lastName)
+    constructor(facebookId: Long?, isTrainer: Boolean?, firstName: String?, lastName: String?):this(null, facebookId, isTrainer, null, firstName, lastName)
+    constructor(facebookId: Long?, isTrainer: Boolean?, trainerId: Long, firstName: String?, lastName: String?):this(null, facebookId, isTrainer, trainerId, firstName, lastName)
 
 }

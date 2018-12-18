@@ -33,7 +33,9 @@ class WorkoutHistoryActivity : Activity() {
     private fun generateWorkoutList() {
         val scrollView = findViewById<ScrollView>(R.id.scrollView)
         val header = findViewById<TextView>(R.id.textViewHeader)
-        if(isTrainerInChargesViewOnlyMode()) header.text = "Podopieczny: $historyOwnerId"
+        val dbContext = GymAssistantDatabase.getInstance(this)
+        val currentCharge = dbContext!!.userDao().getById(historyOwnerId)
+        if(isTrainerInChargesViewOnlyMode()) header.text = "Treningi: ${currentCharge.firstName} ${currentCharge.lastName}"
         else header.text = "Twoje treningi"
 
         val metrics = DisplayMetrics()
@@ -43,7 +45,6 @@ class WorkoutHistoryActivity : Activity() {
         layout.orientation = LinearLayout.VERTICAL
         scrollView.addView(layout)
 
-        val dbContext = GymAssistantDatabase.getInstance(this)
         val workouts = dbContext!!.workoutDao().getForUser(historyOwnerId)
         if(workouts.isEmpty())
             Toast.makeText(this, "Brak zapisanych treningów", Toast.LENGTH_LONG).show()

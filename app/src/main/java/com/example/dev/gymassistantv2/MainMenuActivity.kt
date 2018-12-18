@@ -9,8 +9,6 @@ import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.DBInitializer
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.Entities.Workout
-import com.example.dev.gymassistantv2.LogInActivity.Companion.firstName
-import com.example.dev.gymassistantv2.LogInActivity.Companion.lastName
 import com.facebook.login.LoginManager
 
 class MainMenuActivity : Activity() {
@@ -26,10 +24,9 @@ class MainMenuActivity : Activity() {
         setLogoutButton()
         setDatabase()
 
-        Toast.makeText(applicationContext, "Logged as $firstName $lastName",
+        Toast.makeText(applicationContext, "Logged as ${loggedUser.firstName} ${loggedUser.lastName}",
                 Toast.LENGTH_LONG).show()
     }
-
 
     private fun determineLoggedUserData() {
         loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
@@ -55,7 +52,6 @@ class MainMenuActivity : Activity() {
             startActivity(intentProgress)
         }
 
-//        val isTrainer = false // TODO: check if the user is a trainer
         val buttonTrainerOrCharges = findViewById<Button>(R.id.buttonTrainerOrCharges)
         if (loggedUser.isTrainer!!) {
             buttonTrainerOrCharges.text = resources.getString(R.string.your_charges)
@@ -86,7 +82,9 @@ class MainMenuActivity : Activity() {
         dbInitializer.populateMuscleGroup()
         dbInitializer.populateExercise()
         dbInitializer.populateTrainers()
-        dbInitializer.populateChargesForWilliam()
+        if (loggedUser.isTrainer!!)
+            dbInitializer.populateChargesForTrainer(loggedUser.userId!!)
+        dbInitializer.generateWorkoutHistoryForUser(loggedUser.userId!!)
     }
 
     private fun setLogoutButton() {
