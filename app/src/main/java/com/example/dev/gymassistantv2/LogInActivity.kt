@@ -128,6 +128,6 @@ class LogInActivity : Activity() {
     }
 
     override fun onBackPressed() {
-
+        finishAffinity()
     }
 }

@@ -101,6 +101,6 @@ class MainMenuActivity : Activity() {
     }
 
     override fun onBackPressed() {
-
+        finishAffinity()
     }
 }
