@@ -12,8 +12,11 @@ interface ExerciseDAO {
     @Query("SELECT name FROM Exercise")
     fun getAllNames(): List<String>
 
-    @Query("SELECT name FROM Exercise ex WHERE ex.muscleGroupId == :muscleGroupId")
-    fun getNamesForMuscleGroup(muscleGroupId: Long): List<String>
+    @Query("SELECT * FROM Exercise WHERE muscleGroupId == :id")
+    fun getForMuscleGroup(id: Long): List<Exercise>
+
+    @Query("SELECT name FROM Exercise ex WHERE ex.muscleGroupId == :muscleGroupId AND ex.visible")
+    fun getVisibleNamesForMuscleGroup(muscleGroupId: Long): List<String>
 
     @Query("SELECT * FROM Exercise ex WHERE ex.defaultExercise == 1")
     fun getDefault(): List<Exercise>

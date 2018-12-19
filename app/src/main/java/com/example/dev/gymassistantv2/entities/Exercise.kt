@@ -19,7 +19,8 @@ data class Exercise(@PrimaryKey(autoGenerate = true) var id: Long?,
                     @ColumnInfo(name = "ownerId") var ownerId: Long?,
                     @ColumnInfo(name = "muscleGroupId") var muscleGroupId: Long?,
                     @ColumnInfo(name = "name") var name: String?,
-                    @ColumnInfo(name = "defaultExercise") var defaultExercise: Int?
+                    @ColumnInfo(name = "defaultExercise") var defaultExercise: Int?,
+                    @ColumnInfo(name = "visible") var visible: Boolean?
 ) {
-    constructor() : this(null, null, null, null, 0)
+    constructor() : this(null, null, null, null, 0, true)
 }

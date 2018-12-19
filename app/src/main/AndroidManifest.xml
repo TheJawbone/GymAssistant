@@ -10,20 +10,23 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <meta-data android:name="com.facebook.sdk.ApplicationId"
-            android:value="@string/facebook_app_id"/>
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-            android:configChanges=
-                "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
@@ -32,35 +35,73 @@
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
-        <activity android:name=".LogInActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity
+            android:name=".LogInActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".MainMenuActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".AddExerciseActivity" />
-        <activity android:name=".AddMeasurementsActivity" />
-        <activity android:name=".ChargesSubmenuActivity" />
-        <activity android:name=".ChooseAvailableExercisesActivity" />
-        <activity android:name=".ChooseExerciseActivity" />
-        <activity android:name=".ManageMeasurementsActivity" />
-        <activity android:name=".FindTrainerActivity" />
-        <activity android:name=".ManageChargesActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".ManageInvitationsActivity" />
-        <activity android:name=".ManageTrainerActivity" />
+        <activity
+            android:name=".MainMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddMeasurementsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChargesSubmenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChooseAvailableExercisesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ChooseExerciseActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ManageMeasurementsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FindTrainerActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ManageChargesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ManageInvitationsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ManageTrainerActivity"
+            android:screenOrientation="portrait" />
         <activity android:name=".ProgressActivity" />
-        <activity android:name=".ProgressSubmenuActivity" />
-        <activity android:name=".SegmentHistoryActivity" />
-        <activity android:name=".SetActivity" />
-        <activity android:name=".SetEditActivity" />
-        <activity android:name=".SetHistoryActivity" />
-        <activity android:name=".SettingsActivity" />
-        <activity android:name=".WorkoutDetailsActivity" />
-        <activity android:name=".WorkoutHistoryActivity" />
+        <activity
+            android:name=".ProgressSubmenuActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SegmentHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SetActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SetEditActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SetHistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SettingsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WorkoutDetailsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WorkoutHistoryActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -23,7 +23,6 @@ TODO
 3. Dodać generator pomiarów dla userów
 5. Do pomiarów rozdział - biceps lewy, biceps prawy itp
 6. Description label z wykresów OUT
-7. Stoper ustawia się na ZERO a pamięta ostatni NIEZEROWY LICZNIK i od niego zaczyna liczyć
 9. Implementacja ustawień
     - czyszczenie historii treningów
     - wybierz dostępne ćwiczenia

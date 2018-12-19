@@ -65,7 +65,7 @@ class SettingsActivity : Activity() {
 
     private fun deleteTrainerAndCharges() {
         val dbContext = GymAssistantDatabase.getInstance(this)
-        if(loggedUser.isTrainer!!) {
+        if (loggedUser.isTrainer!!) {
             var charges = dbContext!!.userDao().getChargesForUser(loggedUser.userId!!)
             charges.forEach {
                 it.trainerId = null
@@ -80,7 +80,10 @@ class SettingsActivity : Activity() {
     private fun setAddExerciseButton() {
         val buttonAddExercise = findViewById<Button>(R.id.buttonAddExercise)
         val intentAddExercise = Intent(this, AddExerciseActivity::class.java)
-        buttonAddExercise.setOnClickListener { startActivity(intentAddExercise) }
+        buttonAddExercise.setOnClickListener {
+            intentAddExercise.putExtra("loggedUser", loggedUser)
+            startActivity(intentAddExercise)
+        }
     }
 
     override fun onBackPressed() {
