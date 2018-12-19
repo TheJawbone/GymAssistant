@@ -16,26 +16,71 @@ class SettingsActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings)
 
+
         determineLoggedUserData()
-        val buttonClearWorkoutHistory = findViewById<Button>(R.id.buttonClearWorkoutsInDatabase)
-        buttonClearWorkoutHistory.setOnClickListener{
-            val dbContext = GymAssistantDatabase.getInstance(this)
-            dbContext!!.workoutDao().delete(dbContext.workoutDao().getForUser(loggedUser.userId!!))
-            Toast.makeText(applicationContext, "Historia trenengów została wyczyszczona!",
-                    Toast.LENGTH_LONG).show()
-        }
-
-        val buttonChooseExercises = findViewById<Button>(R.id.buttonChooseAvailableExercises)
-        val intentChooseExercises = Intent(this, ChooseAvailableExercisesActivity::class.java)
-        buttonChooseExercises.setOnClickListener { startActivity(intentChooseExercises) }
-
-        val buttonAddExercise = findViewById<Button>(R.id.buttonAddExercise)
-        val intentAddExercise = Intent(this, AddExerciseActivity::class.java)
-        buttonAddExercise.setOnClickListener { startActivity(intentAddExercise) }
+        setClearHistoryButton()
+        setChooseExercisesButton()
+        setResetToDefaultButton()
+        setAddExerciseButton()
     }
 
     private fun determineLoggedUserData() {
         loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
+    }
+
+    private fun setClearHistoryButton() {
+        val buttonClearWorkoutHistory = findViewById<Button>(R.id.buttonClearWorkoutsInDatabase)
+        buttonClearWorkoutHistory.setOnClickListener {
+            clearWorkoutHistory()
+            Toast.makeText(applicationContext, "Historia trenengów została wyczyszczona!",
+                    Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun clearWorkoutHistory() {
+        val dbContext = GymAssistantDatabase.getInstance(this)
+        dbContext!!.workoutDao().delete(dbContext.workoutDao().getForUser(loggedUser.userId!!))
+    }
+
+    private fun setChooseExercisesButton() {
+        val buttonChooseExercises = findViewById<Button>(R.id.buttonChooseAvailableExercises)
+        val intentChooseExercises = Intent(this, ChooseAvailableExercisesActivity::class.java)
+        buttonChooseExercises.setOnClickListener { startActivity(intentChooseExercises) }
+    }
+
+    private fun setResetToDefaultButton() {
+        findViewById<Button>(R.id.buttonDefaultSettings).setOnClickListener {
+            clearWorkoutHistory()
+            deleteCustomExercises()
+            deleteTrainerAndCharges()
+            Toast.makeText(applicationContext, "Aplikacja zostałą zresetowana do ustawień domyślnych!",
+                    Toast.LENGTH_LONG).show()
+        }
+    }
+
+    private fun deleteCustomExercises() {
+        val dbContext = GymAssistantDatabase.getInstance(this)
+        dbContext!!.exerciseDao().delete(loggedUser.userId!!)
+    }
+
+    private fun deleteTrainerAndCharges() {
+        val dbContext = GymAssistantDatabase.getInstance(this)
+        if(loggedUser.isTrainer!!) {
+            var charges = dbContext!!.userDao().getChargesForUser(loggedUser.userId!!)
+            charges.forEach {
+                it.trainerId = null
+                dbContext!!.userDao().update(it)
+            }
+        } else {
+            loggedUser.trainerId = null
+            dbContext!!.userDao().update(loggedUser.toUser())
+        }
+    }
+
+    private fun setAddExerciseButton() {
+        val buttonAddExercise = findViewById<Button>(R.id.buttonAddExercise)
+        val intentAddExercise = Intent(this, AddExerciseActivity::class.java)
+        buttonAddExercise.setOnClickListener { startActivity(intentAddExercise) }
     }
 
     override fun onBackPressed() {

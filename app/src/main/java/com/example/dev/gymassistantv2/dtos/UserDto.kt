@@ -7,4 +7,15 @@ class UserDto (var userId: Long?, var facebookId: Long?, var isTrainer: Boolean?
 {
     constructor(user: User):this(userId = user.id, facebookId = user.facebookId, isTrainer = user.isTrainer,
             trainerId = user.trainerId, firstName = user.firstName, lastName = user.lastName)
+
+    public fun toUser(): User {
+        var user = User()
+        user.id = this.userId
+        user.facebookId = this.facebookId
+        user.isTrainer = this.isTrainer
+        user.trainerId = this.trainerId
+        user.firstName = this.firstName
+        user.lastName = this.lastName
+        return user
+    }
 }
