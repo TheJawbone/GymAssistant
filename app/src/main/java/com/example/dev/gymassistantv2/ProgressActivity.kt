@@ -122,7 +122,7 @@ class ProgressActivity : Activity() {
 
         val dataSet = BarDataSet(entries, label)
         dataSet.color = Color.BLUE
-        dataSet.valueTextColor = Color.BLUE
+        dataSet.valueTextColor = Color.BLACK
 
         val barData = BarData(dataSet)
         chart.data = barData
@@ -140,12 +140,12 @@ class ProgressActivity : Activity() {
         }
 
         val weightsDataSet = BarDataSet(weightEntries, "Obciązenie")
-        weightsDataSet.color = Color.RED
-        weightsDataSet.valueTextColor = Color.RED
+        weightsDataSet.color = Color.GREEN
+        weightsDataSet.valueTextColor = Color.BLACK
 
         val repsDataSet = BarDataSet(repEntries, "Powtórzenia")
         weightsDataSet.color = Color.BLUE
-        weightsDataSet.valueTextColor = Color.BLUE
+        weightsDataSet.valueTextColor = Color.BLACK
 
         val barData = BarData(listOf(weightsDataSet, repsDataSet))
         chart.data = barData

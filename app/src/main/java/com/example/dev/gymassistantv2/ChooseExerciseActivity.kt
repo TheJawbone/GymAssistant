@@ -24,9 +24,7 @@ class ChooseExerciseActivity : Activity() {
         setExerciseSpinner()
     }
 
-    override fun onBackPressed() {
-        finish()
-    }
+    override fun onBackPressed() { }
 
     private fun processIntent() {
         this.workoutId = this.intent.getLongExtra("workoutId", workoutId)

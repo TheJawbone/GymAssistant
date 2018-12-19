@@ -77,7 +77,9 @@
         <activity
             android:name=".ManageTrainerActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ProgressActivity" />
+        <activity
+            android:name=".ProgressActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ProgressSubmenuActivity"
             android:screenOrientation="portrait" />

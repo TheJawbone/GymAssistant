@@ -26,4 +26,7 @@ interface ExerciseSetDAO {
 
     @Delete
     fun delete(exerciseSet: List<ExerciseSet>)
+
+    @Query("DELETE FROM ExerciseSet")
+    fun deleteAll()
 }

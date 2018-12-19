@@ -26,4 +26,7 @@ interface WorkoutDAO {
 
     @Delete
     fun delete(workouts: List<Workout>)
+
+    @Query("DELETE FROM Workout")
+    fun deleteAll()
 }

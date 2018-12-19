@@ -94,7 +94,6 @@ class LogInActivity : Activity() {
     }
 
     private fun getRegisteredUser(facebookId: String): User {
-        applicationContext.deleteDatabase("gymAssistantDb")
         gymAssistantDatabase = GymAssistantDatabase.getInstance(this)
 
         var user = gymAssistantDatabase?.userDao()?.getByFacebookId(facebookId.toLong())
@@ -103,7 +102,7 @@ class LogInActivity : Activity() {
     }
 
     private fun registerNewUser(facebookId: String): User {
-        val newUserId = gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), false, 2.toLong(), fbUserFirstName, fbUserLastName))
+        val newUserId = gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), false, fbUserFirstName, fbUserLastName))
         val dbInitializer = DBInitializer(GymAssistantDatabase.getInstance(this))
         dbInitializer.populateMuscleGroup()
         dbInitializer.populateDefaultExercisesForUser(newUserId!!)

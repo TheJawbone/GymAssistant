@@ -159,7 +159,5 @@ class SetActivity : Activity() {
         GymAssistantDatabase.getInstance(this)!!.exerciseSetDao().insert(set)
     }
 
-    override fun onBackPressed() {
-        finish()
-    }
+    override fun onBackPressed() { }
 }

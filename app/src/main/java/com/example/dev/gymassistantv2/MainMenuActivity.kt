@@ -24,7 +24,6 @@ class MainMenuActivity : Activity() {
 
         determineLoggedUserData()
         setLogoutButton()
-        setDatabase()
 
         Toast.makeText(applicationContext, "Witaj ${loggedUser.firstName} ${loggedUser.lastName}!",
                 Toast.LENGTH_LONG).show()
@@ -94,18 +93,6 @@ class MainMenuActivity : Activity() {
         val intentSettings = Intent(this, SettingsActivity::class.java)
         intentSettings.putExtra("loggedUser", loggedUser)
         buttonSettings.setOnClickListener { startActivity(intentSettings) }
-    }
-
-    private fun setDatabase() {
-        GlobalScope.launch {
-            //applicationContext.deleteDatabase("gymAssistantDb")
-            val dbContext = GymAssistantDatabase.getInstance(applicationContext)
-            val dbInitializer = DBInitializer(dbContext)
-            dbInitializer.populateTrainers()
-            if (loggedUser.isTrainer!!)
-                dbInitializer.populateChargesForTrainer(loggedUser.userId!!)
-            dbInitializer.generateWorkoutHistoryForUser(loggedUser.userId!!)
-        }
     }
 
     private fun setLogoutButton() {

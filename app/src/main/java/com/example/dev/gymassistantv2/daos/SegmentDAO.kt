@@ -29,4 +29,7 @@ interface SegmentDAO {
 
     @Delete
     fun delete(segments: List<Segment>)
+
+    @Query("DELETE FROM Segment")
+    fun deleteAll()
 }
