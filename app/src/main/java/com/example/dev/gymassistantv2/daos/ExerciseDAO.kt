@@ -48,6 +48,6 @@ interface ExerciseDAO {
     @Delete
     fun delete(exercise: Exercise)
 
-    @Query("DELETE FROM Exercise WHERE ownerId == :ownerId")
+    @Query("DELETE FROM Exercise WHERE ownerId == :ownerId AND defaultExercise == 0")
     fun delete(ownerId: Long)
 }
