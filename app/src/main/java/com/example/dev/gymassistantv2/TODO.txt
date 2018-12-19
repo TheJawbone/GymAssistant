@@ -7,14 +7,38 @@ P DONE Lista serii w ćwiczeniu. Delete i edit do każdego. U góry nazwa ćwicz
 P DONE Dodać ekran edycji serii - 2 pola tekstowe, save i cancel, u góry numer serii
 P DONE Zaimplementować przebieg treningu.
 P DONE Dodać do ćwiczeń ID usera. Dla domyślnych, systemowych ćwiczeń ID = 0 (nope, nowe pole "DefaultExercise")
-
+P DONE Ogarnąć i zrobić wykresy - dla pomiarów centymetry, dla ćwiczeń ciężar razem z repsami
+A DONE Dołożyć ekran usuwania postępów - lista pomiarów z filtracją po kategorii, sortowanie po dacie
 A DONE Ekran podopiecznych - lista ziomków z danymi + przyciski delete i kliknięcie w ziomka daje na postępy.
+A DONE Ogarnąć logowanie przez API facebookowe - imie i nazwisko dla Usera
+A DONE Zaimplementować zapraszanie trenera od strony ćwiczącego - w widoku jest lista trenerów: imie, nazwisko, foto?? i obok button invite. Po kliknięciu inva robimy wpis w bazie zaproszeń i odświeżamy widok. Interpreter widoku w trakcie ładowania - sprawdzenie czy są pending zaproszenia i czy jest trener - jesli trener: id imie nazwisko i delete.
+A DONE PROGRESS Widok zaproszeń trenera - lista pending zaproszeń z jego ajdikiem, możliwość przyjęcia i odrzucenia. Przyjęcie - dodajemy id zgłoszenia do podopiecznych i usuwaamy zapro, odrzuć - usuń zapro.
 
-A IN PROGRESS Ogarnąć logowanie przez API facebookowe 
-A IN PROGRESS Zaimplementować zapraszanie trenera od strony ćwiczącego - w widoku jest lista trenerów: imie, nazwisko, foto?? i obok button invite. Po kliknięciu inva robimy wpis w bazie zaproszeń i odświeżamy widok. Interpreter widoku w trakcie ładowania - sprawdzenie czy są pending zaproszenia i czy jest trener - jesli trener: id imie nazwisko i delete.
-A IN PROGRESS Widok zaproszeń trenera - lista pending zaproszeń z jego ajdikiem, możliwość przyjęcia i odrzucenia. Przyjęcie - dodajemy id zgłoszenia do podopiecznych i usuwaamy zapro, odrzuć - usuń zapro.
+DEPRICATED Dołożyć date pickery do postępów (filtracja)
 
-A Ogarnąć i zrobić wykresy - dla pomiarów centymetry, dla ćwiczeń ciężar razem z repsami
-A Dołożyć date pickery do postępów (filtracja)
-A Dołożyć ekran usuwania postępów - lista pomiarów z filtracją po kategorii, sortowanie po dacie
+TODO
+1. Napisy ze stringów zamiast hardcode
+2. Zapełnić bazę możliwymi ćwiczeniami
+3. Dodać generator pomiarów dla userów
+4. Dodać datę pomiaru do pomiaru i wyświetlać w ManageMeasurements
+5. Do pomiarów rozdział - biceps lewy, biceps prawy itp
+6. Description label z wykresów OUT
+7. Stoper ustawia się na ZERO a pamięta ostatni NIEZEROWY LICZNIK i od niego zaczyna liczyć
+8. Zmiany
+    Rozpocznij serię --> Rozpocznij ćwiczenie
+    Zapisz serię --> Zapisz i zakończ ćwiczenie
+    Anuluj serię --> Zakończ ćwiczenie
+9. Implementacja ustawień
+    - czyszczenie historii treningów
+    - wybierz dostępne ćwiczenia
+    - dodawanie nowego ćwiczenia do bazy
+    - reset aplikacji do ustawień domyślnych
+10. Code refactor dla FindTrainer
+11. Przygotować plan prezentacji
+12. Nagrać tutorial
+
+
+
+
+
 
