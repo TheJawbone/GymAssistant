@@ -98,11 +98,9 @@ class MainMenuActivity : Activity() {
 
     private fun setDatabase() {
         GlobalScope.launch {
-            applicationContext.deleteDatabase("gymAssistantDb")
+            //applicationContext.deleteDatabase("gymAssistantDb")
             val dbContext = GymAssistantDatabase.getInstance(applicationContext)
             val dbInitializer = DBInitializer(dbContext)
-            dbInitializer.populateMuscleGroup()
-            dbInitializer.populateExercise()
             dbInitializer.populateTrainers()
             if (loggedUser.isTrainer!!)
                 dbInitializer.populateChargesForTrainer(loggedUser.userId!!)

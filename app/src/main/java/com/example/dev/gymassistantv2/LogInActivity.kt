@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import com.example.dev.gymassistantv2.database.DBInitializer
 import com.example.dev.gymassistantv2.dtos.UserDto
 import com.example.dev.gymassistantv2.database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.entities.User
@@ -93,6 +94,7 @@ class LogInActivity : Activity() {
     }
 
     private fun getRegisteredUser(facebookId: String): User {
+        applicationContext.deleteDatabase("gymAssistantDb")
         gymAssistantDatabase = GymAssistantDatabase.getInstance(this)
 
         var user = gymAssistantDatabase?.userDao()?.getByFacebookId(facebookId.toLong())
@@ -101,7 +103,10 @@ class LogInActivity : Activity() {
     }
 
     private fun registerNewUser(facebookId: String): User {
-        gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), false, 2.toLong(), fbUserFirstName, fbUserLastName))
+        val newUserId = gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), false, 2.toLong(), fbUserFirstName, fbUserLastName))
+        val dbInitializer = DBInitializer(GymAssistantDatabase.getInstance(this))
+        dbInitializer.populateMuscleGroup()
+        dbInitializer.populateDefaultExercisesForUser(newUserId!!)
         return gymAssistantDatabase?.userDao()?.getByFacebookId(facebookId.toLong())!!
     }
 
