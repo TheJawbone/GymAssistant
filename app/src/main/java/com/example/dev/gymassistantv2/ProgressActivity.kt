@@ -46,8 +46,8 @@ class ProgressActivity : Activity() {
                 val dbContext = GymAssistantDatabase.getInstance(applicationContext)
                 val spinner = findViewById<Spinner>(R.id.spinnerMeasurements)
                 var spinnerItems = when (findViewById<Spinner>(R.id.spinnerCategory).selectedItemPosition) {
-                    0 -> dbContext!!.muscleGroupDao().getAllNames()
-                    1 -> dbContext!!.exerciseDao().getAllNames()
+                    0 -> dbContext!!.muscleGroupDao().getAllNames().sorted()
+                    1 -> dbContext!!.exerciseDao().getAllNames().sorted()
                     else -> null
                 }
                 var adapter = ArrayAdapter<String>(applicationContext,
