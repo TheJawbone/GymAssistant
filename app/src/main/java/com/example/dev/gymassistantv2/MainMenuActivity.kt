@@ -23,12 +23,17 @@ class MainMenuActivity : Activity() {
         setContentView(R.layout.activity_main_menu)
 
         determineLoggedUserData()
-        setNavigationControls()
         setLogoutButton()
         setDatabase()
 
-        Toast.makeText(applicationContext, "Logged as ${loggedUser.firstName} ${loggedUser.lastName}",
+        Toast.makeText(applicationContext, "Witaj ${loggedUser.firstName} ${loggedUser.lastName}!",
                 Toast.LENGTH_LONG).show()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        loggedUser = UserDto(GymAssistantDatabase.getInstance(this)!!.userDao().getById(loggedUser.userId!!))
+        setNavigationControls()
     }
 
     private fun determineLoggedUserData() {
@@ -65,14 +70,17 @@ class MainMenuActivity : Activity() {
         } else {
             buttonTrainerOrCharges.text = resources.getString(R.string.trainer)
             if(loggedUser.trainerId != null) {
-                val intentTrainer = Intent(this, FindTrainerActivity::class.java)
-                intentTrainer.putExtra("loggedUser", loggedUser)
-                intentTrainer.putExtra("pendingInvitation", PendingInvitationDto())
-                buttonTrainerOrCharges.setOnClickListener { startActivity(intentTrainer) }
+                buttonTrainerOrCharges.setOnClickListener {
+                    val intentTrainer = Intent(this, FindTrainerActivity::class.java)
+                    intentTrainer.putExtra("loggedUser", loggedUser)
+                    intentTrainer.putExtra("pendingInvitation", PendingInvitationDto())
+                    startActivity(intentTrainer) }
             } else {
-                val intentTrainer = Intent(this, ManageTrainerActivity::class.java)
-                intentTrainer.putExtra("loggedUser", loggedUser)
-                buttonTrainerOrCharges.setOnClickListener { startActivity(intentTrainer) }
+
+                buttonTrainerOrCharges.setOnClickListener {
+                    val intentTrainer = Intent(this, ManageTrainerActivity::class.java)
+                    intentTrainer.putExtra("loggedUser", loggedUser)
+                    startActivity(intentTrainer) }
             }
         }
 
@@ -90,7 +98,7 @@ class MainMenuActivity : Activity() {
 
     private fun setDatabase() {
         GlobalScope.launch {
-            //applicationContext.deleteDatabase("gymAssistantDb")
+            applicationContext.deleteDatabase("gymAssistantDb")
             val dbContext = GymAssistantDatabase.getInstance(applicationContext)
             val dbInitializer = DBInitializer(dbContext)
             dbInitializer.populateMuscleGroup()

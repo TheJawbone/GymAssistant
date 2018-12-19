@@ -19,9 +19,13 @@ class ManageTrainerActivity : Activity() {
         setContentView(R.layout.activity_manage_trainer)
 
         determineLoggedUserData()
+        setBackButton()
+    }
+
+    override fun onResume() {
+        super.onResume()
         setPendingInvitation()
         setContent()
-        setBackButton()
     }
 
     private fun setContent() {
@@ -29,7 +33,7 @@ class ManageTrainerActivity : Activity() {
         val textViewTrainerData = findViewById<TextView>(R.id.textViewTrainerData)
         if (isTrainerNotAssignedToUser()) {
             if (isInvitationPending()) {
-                buttonFindTrainer.text = "Show invitation"
+                buttonFindTrainer.text = "Pokaż zaproszenie"
                 textViewTrainerData.text = resources.getString(R.string.invitation_pending)
                 val intentFindTrainer = Intent(this, FindTrainerActivity::class.java)
                 intentFindTrainer.putExtra("pendingInvitation", pendingInvitation)
@@ -69,9 +73,14 @@ class ManageTrainerActivity : Activity() {
     private fun setBackButton() {
         val buttonBack = findViewById<Button>(R.id.buttonBack)
         buttonBack.setOnClickListener{
-            val intentMainMenu = Intent(this, MainMenuActivity::class.java)
-            intentMainMenu.putExtra("loggedUser", loggedUser)
-            startActivity(intentMainMenu)
+//            val intentMainMenu = Intent(this, MainMenuActivity::class.java)
+//            intentMainMenu.putExtra("loggedUser", loggedUser)
+//            startActivity(intentMainMenu)
+            finish()
         }
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

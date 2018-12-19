@@ -101,7 +101,7 @@ class LogInActivity : Activity() {
     }
 
     private fun registerNewUser(facebookId: String): User {
-        gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), true, fbUserFirstName, fbUserLastName))
+        gymAssistantDatabase?.userDao()?.insert(User(facebookId.toLong(), false, 2.toLong(), fbUserFirstName, fbUserLastName))
         return gymAssistantDatabase?.userDao()?.getByFacebookId(facebookId.toLong())!!
     }
 

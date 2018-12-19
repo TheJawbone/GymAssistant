@@ -18,26 +18,40 @@ class FindTrainerActivity : Activity() {
 
     private lateinit var loggedUser: UserDto
     private var pendingInvitation : PendingInvitationDto? = null
+    private lateinit var layout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_find_trainer)
 
         processIntent()
+        setLayout()
+        setBackButton()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        setContent()
+    }
+
+    private fun setContent() {
+        layout.removeAllViews()
         setTitleDescription()
         when {
             isTrainerAssignedToUser() -> showAssignedTrainer()
             isInvitationPending() -> showPendingInvitation()
             else -> generateAvailableTrainerList()
         }
-        setBackButton()
+    }
+
+    private fun setLayout() {
+        layout = findViewById(R.id.linearLayout)
     }
 
     private fun showAssignedTrainer() {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
 
-        val layout = findViewById<LinearLayout>(R.id.linearLayout)
         val dbContext = GymAssistantDatabase.getInstance(this)
 
         val horizontalLayout = LinearLayout(this)
@@ -75,7 +89,6 @@ class FindTrainerActivity : Activity() {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
 
-        val layout = findViewById<LinearLayout>(R.id.linearLayout)
         val dbContext = GymAssistantDatabase.getInstance(this)
 
         val horizontalLayout = LinearLayout(this)
@@ -100,9 +113,7 @@ class FindTrainerActivity : Activity() {
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
 
-        val layout = findViewById<LinearLayout>(R.id.linearLayout)
         val dbContext = GymAssistantDatabase.getInstance(this)
-
         val trainers = dbContext!!.userDao().getAllTrainers()
 
         if(trainers.isEmpty())
@@ -156,7 +167,7 @@ class FindTrainerActivity : Activity() {
             buttonInvite.text = "Zaproś"
         buttonInvite.setOnClickListener {
             pendingInvitation = PendingInvitationDto(dbContext!!.invitationDao().getById(dbContext.invitationDao().insert(Invitation(loggedUser.userId, trainer.id)))!!)
-            refreshActivity()
+            setContent()
         }
         return buttonInvite
     }
@@ -178,38 +189,37 @@ class FindTrainerActivity : Activity() {
                 currentUser.trainerId = null
                 dbContext.userDao().update(currentUser)
                 loggedUser = UserDto(dbContext.userDao().getById(loggedUser.userId!!))
-                val intentManageTrainer = Intent(this, ManageTrainerActivity::class.java)
-                intentManageTrainer.putExtra("loggedUser", loggedUser)
-                startActivity(intentManageTrainer)
+                Toast.makeText(this, "Trener usunięty!", Toast.LENGTH_LONG).show()
+                finish()
+//                val intentManageTrainer = Intent(this, ManageTrainerActivity::class.java)
+//                intentManageTrainer.putExtra("loggedUser", loggedUser)
+//                startActivity(intentManageTrainer)
             } else {
                 dbContext.invitationDao().delete(dbContext.invitationDao().getById(pendingInvitation!!.id!!)!!)
                 pendingInvitation = PendingInvitationDto()
-                refreshActivity()
+                setContent()
             }
         }
         return buttonDelete
     }
 
-    private fun refreshActivity() {
-        val intent = Intent(this, FindTrainerActivity::class.java)
-        intent.putExtra("loggedUser", loggedUser)
-        intent.putExtra("pendingInvitation", pendingInvitation)
-        startActivity(intent)
-    }
-
     private fun setBackButton() {
         val buttonBack = findViewById<Button>(R.id.buttonBack)
         buttonBack.setOnClickListener {
-            if(isTrainerAssignedToUser()) {
-                val intentManageTrainer = Intent(this, MainMenuActivity::class.java)
-                intentManageTrainer.putExtra("loggedUser", loggedUser)
-                startActivity(intentManageTrainer)
-            } else {
-                val intentManageTrainer = Intent(this, ManageTrainerActivity::class.java)
-                intentManageTrainer.putExtra("loggedUser", loggedUser)
-                startActivity(intentManageTrainer)
-            }
+            finish()
+//            if(isTrainerAssignedToUser()) {
+//                val intentManageTrainer = Intent(this, MainMenuActivity::class.java)
+//                intentManageTrainer.putExtra("loggedUser", loggedUser)
+//                startActivity(intentManageTrainer)
+//            } else {
+//                val intentManageTrainer = Intent(this, ManageTrainerActivity::class.java)
+//                intentManageTrainer.putExtra("loggedUser", loggedUser)
+//                startActivity(intentManageTrainer)
+//            }
         }
+    }
 
+    override fun onBackPressed() {
+        finish()
     }
 }
