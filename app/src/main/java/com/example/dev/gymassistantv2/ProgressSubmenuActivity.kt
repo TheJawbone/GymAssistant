@@ -4,7 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
-import com.example.dev.gymassistantv2.DTOs.UserDto
+import com.example.dev.gymassistantv2.dtos.UserDto
 
 class ProgressSubmenuActivity : Activity() {
 

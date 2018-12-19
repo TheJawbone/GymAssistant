@@ -1,4 +1,4 @@
-package com.example.dev.gymassistantv2.Entities
+package com.example.dev.gymassistantv2.entities
 
 import android.arch.persistence.room.*
 

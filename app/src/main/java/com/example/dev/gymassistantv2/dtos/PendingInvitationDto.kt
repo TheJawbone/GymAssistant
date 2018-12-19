@@ -1,6 +1,6 @@
-package com.example.dev.gymassistantv2.DTOs
+package com.example.dev.gymassistantv2.dtos
 
-import com.example.dev.gymassistantv2.Entities.Invitation
+import com.example.dev.gymassistantv2.entities.Invitation
 import java.io.Serializable
 
 class PendingInvitationDto (var id: Long?, var senderId: Long?, var recipientId: Long?, var date: Long?): Serializable

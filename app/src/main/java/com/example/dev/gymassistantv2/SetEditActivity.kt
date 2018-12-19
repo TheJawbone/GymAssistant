@@ -4,11 +4,10 @@ import android.app.Activity
 import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
 import android.widget.*
-import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Entities.ExerciseSet
-import kotlinx.android.synthetic.main.activity_main_menu.*
+import com.example.dev.gymassistantv2.dtos.UserDto
+import com.example.dev.gymassistantv2.entities.ExerciseSet
 
 
 class SetEditActivity : Activity() {

@@ -1,10 +1,10 @@
-package com.example.dev.gymassistantv2.DAOs
+package com.example.dev.gymassistantv2.daos
 
 import android.arch.persistence.room.Dao
 import android.arch.persistence.room.Insert
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
 import android.arch.persistence.room.Query
-import com.example.dev.gymassistantv2.Entities.Test
+import com.example.dev.gymassistantv2.entities.Test
 
 @Dao
 interface TestDao {

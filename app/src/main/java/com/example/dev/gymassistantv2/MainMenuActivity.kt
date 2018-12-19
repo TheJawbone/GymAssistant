@@ -5,11 +5,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
-import com.example.dev.gymassistantv2.DTOs.PendingInvitationDto
-import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Database.DBInitializer
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
-import com.example.dev.gymassistantv2.Entities.Workout
+import com.example.dev.gymassistantv2.dtos.PendingInvitationDto
+import com.example.dev.gymassistantv2.dtos.UserDto
+import com.example.dev.gymassistantv2.database.DBInitializer
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.entities.Workout
 import com.facebook.login.LoginManager
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch

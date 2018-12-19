@@ -2,12 +2,12 @@ package com.example.dev.gymassistantv2
 
 import android.app.Activity
 import android.os.Bundle
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
 import android.content.Intent
 import android.graphics.Typeface
 import android.util.DisplayMetrics
 import android.widget.*
-import com.example.dev.gymassistantv2.DTOs.UserDto
+import com.example.dev.gymassistantv2.dtos.UserDto
 import java.sql.Date
 import java.text.SimpleDateFormat
 

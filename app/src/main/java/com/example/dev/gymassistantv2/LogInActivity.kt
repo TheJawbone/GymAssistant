@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
-import com.example.dev.gymassistantv2.Entities.User
+import com.example.dev.gymassistantv2.dtos.UserDto
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.entities.User
 import com.facebook.*
 
 import com.facebook.login.LoginManager

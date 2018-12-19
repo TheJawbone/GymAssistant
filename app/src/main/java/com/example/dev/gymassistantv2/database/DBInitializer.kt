@@ -1,6 +1,6 @@
-package com.example.dev.gymassistantv2.Database
+package com.example.dev.gymassistantv2.database
 
-import com.example.dev.gymassistantv2.Entities.*
+import com.example.dev.gymassistantv2.entities.*
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
 

@@ -1,4 +1,4 @@
-package com.example.dev.gymassistantv2.Utils
+package com.example.dev.gymassistantv2.utils
 
 class Stopwatch {
 

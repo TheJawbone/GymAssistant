@@ -5,9 +5,9 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import com.example.dev.gymassistantv2.DTOs.PendingInvitationDto
-import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.dtos.PendingInvitationDto
+import com.example.dev.gymassistantv2.dtos.UserDto
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
 
 class ManageTrainerActivity : Activity() {
 

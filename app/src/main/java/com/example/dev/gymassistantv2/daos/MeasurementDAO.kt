@@ -1,9 +1,8 @@
-package com.example.dev.gymassistantv2.DAOs
+package com.example.dev.gymassistantv2.daos
 
 import android.arch.persistence.room.*
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
-import com.example.dev.gymassistantv2.Entities.Invitation
-import com.example.dev.gymassistantv2.Entities.Measurement
+import com.example.dev.gymassistantv2.entities.Measurement
 
 @Dao
 interface MeasurementDAO {

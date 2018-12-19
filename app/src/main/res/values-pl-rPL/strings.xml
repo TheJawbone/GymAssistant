@@ -8,7 +8,7 @@
     <string name="muscle_group">Grupa mięśniowa</string>
     <string name="muscle_group_colon">Grupa mięśniowa:</string>
     <string name="exercise_colon">Ćwiczenie:</string>
-    <string name="begin_set">Rozpocznij serię</string>
+    <string name="begin_set">Rozpocznij ćwiczenie</string>
     <string name="end_workout">Zakończ trening</string>
     <string name="free_workout">Trening dowolny</string>
     <string name="planned_workout">Trening zaplanowany</string>
@@ -25,9 +25,9 @@
     <string name="rep_count_colon">Liczba powtórzeń:</string>
     <string name="next_set">Następna seria</string>
     <string name="next_exercise">Następne ćwiczenie</string>
-    <string name="cancel_set">Anuluj serię</string>
+    <string name="cancel_set">Zakończ ćwiczenie</string>
     <string name="set">Seria</string>
-    <string name="save_set">Zapisz serię</string>
+    <string name="save_set">Zapisz i zakończ ćwiczenie</string>
     <string name="grey_background">Szare tło</string>
     <string name="clear_workout_history">Wyczyść historię treningów</string>
     <string name="choose_available_exercises">Wybierz dostępne ćwiczenia</string>

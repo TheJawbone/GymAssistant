@@ -9,9 +9,9 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
-import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
-import com.example.dev.gymassistantv2.Entities.ExerciseSet
+import com.example.dev.gymassistantv2.dtos.UserDto
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.entities.ExerciseSet
 import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.*
 

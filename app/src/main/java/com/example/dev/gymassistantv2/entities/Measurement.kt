@@ -1,4 +1,4 @@
-package com.example.dev.gymassistantv2.Entities
+package com.example.dev.gymassistantv2.entities
 
 import android.arch.persistence.room.*
 
@@ -19,7 +19,8 @@ import android.arch.persistence.room.*
 data class Measurement(@PrimaryKey(autoGenerate = true) var id: Long?,
                        @ColumnInfo(name = "bodyPartId") var bodyPartId: Long?,
                        @ColumnInfo(name = "userId") var userId: Long?,
-                       @ColumnInfo(name = "value") var value: Int?
+                       @ColumnInfo(name = "value") var value: Int?,
+                       @ColumnInfo(name = "date") var date: Long?
 ) {
-    constructor() : this(null, null, null, null)
+    constructor() : this(null, null, null, null, null)
 }

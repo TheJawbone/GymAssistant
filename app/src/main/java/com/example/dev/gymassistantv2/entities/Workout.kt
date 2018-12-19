@@ -1,10 +1,8 @@
-package com.example.dev.gymassistantv2.Entities
+package com.example.dev.gymassistantv2.entities
 
 import android.arch.persistence.room.ColumnInfo
 import android.arch.persistence.room.Entity
 import android.arch.persistence.room.PrimaryKey
-import android.arch.persistence.room.Relation
-import java.sql.Date
 
 @Entity(tableName = "Workout")
 data class Workout(@PrimaryKey(autoGenerate = true) var id: Long?,

@@ -8,10 +8,10 @@ import android.os.Bundle
 import android.util.DisplayMetrics
 import android.view.Gravity
 import android.widget.*
-import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
-import com.example.dev.gymassistantv2.Entities.Invitation
-import com.example.dev.gymassistantv2.Entities.User
+import com.example.dev.gymassistantv2.dtos.UserDto
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.entities.Invitation
+import com.example.dev.gymassistantv2.entities.User
 
 class ManageInvitationsActivity : Activity() {
 

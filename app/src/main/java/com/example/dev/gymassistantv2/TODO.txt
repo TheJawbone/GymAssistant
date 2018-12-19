@@ -15,27 +15,32 @@ A DONE Zaimplementować zapraszanie trenera od strony ćwiczącego - w widoku je
 A DONE PROGRESS Widok zaproszeń trenera - lista pending zaproszeń z jego ajdikiem, możliwość przyjęcia i odrzucenia. Przyjęcie - dodajemy id zgłoszenia do podopiecznych i usuwaamy zapro, odrzuć - usuń zapro.
 
 DEPRICATED Dołożyć date pickery do postępów (filtracja)
+----------------------------------------------------------
 
 TODO
 1. Napisy ze stringów zamiast hardcode
 2. Zapełnić bazę możliwymi ćwiczeniami
 3. Dodać generator pomiarów dla userów
-4. Dodać datę pomiaru do pomiaru i wyświetlać w ManageMeasurements
 5. Do pomiarów rozdział - biceps lewy, biceps prawy itp
 6. Description label z wykresów OUT
 7. Stoper ustawia się na ZERO a pamięta ostatni NIEZEROWY LICZNIK i od niego zaczyna liczyć
-8. Zmiany
-    Rozpocznij serię --> Rozpocznij ćwiczenie
-    Zapisz serię --> Zapisz i zakończ ćwiczenie
-    Anuluj serię --> Zakończ ćwiczenie
 9. Implementacja ustawień
     - czyszczenie historii treningów
     - wybierz dostępne ćwiczenia
     - dodawanie nowego ćwiczenia do bazy
     - reset aplikacji do ustawień domyślnych
 10. Code refactor dla FindTrainer
+
 11. Przygotować plan prezentacji
 12. Nagrać tutorial
+
+------------------------------------------------------------
+DONE
+8. Zmiany
+    Rozpocznij serię --> Rozpocznij ćwiczenie
+    Zapisz serię --> Zapisz i zakończ ćwiczenie
+    Anuluj serię --> Zakończ ćwiczenie
+4. Dodać datę pomiaru do pomiaru i wyświetlać w ManageMeasurements
 
 
 

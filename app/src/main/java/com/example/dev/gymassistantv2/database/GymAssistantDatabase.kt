@@ -1,11 +1,11 @@
-package com.example.dev.gymassistantv2.Database
+package com.example.dev.gymassistantv2.database
 
 import android.arch.persistence.room.Database
 import android.arch.persistence.room.Room
 import android.arch.persistence.room.RoomDatabase
 import android.content.Context
-import com.example.dev.gymassistantv2.DAOs.*
-import com.example.dev.gymassistantv2.Entities.*
+import com.example.dev.gymassistantv2.daos.*
+import com.example.dev.gymassistantv2.entities.*
 
 @Database(entities = [Exercise::class, ExerciseSet::class, Invitation::class, Measurement::class,
     MuscleGroup::class, Segment::class, User::class, Workout::class], version = 1)

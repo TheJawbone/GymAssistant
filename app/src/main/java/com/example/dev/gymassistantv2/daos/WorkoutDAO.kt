@@ -1,9 +1,8 @@
-package com.example.dev.gymassistantv2.DAOs
+package com.example.dev.gymassistantv2.daos
 
 import android.arch.persistence.room.*
 import android.arch.persistence.room.OnConflictStrategy.REPLACE
-import com.example.dev.gymassistantv2.Entities.User
-import com.example.dev.gymassistantv2.Entities.Workout
+import com.example.dev.gymassistantv2.entities.Workout
 
 @Dao
 interface WorkoutDAO {

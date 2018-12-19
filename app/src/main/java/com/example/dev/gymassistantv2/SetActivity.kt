@@ -7,14 +7,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
-import com.example.dev.gymassistantv2.Entities.ExerciseSet
-import com.example.dev.gymassistantv2.R.string.stop
+import com.example.dev.gymassistantv2.dtos.UserDto
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.entities.ExerciseSet
 import android.annotation.SuppressLint
 import android.os.Handler
 import android.os.Message
-import com.example.dev.gymassistantv2.Utils.Stopwatch
+import com.example.dev.gymassistantv2.utils.Stopwatch
 
 
 class SetActivity : Activity() {

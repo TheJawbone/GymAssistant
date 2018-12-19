@@ -4,9 +4,9 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.*
-import com.example.dev.gymassistantv2.DTOs.UserDto
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
-import com.example.dev.gymassistantv2.Entities.Measurement
+import com.example.dev.gymassistantv2.dtos.UserDto
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.entities.Measurement
 
 class AddMeasurementsActivity : Activity() {
 
@@ -37,6 +37,7 @@ class AddMeasurementsActivity : Activity() {
             measurement.value = findViewById<EditText>(R.id.editTextMeasurement).text.toString().toInt()
             measurement.bodyPartId = bodyPart.id
             measurement.userId = loggedUser.userId
+            measurement.date = System.currentTimeMillis()
             dbContext.measurementDao().insert(measurement)
             Toast.makeText(this, "Pomyślnie dodano pomiar", Toast.LENGTH_LONG).show()
             intentSave.putExtra("loggedUser", loggedUser)

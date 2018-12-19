@@ -1,4 +1,4 @@
-package com.example.dev.gymassistantv2.Database
+package com.example.dev.gymassistantv2.database
 
 import android.os.Handler
 import android.os.HandlerThread

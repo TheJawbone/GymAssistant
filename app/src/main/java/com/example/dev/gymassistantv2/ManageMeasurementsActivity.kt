@@ -2,12 +2,14 @@ package com.example.dev.gymassistantv2
 
 import android.app.Activity
 import android.os.Bundle
-import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
+import com.example.dev.gymassistantv2.database.GymAssistantDatabase
 import android.content.Intent
 import android.graphics.Typeface
 import android.util.DisplayMetrics
 import android.widget.*
-import com.example.dev.gymassistantv2.DTOs.UserDto
+import com.example.dev.gymassistantv2.dtos.UserDto
+import java.sql.Date
+import java.text.SimpleDateFormat
 
 
 class ManageMeasurementsActivity : Activity() {
@@ -51,8 +53,10 @@ class ManageMeasurementsActivity : Activity() {
 
             val bodyPartName = dbContext!!.muscleGroupDao().getById(it.bodyPartId!!).name
             val measurementValue = it.value.toString()
+            val dateFormat = SimpleDateFormat("dd/MM/yyyy")
+            val measurementDate = dateFormat.format(Date(it.date!!))
 
-            var buttonText = bodyPartName + "\n" + measurementValue + "cm"
+            val buttonText = bodyPartName + ": " + measurementValue + "cm" + "\n Data pomiaru: " + measurementDate
             val buttonMain = Button(this)
             buttonMain.layoutParams = LinearLayout.LayoutParams(
                     (metrics.widthPixels * 0.8).toInt(), LinearLayout.LayoutParams.WRAP_CONTENT)
