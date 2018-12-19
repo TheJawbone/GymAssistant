@@ -33,6 +33,8 @@ TODO
 
 11. Przygotować plan prezentacji
 12. Nagrać tutorial
+13. Sprawdzić layouty (uniwersalne?)
+14. Ustawić tylko pionowy ekran ?
 
 ------------------------------------------------------------
 DONE
