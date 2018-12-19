@@ -3,7 +3,6 @@ package com.example.dev.gymassistantv2
 import android.app.Activity
 import android.os.Bundle
 import com.example.dev.gymassistantv2.database.GymAssistantDatabase
-import android.content.Intent
 import android.graphics.Typeface
 import android.util.DisplayMetrics
 import android.widget.*
@@ -21,24 +20,28 @@ class ManageMeasurementsActivity : Activity() {
         setContentView(R.layout.generic_history_layout)
 
         processIntent()
-        generateMeasurementsList()
+        generateMeasurementsList(setLayout())
+    }
+
+    private fun setLayout(): LinearLayout {
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+        val header = findViewById<TextView>(R.id.textViewHeader)
+        header.text = "Twoje pomiary"
+        val layout = LinearLayout(applicationContext)
+        layout.orientation = LinearLayout.VERTICAL
+        scrollView.addView(layout)
+        return layout
     }
 
     private fun processIntent() {
         this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
-    private fun generateMeasurementsList() {
-        val scrollView = findViewById<ScrollView>(R.id.scrollView)
-        val header = findViewById<TextView>(R.id.textViewHeader)
-        header.text = "Twoje pomiary"
+    private fun generateMeasurementsList(layout: LinearLayout) {
 
+        layout.removeAllViews()
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
-
-        val layout = LinearLayout(applicationContext)
-        layout.orientation = LinearLayout.VERTICAL
-        scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
         val measurements = dbContext!!.measurementDao().getForUser(loggedUser.userId!!)
@@ -74,10 +77,8 @@ class ManageMeasurementsActivity : Activity() {
             buttonDelete.typeface = typeface
             val measurement = it
             buttonDelete.setOnClickListener {
-                dbContext!!.measurementDao().delete(measurement)
-                val intent = Intent(this, ManageMeasurementsActivity::class.java)
-                intent.putExtra("loggedUser", loggedUser)
-                startActivity(intent)
+                dbContext.measurementDao().delete(measurement)
+                generateMeasurementsList(layout)
             }
 
             horizontalLayout.addView(buttonMain)
@@ -87,8 +88,6 @@ class ManageMeasurementsActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        intent = Intent(this, ProgressSubmenuActivity::class.java)
-        intent.putExtra("loggedUser", loggedUser)
-        startActivity(intent)
+        finish()
     }
 }

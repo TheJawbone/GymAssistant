@@ -18,22 +18,30 @@ class SetHistoryActivity : Activity() {
     private lateinit var loggedUser: UserDto
     private var historyOwnerId: Long = 0
     private var segmentId: Long = 0
+    private lateinit var layout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.generic_history_layout)
 
         processIntent()
-        generateSegmentList()
+        setLayout()
+    }
+
+    private fun setLayout() {
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+        val header = findViewById<TextView>(R.id.textViewHeader)
+        header.text = "Serie w ćwiczeniu\n" + GymAssistantDatabase.getInstance(this)!!.exerciseDao().getById(
+                GymAssistantDatabase.getInstance(this)!!.segmentDao().getById(segmentId).exerciseId!!
+        ).name
+
+        layout = LinearLayout(applicationContext)
+        layout.orientation = LinearLayout.VERTICAL
+        scrollView.addView(layout)
     }
 
     override fun onBackPressed() {
-        val intent = Intent(this, SegmentHistoryActivity::class.java)
-        intent.putExtra("workoutId",
-                GymAssistantDatabase.getInstance(this)!!.segmentDao().getById(segmentId).workoutId)
-        intent.putExtra("loggedUser", loggedUser)
-        intent.putExtra("historyOwnerId", historyOwnerId)
-        startActivity(intent)
+        finish()
     }
 
     private fun processIntent() {
@@ -43,21 +51,10 @@ class SetHistoryActivity : Activity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun generateSegmentList() {
-        val scrollView = findViewById<ScrollView>(R.id.scrollView)
-        val header = findViewById<TextView>(R.id.textViewHeader)
-        header.text = "Serie w ćwiczeniu\n" + GymAssistantDatabase.getInstance(this)!!.exerciseDao().getById(
-                GymAssistantDatabase.getInstance(this)!!.segmentDao().getById(segmentId).exerciseId!!
-        ).name
-
+    private fun generateSetList() {
+        layout.removeAllViews()
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
-
-        val layout = LinearLayout(applicationContext)
-        layout.orientation = LinearLayout.VERTICAL
-        /*layout.setPadding(Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0,
-                Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0)*/
-        scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
         val segments = dbContext!!.exerciseSetDao().getForSegment(segmentId)
@@ -118,7 +115,8 @@ class SetHistoryActivity : Activity() {
         return buttonEdit
     }
 
-    private fun setDeleteButton(buttonMain: Button, metrics: DisplayMetrics, typeface: Typeface?, dbContext: GymAssistantDatabase, exerciseSetId: Long?): Button {
+    private fun setDeleteButton(buttonMain: Button, metrics: DisplayMetrics, typeface: Typeface?,
+                                dbContext: GymAssistantDatabase, exerciseSetId: Long?): Button {
         val buttonDelete = Button(this)
         buttonDelete.height = buttonMain.measuredHeight
         buttonDelete.width = (metrics.widthPixels * 0.2).toInt()
@@ -127,13 +125,26 @@ class SetHistoryActivity : Activity() {
         buttonDelete.typeface = typeface
         buttonDelete.setOnClickListener {
             dbContext.exerciseSetDao().delete(dbContext.exerciseSetDao().getById(exerciseSetId!!))
-            val intent = Intent(this, SetHistoryActivity::class.java)
-            intent.putExtra("segmentId", segmentId)
-            intent.putExtra("historyOwnerId", historyOwnerId)
-            intent.putExtra("loggedUser", loggedUser)
-            startActivity(intent)
+            if(isZeroSetsInSegment()) {
+                deleteSegment()
+                finish()
+            } else
+                generateSetList()
         }
         return buttonDelete
+    }
+
+    private fun deleteSegment() {
+        GymAssistantDatabase.getInstance(this)!!.segmentDao().delete(GymAssistantDatabase.getInstance(this)!!.segmentDao().getById(segmentId))
+    }
+
+    private fun isZeroSetsInSegment() =
+        GymAssistantDatabase.getInstance(this)!!.exerciseSetDao().getForSegment(segmentId).isEmpty()
+
+
+    override fun onResume() {
+        super.onResume()
+        generateSetList()
     }
 
     private fun isTrainerInChargesViewOnlyMode() =

@@ -27,7 +27,6 @@ class AddMeasurementsActivity : Activity() {
 
     private fun setNavigationControls() {
         val buttonSave = findViewById<Button>(R.id.buttonSave)
-        val intentSave = Intent(this, ProgressSubmenuActivity::class.java)
         buttonSave.setOnClickListener {
             val dbContext = GymAssistantDatabase.getInstance(this)
             val bodyPart = dbContext!!.muscleGroupDao().getByName(
@@ -40,12 +39,11 @@ class AddMeasurementsActivity : Activity() {
             measurement.date = System.currentTimeMillis()
             dbContext.measurementDao().insert(measurement)
             Toast.makeText(this, "Pomyślnie dodano pomiar", Toast.LENGTH_LONG).show()
-            intentSave.putExtra("loggedUser", loggedUser)
-            startActivity(intentSave)
+            finish()
         }
 
         val buttonBack = findViewById<Button>(R.id.buttonBack)
-        buttonBack.setOnClickListener { super.onBackPressed() }
+        buttonBack.setOnClickListener { finish() }
     }
 
     private fun setBodyPartSpinner() {
@@ -53,5 +51,9 @@ class AddMeasurementsActivity : Activity() {
         val adapter = ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,
                 GymAssistantDatabase.getInstance(this)!!.muscleGroupDao().getAllNames())
         spinner.adapter = adapter
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

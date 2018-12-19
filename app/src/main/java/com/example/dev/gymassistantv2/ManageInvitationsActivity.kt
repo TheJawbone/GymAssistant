@@ -2,7 +2,6 @@ package com.example.dev.gymassistantv2
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.util.DisplayMetrics
@@ -22,8 +21,12 @@ class ManageInvitationsActivity : Activity() {
         setContentView(R.layout.activity_manage_invitations)
 
         determineLoggedUserData()
-        generateInvitationList()
+        generateInvitationList(setLayout())
         setBackButton()
+    }
+
+    private fun setLayout(): LinearLayout {
+        return findViewById(R.id.linearLayout)!!
     }
 
     private fun determineLoggedUserData() {
@@ -31,30 +34,20 @@ class ManageInvitationsActivity : Activity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun generateInvitationList() {
-        //val scrollView = findViewById<ScrollView>(R.id.scrollView)
-        //val header = findViewById<TextView>(R.id.textViewHeader)
-        //header.text = "Heyy"
-
-        /*layout.setPadding(Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0,
-                Math.ceil((10 * logicalDensity).toDouble()).toInt(), 0)*/
-        //scrollView.addView(layout)
-
-
-
-        val layout = findViewById<LinearLayout>(R.id.linearLayout)
+    private fun generateInvitationList(layout: LinearLayout) {
+        layout.removeAllViews()
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
 
 
         val dbContext = GymAssistantDatabase.getInstance(this)
-        val segments = dbContext!!.invitationDao().getForRecipient(loggedUser.userId!!)
+        val invitations = dbContext!!.invitationDao().getForRecipient(loggedUser.userId!!)
 
-        if(segments.isEmpty())
+        if(invitations.isEmpty())
             Toast.makeText(this, "Brak zaproszeń", Toast.LENGTH_LONG).show()
 
 
-        segments.forEach {
+        invitations.forEach {
             val horizontalLayout = LinearLayout(this)
             horizontalLayout.orientation = LinearLayout.HORIZONTAL
             horizontalLayout.gravity = Gravity.CENTER_VERTICAL
@@ -63,8 +56,8 @@ class ManageInvitationsActivity : Activity() {
             val sender = dbContext.userDao().getById(it.senderId!!)
 
             val buttonMain = setMainButton(metrics, typeface, sender)
-            val buttonAccept = setAcceptButton(buttonMain, metrics, typeface, it, sender, dbContext)
-            val buttonDelete = setDeleteButton(buttonMain, metrics, typeface, it,  dbContext)
+            val buttonAccept = setAcceptButton(buttonMain, metrics, typeface, it, sender, dbContext, layout)
+            val buttonDelete = setDeleteButton(buttonMain, metrics, typeface, it,  dbContext, layout)
 
             horizontalLayout.addView(buttonMain)
             horizontalLayout.addView(buttonAccept)
@@ -86,7 +79,8 @@ class ManageInvitationsActivity : Activity() {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setAcceptButton(buttonMain: Button, metrics: DisplayMetrics, typeface: Typeface?, invitation: Invitation, newCharge: User, dbContext: GymAssistantDatabase): Button {
+    private fun setAcceptButton(buttonMain: Button, metrics: DisplayMetrics, typeface: Typeface?, invitation: Invitation,
+                                newCharge: User, dbContext: GymAssistantDatabase, layout: LinearLayout): Button {
         val buttonAccept = Button(this)
         buttonAccept.height = buttonMain.measuredHeight
         buttonAccept.width = (metrics.widthPixels * 0.2).toInt()
@@ -97,13 +91,14 @@ class ManageInvitationsActivity : Activity() {
             newCharge.trainerId = loggedUser.userId
             dbContext.userDao().update(newCharge)
             dbContext.invitationDao().delete(invitation)
-            refreshActivity()
+            generateInvitationList(layout)
         }
         return buttonAccept
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setDeleteButton(buttonMain: Button, metrics: DisplayMetrics, typeface: Typeface?, invitation: Invitation, dbContext: GymAssistantDatabase): Button {
+    private fun setDeleteButton(buttonMain: Button, metrics: DisplayMetrics, typeface: Typeface?,
+                                invitation: Invitation, dbContext: GymAssistantDatabase, layout: LinearLayout): Button {
         val buttonDelete = Button(this)
         buttonDelete.height = buttonMain.measuredHeight
         buttonDelete.width = (metrics.widthPixels * 0.2).toInt()
@@ -112,7 +107,7 @@ class ManageInvitationsActivity : Activity() {
         buttonDelete.typeface = typeface
         buttonDelete.setOnClickListener {
             dbContext.invitationDao().delete(invitation)
-            refreshActivity()
+            generateInvitationList(layout)
         }
         return buttonDelete
     }
@@ -120,20 +115,12 @@ class ManageInvitationsActivity : Activity() {
     private fun setBackButton() {
         val buttonBack = findViewById<Button>(R.id.buttonBack)
         buttonBack.setOnClickListener {
-            onBackPressed()
+            finish()
         }
     }
 
-    private fun refreshActivity() {
-        val intent = Intent(this, ManageInvitationsActivity::class.java)
-        intent.putExtra("loggedUser", loggedUser)
-        startActivity(intent)
-    }
-
     override fun onBackPressed() {
-        val intent = Intent(this, ChargesSubmenuActivity::class.java)
-        intent.putExtra("loggedUser", loggedUser)
-        startActivity(intent)
+        finish()
     }
 
 }

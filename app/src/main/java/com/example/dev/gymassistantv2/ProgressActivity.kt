@@ -153,18 +153,6 @@ class ProgressActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        if(isTrainerInViewOnlyMode())
-            goToManageCharges()
-        else
-            super.onBackPressed()
-    }
-
-    private fun isTrainerInViewOnlyMode() =
-            loggedUser.isTrainer!! && loggedUser.userId != historyOwnerId
-
-    private fun goToManageCharges() {
-        val intentManageCharges = Intent(this, ManageChargesActivity::class.java)
-        intentManageCharges.putExtra("loggedUser", loggedUser)
-        startActivity(intentManageCharges)
+        finish()
     }
 }

@@ -49,17 +49,14 @@ class SetEditActivity : Activity() {
                 set.weight = weight.toInt()
                 set.repCount = repCount.toInt()
                 GymAssistantDatabase.getInstance(this)!!.exerciseSetDao().update(set)
-                val intentSave = Intent(this, SetHistoryActivity::class.java)
-                intentSave.putExtra("segmentId", set.segmentId)
-                intentSave.putExtra("historyOwnerId", historyOwnerId)
-                intentSave.putExtra("loggedUser", loggedUser)
-                startActivity(intentSave)
+                Toast.makeText(this, "Zaktualizowano!", Toast.LENGTH_LONG).show()
+                finish()
             }
         }
 
         val buttonBack = findViewById<Button>(R.id.buttonBack)
         buttonBack.setOnClickListener {
-            super.onBackPressed()
+            finish()
         }
     }
 
@@ -69,5 +66,9 @@ class SetEditActivity : Activity() {
         findViewById<Button>(R.id.buttonBack).typeface = typeface
         findViewById<TextView>(R.id.textViewWeight).typeface = typeface
         findViewById<TextView>(R.id.textViewRepCount).typeface = typeface
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

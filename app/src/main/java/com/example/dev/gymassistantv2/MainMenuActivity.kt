@@ -84,12 +84,13 @@ class MainMenuActivity : Activity() {
 
         val buttonSettings = findViewById<Button>(R.id.buttonSettings)
         val intentSettings = Intent(this, SettingsActivity::class.java)
+        intentSettings.putExtra("loggedUser", loggedUser)
         buttonSettings.setOnClickListener { startActivity(intentSettings) }
     }
 
     private fun setDatabase() {
         GlobalScope.launch {
-            applicationContext.deleteDatabase("gymAssistantDb")
+            //applicationContext.deleteDatabase("gymAssistantDb")
             val dbContext = GymAssistantDatabase.getInstance(applicationContext)
             val dbInitializer = DBInitializer(dbContext)
             dbInitializer.populateMuscleGroup()

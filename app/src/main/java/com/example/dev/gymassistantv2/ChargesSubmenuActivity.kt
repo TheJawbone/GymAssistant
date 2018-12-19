@@ -44,16 +44,12 @@ class ChargesSubmenuActivity : Activity() {
 
     private fun setBackButton() {
         val buttonMainMenu = findViewById<Button>(R.id.buttonBack)
-        val intentManageCharges = Intent(this, MainMenuActivity::class.java)
         buttonMainMenu.setOnClickListener {
-            intentManageCharges.putExtra("loggedUser", loggedUser)
-            startActivity(intentManageCharges)
+            finish()
         }
     }
 
     override fun onBackPressed() {
-        val intentMainMenu = Intent(this, MainMenuActivity::class.java)
-        intentMainMenu.putExtra("loggedUser", loggedUser)
-        startActivity(intentMainMenu)
+        finish()
     }
 }

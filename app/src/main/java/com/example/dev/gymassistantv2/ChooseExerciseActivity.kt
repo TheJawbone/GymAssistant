@@ -4,10 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.Spinner
+import android.widget.*
 import com.example.dev.gymassistantv2.dtos.UserDto
 import com.example.dev.gymassistantv2.database.GymAssistantDatabase
 import com.example.dev.gymassistantv2.entities.Segment
@@ -28,6 +25,7 @@ class ChooseExerciseActivity : Activity() {
     }
 
     override fun onBackPressed() {
+        finish()
     }
 
     private fun processIntent() {
@@ -53,14 +51,13 @@ class ChooseExerciseActivity : Activity() {
         }
 
         val buttonEndWorkout = findViewById<Button>(R.id.buttonEndWorkout)
-        val intentEndWorkout = Intent(this, MainMenuActivity::class.java)
         buttonEndWorkout.setOnClickListener {
             val workoutSegments = dbContext!!.segmentDao().getForWorkout(workoutId)
             if(workoutSegments.isEmpty()) {
                 dbContext.workoutDao().delete(dbContext.workoutDao().getById(workoutId))
             }
-            intentEndWorkout.putExtra("loggedUser", loggedUser)
-            startActivity(intentEndWorkout)
+            Toast.makeText(this, "Trening zakończony!", Toast.LENGTH_LONG).show()
+            finish()
         }
     }
 

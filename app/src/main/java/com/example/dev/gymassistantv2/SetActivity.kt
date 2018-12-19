@@ -22,6 +22,8 @@ class SetActivity : Activity() {
     private var setNumber: Int = 0
     private var segmentId: Long = 0
     private var workoutId: Long = 0
+    private lateinit var repCount: String
+    private lateinit var weight: String
 
     var timer = Stopwatch()
     val REFRESH_RATE = 1.toLong()
@@ -94,48 +96,45 @@ class SetActivity : Activity() {
         val segment = dbContext!!.segmentDao().getById(segmentId)
         val exercise = dbContext.exerciseDao().getById(segment.exerciseId!!)
         findViewById<TextView>(R.id.textViewExerciseName).text = exercise.name
-        findViewById<TextView>(R.id.textViewSeriesNumber).text = setNumber.toString()
     }
 
     private fun setNavigationControls() {
+        findViewById<EditText>(R.id.editTextRepCount).text.clear()
+        findViewById<EditText>(R.id.editTextWeight).text.clear()
+        findViewById<TextView>(R.id.textViewSeriesNumber).text = setNumber.toString()
         val buttonNextSet = findViewById<Button>(R.id.buttonNextSet)
-        val intentNextSet = Intent(this, SetActivity::class.java)
-        intentNextSet.putExtra("setNumber", setNumber + 1)
-        intentNextSet.putExtra("segmentId", segmentId)
-        intentNextSet.putExtra("workoutId", workoutId)
-        intentNextSet.putExtra("loggedUser", loggedUser)
         buttonNextSet.setOnClickListener {
-            intentNextSet.putExtra("stopwatchElapsedTime", timer.elapsedTime)
-            intentNextSet.putExtra("stopwatchRunning", timer.isRunning)
-            processSetPersistenceRequest(intentNextSet)
+            repCount = findViewById<EditText>(R.id.editTextRepCount).text.toString()
+            weight = findViewById<EditText>(R.id.editTextWeight).text.toString()
+            if (repCount.isNotEmpty() && weight.isNotEmpty()) {
+                setNumber+=1
+                processSetPersistenceRequest()
+                setNavigationControls()
+            } else
+                Toast.makeText(this, "Uzupełnij oba pola aby kontynuować", Toast.LENGTH_LONG).show()
         }
 
         val buttonNextExerciseSave = findViewById<Button>(R.id.buttonNextExerciseOK)
-        val intentNextExerciseSave = Intent(this, ChooseExerciseActivity::class.java)
-        intentNextExerciseSave.putExtra("workoutId", workoutId)
-        intentNextExerciseSave.putExtra("loggedUser", loggedUser)
         buttonNextExerciseSave.setOnClickListener {
-            processSetPersistenceRequest(intentNextExerciseSave)
+            repCount = findViewById<EditText>(R.id.editTextRepCount).text.toString()
+            weight = findViewById<EditText>(R.id.editTextWeight).text.toString()
+            if (repCount.isNotEmpty() && weight.isNotEmpty()) {
+                processSetPersistenceRequest()
+                Toast.makeText(this, "Ćwiczenie zakończone!", Toast.LENGTH_LONG).show()
+                finish()
+            } else
+                Toast.makeText(this, "Uzupełnij oba pola aby kontynuować", Toast.LENGTH_LONG).show()
         }
 
         val buttonNextExerciseCancel = findViewById<Button>(R.id.buttonNextExerciseCancel)
-        val intentNextExerciseCancel = Intent(this, ChooseExerciseActivity::class.java)
-        intentNextExerciseCancel.putExtra("workoutId", workoutId)
-        intentNextExerciseCancel.putExtra("loggedUser", loggedUser)
         buttonNextExerciseCancel.setOnClickListener {
-            startActivity(intentNextExerciseCancel)
+            Toast.makeText(this, "Ćwiczenie zakończone!", Toast.LENGTH_LONG).show()
+                finish ()
         }
     }
 
-    private fun processSetPersistenceRequest(intent: Intent) {
-        val repCount = findViewById<EditText>(R.id.editTextRepCount).text.toString()
-        val weight = findViewById<EditText>(R.id.editTextWeight).text.toString()
-        if (repCount.isEmpty() || weight.isEmpty()) {
-            Toast.makeText(this, "Uzupełnij oba pola aby kontynuować", Toast.LENGTH_LONG).show()
-        } else {
-            persistSet(repCount.toInt(), weight.toInt())
-            startActivity(intent)
-        }
+    private fun processSetPersistenceRequest() {
+            persistSet()
     }
 
     private fun setStopwatchControls() {
@@ -152,11 +151,15 @@ class SetActivity : Activity() {
         }
     }
 
-    private fun persistSet(repCount: Int, weight: Int) {
+    private fun persistSet() {
         val set = ExerciseSet()
-        set.repCount = repCount
-        set.weight = weight
+        set.repCount = repCount.toInt()
+        set.weight = weight.toInt()
         set.segmentId = segmentId
         GymAssistantDatabase.getInstance(this)!!.exerciseSetDao().insert(set)
+    }
+
+    override fun onBackPressed() {
+        finish()
     }
 }

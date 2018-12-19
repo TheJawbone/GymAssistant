@@ -19,21 +19,34 @@ class SegmentHistoryActivity : Activity() {
     private lateinit var loggedUser: UserDto
     private var historyOwnerId: Long = 0
     private var workoutId: Long = 0
+    private lateinit var layout: LinearLayout
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.generic_history_layout)
 
         processIntent()
+        setLayout()
+    }
+
+    override fun onResume() {
+        super.onResume()
         generateSegmentList()
     }
 
+    private fun setLayout() {
+        val scrollView = findViewById<ScrollView>(R.id.scrollView)
+        val header = findViewById<TextView>(R.id.textViewHeader)
+        val workout = GymAssistantDatabase.getInstance(this)!!.workoutDao().getById(workoutId)
+        val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
+        header.text = "Ćwiczenia z treningu " + dateFormat.format(Date(workout.date!!))
+        layout = LinearLayout(applicationContext)
+        layout.orientation = LinearLayout.VERTICAL
+        scrollView.addView(layout)
+    }
+
     override fun onBackPressed() {
-        val intent = Intent(this, WorkoutHistoryActivity::class.java)
-        intent.putExtra("workoutId", workoutId)
-        intent.putExtra("loggedUser", loggedUser)
-        intent.putExtra("historyOwnerId", historyOwnerId)
-        startActivity(intent)
+        finish()
     }
 
     private fun processIntent() {
@@ -44,18 +57,10 @@ class SegmentHistoryActivity : Activity() {
 
     @SuppressLint("SetTextI18n")
     private fun generateSegmentList() {
-        val scrollView = findViewById<ScrollView>(R.id.scrollView)
-        val header = findViewById<TextView>(R.id.textViewHeader)
-        val workout = GymAssistantDatabase.getInstance(this)!!.workoutDao().getById(workoutId)
-        val dateFormat = SimpleDateFormat("dd/MM/yyyy hh:mm")
-        header.text = "Ćwiczenia z treningu " + dateFormat.format(Date(workout.date!!))
 
+        layout.removeAllViews()
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
-
-        val layout = LinearLayout(applicationContext)
-        layout.orientation = LinearLayout.VERTICAL
-        scrollView.addView(layout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
         val segments = dbContext!!.segmentDao().getForWorkout(workoutId)
@@ -114,15 +119,23 @@ class SegmentHistoryActivity : Activity() {
         buttonDelete.typeface = typeface
         buttonDelete.setOnClickListener {
             dbContext!!.segmentDao().delete(dbContext.segmentDao().getById(segmentId!!))
-            val intent = Intent(this, SegmentHistoryActivity::class.java)
-            intent.putExtra("workoutId", workoutId)
-            intent.putExtra("loggedUser", loggedUser)
-            intent.putExtra("historyOwnerId", historyOwnerId)
-            startActivity(intent)
+            if(isZeroSegmentsInWorkout()) {
+                deleteWorkout()
+                finish()
+            } else
+                generateSegmentList()
         }
         return buttonDelete
     }
 
+    private fun deleteWorkout() {
+        GymAssistantDatabase.getInstance(this)!!.workoutDao().delete(GymAssistantDatabase.getInstance(this)!!.workoutDao().getById(workoutId))
+    }
+
+    private fun isZeroSegmentsInWorkout() =
+            GymAssistantDatabase.getInstance(this)!!.segmentDao().getForWorkout(workoutId).isEmpty()
+
     private fun isTrainerInChargesViewOnlyMode() =
             loggedUser.isTrainer!! && loggedUser.userId != historyOwnerId
+
 }

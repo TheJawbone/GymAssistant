@@ -30,7 +30,6 @@ class LogInActivity : Activity() {
     private var gymAssistantDatabase: GymAssistantDatabase? = null
     private var accessToken: AccessToken? = null
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
         super.onActivityResult(requestCode, resultCode, data)
         callbackManager.onActivityResult(requestCode, resultCode, data)

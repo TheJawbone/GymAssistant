@@ -19,23 +19,26 @@ class ManageChargesActivity : Activity() {
 
         processIntent()
         setBackButton()
-        generateChargesList()
+        generateChargesList(setLayout())
+    }
+
+    private fun setLayout(): LinearLayout {
+        return findViewById<LinearLayout>(R.id.chargesLinearLayout)!!
     }
 
     private fun setBackButton() {
         val buttonBack = findViewById<Button>(R.id.buttonBack)
-        buttonBack.setOnClickListener { goToChargesSubmenuActivity() }
+        buttonBack.setOnClickListener { finish() }
     }
 
     private fun processIntent() {
         this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
     }
 
-    private fun generateChargesList() {
+    private fun generateChargesList(layout: LinearLayout) {
+        layout.removeAllViews()
         val metrics = DisplayMetrics()
         windowManager.defaultDisplay.getMetrics(metrics)
-
-        val layout = findViewById<LinearLayout>(R.id.chargesLinearLayout)
 
         val dbContext = GymAssistantDatabase.getInstance(this)
         val charges = dbContext!!.userDao().getChargesForUser(loggedUser.userId!!)
@@ -78,9 +81,7 @@ class ManageChargesActivity : Activity() {
                 val charge = dbContext.userDao().getById(chargeId)
                 charge.trainerId = null
                 dbContext.userDao().update(charge)
-                val intent = Intent(this, ManageChargesActivity::class.java)
-                intent.putExtra("loggedUser", loggedUser)
-                startActivity(intent)
+                generateChargesList(layout)
             }
 
             horizontalLayout.addView(buttonMain)
@@ -90,14 +91,6 @@ class ManageChargesActivity : Activity() {
     }
 
     override fun onBackPressed() {
-        goToChargesSubmenuActivity()
+        finish()
     }
-
-    private fun goToChargesSubmenuActivity() {
-        val intentChargesSubmenu = Intent(this, ChargesSubmenuActivity::class.java)
-        intentChargesSubmenu.putExtra("loggedUser", loggedUser)
-        startActivity(intentChargesSubmenu)
-    }
-
-
 }
