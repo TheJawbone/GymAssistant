@@ -27,6 +27,7 @@ class ProgressSubmenuActivity : Activity() {
         val intentProgress = Intent(this, ProgressActivity::class.java)
         buttonProgress.setOnClickListener {
             intentProgress.putExtra("loggedUser", loggedUser)
+            intentProgress.putExtra("historyOwnerId", loggedUser.userId)
             startActivity(intentProgress)
         }
 

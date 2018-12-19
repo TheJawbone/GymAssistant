@@ -1,6 +1,7 @@
 package com.example.dev.gymassistantv2
 
 import android.app.Activity
+import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
@@ -18,6 +19,7 @@ import com.github.mikephil.charting.data.*
 class ProgressActivity : Activity() {
 
     private lateinit var loggedUser: UserDto
+    private var historyOwnerId: Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +33,7 @@ class ProgressActivity : Activity() {
 
     private fun processIntent() {
         this.loggedUser = this.intent.getSerializableExtra("loggedUser") as UserDto
+        this.historyOwnerId = this.intent.getLongExtra("historyOwnerId", historyOwnerId)
     }
 
     private fun setNavigationControls() {
@@ -65,7 +68,7 @@ class ProgressActivity : Activity() {
                 when (findViewById<Spinner>(R.id.spinnerCategory).selectedItemPosition) {
                     0 -> {
                         val bodyPart = dbContext!!.muscleGroupDao().getByName(selectedItem)
-                        val measurements = dbContext!!.measurementDao().getForBodyPartAndUser(bodyPart.id!!, loggedUser.userId!!)
+                        val measurements = dbContext.measurementDao().getForBodyPartAndUser(bodyPart.id!!, historyOwnerId)
                         val valuesX = mutableListOf<Int>()
                         val valuesY = mutableListOf<Int>()
                         var counter = 0
@@ -136,16 +139,32 @@ class ProgressActivity : Activity() {
             repEntries.add(BarEntry(valuesX[i].toFloat(), repsY[i].toFloat()))
         }
 
-        val weightsDataSet = BarDataSet(weightEntries, "$label - ciężar")
+        val weightsDataSet = BarDataSet(weightEntries, "Obciązenie")
         weightsDataSet.color = Color.RED
         weightsDataSet.valueTextColor = Color.RED
 
-        val repsDataSet = BarDataSet(repEntries, "$label - powtórzenia")
+        val repsDataSet = BarDataSet(repEntries, "Powtórzenia")
         weightsDataSet.color = Color.BLUE
         weightsDataSet.valueTextColor = Color.BLUE
 
         val barData = BarData(listOf(weightsDataSet, repsDataSet))
         chart.data = barData
         chart.invalidate()
+    }
+
+    override fun onBackPressed() {
+        if(isTrainerInViewOnlyMode())
+            goToManageCharges()
+        else
+            super.onBackPressed()
+    }
+
+    private fun isTrainerInViewOnlyMode() =
+            loggedUser.isTrainer!! && loggedUser.userId != historyOwnerId
+
+    private fun goToManageCharges() {
+        val intentManageCharges = Intent(this, ManageChargesActivity::class.java)
+        intentManageCharges.putExtra("loggedUser", loggedUser)
+        startActivity(intentManageCharges)
     }
 }

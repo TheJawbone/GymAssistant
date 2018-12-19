@@ -62,7 +62,7 @@ class ManageChargesActivity : Activity() {
             buttonMain.typeface = typeface
 
             buttonMain.setOnClickListener {
-                val intent = Intent(this, WorkoutHistoryActivity::class.java)
+                val intent = Intent(this, ProgressActivity::class.java)
                 intent.putExtra("loggedUser", loggedUser)
                 intent.putExtra("historyOwnerId", chargeId)
                 startActivity(intent)
