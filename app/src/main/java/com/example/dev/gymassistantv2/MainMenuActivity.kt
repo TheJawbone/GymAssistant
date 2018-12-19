@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.Toast
+import com.example.dev.gymassistantv2.DTOs.PendingInvitationDto
 import com.example.dev.gymassistantv2.DTOs.UserDto
 import com.example.dev.gymassistantv2.Database.DBInitializer
 import com.example.dev.gymassistantv2.Database.GymAssistantDatabase
@@ -62,8 +63,16 @@ class MainMenuActivity : Activity() {
             buttonTrainerOrCharges.setOnClickListener { startActivity(intentCharges) }
         } else {
             buttonTrainerOrCharges.text = resources.getString(R.string.trainer)
-            val intentTrainer = Intent(this, ManageTrainerActivity::class.java)
-            buttonTrainerOrCharges.setOnClickListener { startActivity(intentTrainer) }
+            if(loggedUser.trainerId != null) {
+                val intentTrainer = Intent(this, FindTrainerActivity::class.java)
+                intentTrainer.putExtra("loggedUser", loggedUser)
+                intentTrainer.putExtra("pendingInvitation", PendingInvitationDto())
+                buttonTrainerOrCharges.setOnClickListener { startActivity(intentTrainer) }
+            } else {
+                val intentTrainer = Intent(this, ManageTrainerActivity::class.java)
+                intentTrainer.putExtra("loggedUser", loggedUser)
+                buttonTrainerOrCharges.setOnClickListener { startActivity(intentTrainer) }
+            }
         }
 
         val buttonHistory = findViewById<Button>(R.id.buttonHistory)

@@ -21,4 +21,5 @@ data class Invitation(@PrimaryKey(autoGenerate = true) var id: Long?,
                       @ColumnInfo(name="date") var date: Long?
 ){
     constructor():this(null, null, null, null)
+    constructor(senderId: Long?, recipientId: Long?):this(null, senderId, recipientId, System.currentTimeMillis())
 }

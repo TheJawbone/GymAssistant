@@ -13,7 +13,7 @@ data class User(@PrimaryKey(autoGenerate = true) var id: Long?,
                 @ColumnInfo(name="lastName") var lastName: String?
 ){
     constructor():this(null, null, false, null, null, null)
-    constructor(facebookId: Long?, firstName: String?, lastName: String?):this(null, facebookId, false, null, firstName, lastName)
+    constructor(facebookId: Long?, firstName: String?, lastName: String?, trainerId: Long?):this(null, facebookId, false, trainerId, firstName, lastName)
     constructor(facebookId: Long?, isTrainer: Boolean?, firstName: String?, lastName: String?):this(null, facebookId, isTrainer, null, firstName, lastName)
     constructor(facebookId: Long?, isTrainer: Boolean?, trainerId: Long?, firstName: String?, lastName: String?):this(null, facebookId, isTrainer, trainerId, firstName, lastName)
 

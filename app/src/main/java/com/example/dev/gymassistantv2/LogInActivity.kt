@@ -107,12 +107,11 @@ class LogInActivity : Activity() {
     }
 
     private fun performLoginAsUser(loggedUser: User) {
-        val loggedUserDto = UserDto(loggedUser, fbUserFirstName, fbUserLastName)
+        val loggedUserDto = UserDto(loggedUser)
         val intentMainMenu = Intent(this, MainMenuActivity::class.java)
         intentMainMenu.putExtra("loggedUser", loggedUserDto)
         startActivity(intentMainMenu)
     }
-
 
     private fun isAccessTokenPresent(): Boolean {
         val accessToken = AccessToken.getCurrentAccessToken()

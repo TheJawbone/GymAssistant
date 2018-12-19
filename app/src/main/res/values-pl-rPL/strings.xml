@@ -39,7 +39,7 @@
     <string name="save">Zapisz</string>
     <string name="cancel">Anuluj</string>
     <string name="send_invitation">Wyślij zaproszenie</string>
-    <string name="send_invitation_description">Wybierz trenera z którym chcesz nawiązać współpracę.</string>
+    <string name="send_invitation_description">Zaproś trenera do współpracy</string>
     <string name="pending_invitations">Zaproszenia oczekujące na zatwierdzenie</string>
     <string name="my_trainer">Mój trener</string>
     <string name="no_trainer">Brak trenera</string>

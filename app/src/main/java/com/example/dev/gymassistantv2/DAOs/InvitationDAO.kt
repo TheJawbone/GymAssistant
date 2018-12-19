@@ -11,16 +11,16 @@ interface InvitationDAO {
     fun getAll(): List<Invitation>
 
     @Query("SELECT * FROM Invitation inv WHERE inv.id == :id")
-    fun getById(id: Long): Invitation
+    fun getById(id: Long): Invitation?
 
     @Query("SELECT * FROM Invitation inv WHERE inv.senderId == :senderId")
-    fun getForSender(senderId: Long): Invitation
+    fun getForSender(senderId: Long): Invitation?
 
     @Query("SELECT * FROM Invitation inv WHERE inv.recipientId == :recipientId")
     fun getForRecipient(recipientId: Long): List<Invitation>
 
     @Insert(onConflict = REPLACE)
-    fun insert(invitation: Invitation)
+    fun insert(invitation: Invitation): Long
 
     @Update
     fun update(invitation: Invitation)
